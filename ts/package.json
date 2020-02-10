@@ -1,5 +1,5 @@
 {
-  "name": "@ali/tea-util",
+  "name": "@alicloud/tea-util",
   "version": "1.0.0",
   "description": "",
   "main": "dist/client.js",
