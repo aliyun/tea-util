@@ -7,6 +7,8 @@
 
 - [Go](./golang/README-CN.md)
 - [Java](./java/README-CN.md)
+- [.Net](./csharp/README-CN.md)
+- [TypeScript/Node.js](./ts/README-CN.md)
 
 ## 问题
 [Opening an Issue](https://github.com/aliyun/tea-util/issues/new)，不符合指南的问题可能会立即关闭。
