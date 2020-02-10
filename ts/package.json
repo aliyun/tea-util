@@ -1,0 +1,30 @@
+{
+  "name": "@ali/tea-util",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/client.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register -r source-map-support/register test/**/*.spec.ts",
+    "test-cov": "nyc -e .ts -r=html -r=text -r=lcov npm run test",
+    "ci": "npm run test-cov && codecov",
+    "build": "tsc",
+    "prepublishOnly": "tsc"
+  },
+  "author": "Jackson Tian",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^12.12.26",
+    "mocha": "^7.0.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@alicloud/tea-typescript": "^1.5.1",
+    "kitx": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npm.alibaba-inc.com"
+  },
+  "files":["dist", "src"]
+}

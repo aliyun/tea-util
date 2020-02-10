@@ -1,0 +1,164 @@
+import { Readable } from 'stream';
+import * as $tea from '@alicloud/tea-typescript';
+import * as kitx from 'kitx';
+import querystring from 'querystring';
+
+export class RuntimeOptions extends $tea.Model {
+  autoretry?: boolean;
+  ignoreSSL?: boolean;
+  maxAttempts?: number;
+  backoffPolicy?: string;
+  backoffPeriod?: number;
+  readTimeout?: number;
+  connectTimeout?: number;
+  httpProxy?: string;
+  httpsProxy?: string;
+  noProxy?: string;
+  maxIdleConns?: number;
+  static names(): { [key: string]: string } {
+    return {
+      autoretry: 'autoretry',
+      ignoreSSL: 'ignoreSSL',
+      maxAttempts: 'max_attempts',
+      backoffPolicy: 'backoff_policy',
+      backoffPeriod: 'backoff_period',
+      readTimeout: 'readTimeout',
+      connectTimeout: 'connectTimeout',
+      httpProxy: 'httpProxy',
+      httpsProxy: 'httpsProxy',
+      noProxy: 'noProxy',
+      maxIdleConns: 'maxIdleConns',
+    };
+  }
+
+  static types(): { [key: string]: any } {
+    return {
+      autoretry: 'boolean',
+      ignoreSSL: 'boolean',
+      maxAttempts: 'number',
+      backoffPolicy: 'string',
+      backoffPeriod: 'number',
+      readTimeout: 'number',
+      connectTimeout: 'number',
+      httpProxy: 'string',
+      httpsProxy: 'string',
+      noProxy: 'string',
+      maxIdleConns: 'number',
+    };
+  }
+
+  constructor(map?: { [key: string]: any }) {
+    super(map);
+  }
+}
+
+function read(readable: Readable): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    let onData, onError, onEnd;
+    var cleanup = function () {
+      // cleanup
+      readable.removeListener('error', onError);
+      readable.removeListener('data', onData);
+      readable.removeListener('end', onEnd);
+    };
+
+    var bufs = [];
+    var size = 0;
+
+    onData = function (buf) {
+      bufs.push(buf);
+      size += buf.length;
+    };
+
+    onError = function (err) {
+      cleanup();
+      reject(err);
+    };
+
+    onEnd = function () {
+      cleanup();
+      resolve(Buffer.concat(bufs, size));
+    };
+
+    readable.on('error', onError);
+    readable.on('data', onData);
+    readable.on('end', onEnd);
+  });
+}
+
+export default class Client {
+
+  static toString(buff: Buffer): string {
+    return buff.toString();
+  }
+
+  static parseJSON(text: string): any {
+    return JSON.parse(text);
+  }
+
+  static async readAsBytes(stream: Readable): Promise<Buffer> {
+    return await read(stream);
+  }
+
+  static async readAsString(stream: Readable): Promise<string> {
+    let buff = await Client.readAsBytes(stream);
+    return Client.toString(buff);
+  }
+
+  static async readAsJSON(stream: Readable): Promise<any> {
+    return Client.parseJSON(await Client.readAsString(stream));
+  }
+
+  static getNonce(): string {
+    return kitx.makeNonce();
+  }
+
+  static getDateUTCString(): string {
+    const now = new Date();
+    return now.toUTCString();
+  }
+
+  static defaultString(real: string, defaultValue: string): string {
+    return real || defaultValue;
+  }
+
+  static defaultNumber(real: number, defaultValue: number): number {
+    return real || defaultValue;
+  }
+
+  static toFormString(val: {[key: string]: any}): string {
+    return querystring.stringify(val);
+  }
+
+  static toJSONString(val: {[key: string]: any}): string {
+    return JSON.stringify(val);
+  }
+
+  static toBytes(val: string): Buffer {
+    return Buffer.from(val);
+  }
+
+  static empty(val: string): boolean {
+    return !val;
+  }
+
+  static equalString(val1: string, val2: string): boolean {
+    return val1 === val2;
+  }
+
+  static equalNumber(val1: number, val2: number): boolean {
+    return val1 === val2;
+  }
+
+  static isUnset(value: any): boolean {
+    if (typeof value === 'undefined') {
+      return true;
+    }
+
+    if (value === null) {
+      return true;
+    }
+
+    return false;
+  }
+}
