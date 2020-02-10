@@ -10,3 +10,11 @@ jobs:
         - go test -race -coverprofile=coverage.txt -covermode=atomic ./service/... ./utils...
       after_success:
         - bash <(curl -s https://codecov.io/bash) -cF go
+    - language: java
+      jdk: openjdk8
+      if: branch = master
+      script:
+        - cd baseclient/java
+        - mvn test -B
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF java

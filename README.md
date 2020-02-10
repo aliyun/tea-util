@@ -7,6 +7,7 @@ English | [简体中文](README-CN.md)
 ## Installation
 
 - [Go](./golang/README.md)
+- [Java](./java/README.md)
 
 ## Issues
 [Opening an Issue](), Issues not conforming to the guidelines may be closed immediately.
