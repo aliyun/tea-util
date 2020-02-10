@@ -9,7 +9,7 @@ namespace tests.Models
         [Fact]
         public void Test_RuntimeObject()
         {
-            RuntimeObject runtime = new RuntimeObject();
+            RuntimeOptions runtime = new RuntimeOptions();
             runtime.Autoretry = true;
             runtime.BackoffPeriod = 1;
             runtime.BackoffPolicy = "backoff";
