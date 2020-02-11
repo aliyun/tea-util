@@ -82,7 +82,7 @@ func Empty(val string) bool {
 	return val == ""
 }
 
-func Equal(val1, val2 string) bool {
+func EqualString(val1, val2 string) bool {
 	return val1 == val2
 }
 
