@@ -179,5 +179,13 @@ namespace tests
 
             Assert.False(Common.IsUnset("test"));
         }
+
+        [Fact]
+        public void Test_StringifyMapValue()
+        {
+            Assert.Equal(new Dictionary<string, string>(), Common.StringifyMapValue(new Dictionary<string, object>()));
+            Assert.Equal("100", Common.StringifyMapValue(new Dictionary<string, object> { { "number", 100 } })["number"]);
+            Assert.Null(Common.StringifyMapValue(null));
+        }
     }
 }
