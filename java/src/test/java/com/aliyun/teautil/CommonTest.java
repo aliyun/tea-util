@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SimpleTimeZone;
+import java.util.*;
 
 public class CommonTest {
     @Test
@@ -133,5 +130,24 @@ public class CommonTest {
         Assert.assertEquals("null", result.get("testNull"));
         Assert.assertEquals("string", result.get("testString"));
         Assert.assertEquals("1", result.get("testNum"));
+    }
+
+    @Test
+    public void assertAsMapTest() {
+        try {
+            Common.assertAsMap(new ArrayList<>());
+            Assert.fail();
+        }catch (Exception e) {
+            Assert.assertEquals("The value is not a object", e.getMessage());
+        }
+
+        try {
+            Common.assertAsMap(null);
+            Assert.fail();
+        }catch (Exception e) {
+            Assert.assertEquals("The value is not a object", e.getMessage());
+        }
+
+        Assert.assertEquals("test", Common.assertAsMap("{\"test\":\"test\"}").get("test"));
     }
 }

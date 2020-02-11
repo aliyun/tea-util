@@ -40,6 +40,18 @@ public class Common {
     }
 
     /**
+     * Assert a value, if it is a map, return it, otherwise throws
+     *
+     * @return the map value
+     */
+    public static Map<String, Object> assertAsMap(Object object) {
+        if (null != object && !List.class.isAssignableFrom(object.getClass())) {
+            return new Gson().fromJson(String.valueOf(object), Map.class);
+        }
+        throw new RuntimeException("The value is not a object");
+    }
+
+    /**
      * Read data from a readable stream, and compose it to a bytes
      *
      * @param stream the readable stream
