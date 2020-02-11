@@ -138,3 +138,11 @@ func Test_StringifyMapValue(t *testing.T) {
 	utils.AssertEqual(t, "10", out["num"])
 	utils.AssertEqual(t, `{"test":"ok"}`, out["json"])
 }
+
+func Test_AssertAsMap(t *testing.T) {
+	in := map[string]string{
+		"num": "10",
+	}
+	out := AssertAsMap(in)
+	utils.AssertEqual(t, "10", out["num"].(string))
+}

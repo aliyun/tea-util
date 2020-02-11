@@ -107,6 +107,16 @@ func ToBytes(a string) []byte {
 	return []byte(a)
 }
 
+func AssertAsMap(a interface{}) map[string]interface{} {
+	byt, _ := json.Marshal(a)
+	res := make(map[string]interface{})
+	err := json.Unmarshal(byt, &res)
+	if err == nil {
+		return res
+	}
+	return res
+}
+
 func ParseJSON(a string) interface{} {
 	tmp := make(map[string]interface{})
 	err := json.Unmarshal([]byte(a), &tmp)
