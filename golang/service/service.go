@@ -38,6 +38,15 @@ func ReadAsString(body io.Reader) (string, error) {
 	return string(byt), nil
 }
 
+func StringifyMapValue(a map[string]interface{}) map[string]string {
+	res := make(map[string]string)
+	for key, value := range a {
+		byt, _ := json.Marshal(value)
+		res[key] = string(byt)
+	}
+	return res
+}
+
 func ReadAsBytes(body io.Reader) ([]byte, error) {
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {

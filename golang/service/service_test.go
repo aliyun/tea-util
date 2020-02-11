@@ -126,3 +126,15 @@ func Test_IsUnset(t *testing.T) {
 	ok = IsUnset("str")
 	utils.AssertEqual(t, false, ok)
 }
+
+func Test_StringifyMapValue(t *testing.T) {
+	in := map[string]interface{}{
+		"num": 10,
+		"json": map[string]string{
+			"test": "ok",
+		},
+	}
+	out := StringifyMapValue(in)
+	utils.AssertEqual(t, "10", out["num"])
+	utils.AssertEqual(t, `{"test":"ok"}`, out["json"])
+}
