@@ -14,6 +14,7 @@ import java.util.*;
 public class Common {
     /**
      * Convert a string(utf8) to bytes
+     *
      * @return the return bytes
      */
     public static byte[] toBytes(String str) throws UnsupportedEncodingException {
@@ -22,6 +23,7 @@ public class Common {
 
     /**
      * Convert a bytes to string(utf8)
+     *
      * @return the return string
      */
     public static String toString(byte[] bytes) throws UnsupportedEncodingException {
@@ -30,6 +32,7 @@ public class Common {
 
     /**
      * Parse it by JSON format
+     *
      * @return the parsed result
      */
     public static Object parseJSON(String json) {
@@ -38,6 +41,7 @@ public class Common {
 
     /**
      * Read data from a readable stream, and compose it to a bytes
+     *
      * @param stream the readable stream
      * @return the bytes result
      */
@@ -60,6 +64,7 @@ public class Common {
 
     /**
      * Read data from a readable stream, and compose it to a string
+     *
      * @param stream the readable stream
      * @return the string result
      */
@@ -69,6 +74,7 @@ public class Common {
 
     /**
      * Read data from a readable stream, and parse it by JSON format
+     *
      * @param stream the readable stream
      * @return the parsed result
      */
@@ -79,6 +85,7 @@ public class Common {
 
     /**
      * Generate a nonce string
+     *
      * @return the nonce string
      */
     public static String getNonce() {
@@ -92,6 +99,7 @@ public class Common {
 
     /**
      * Get an UTC format string by current date, e.g. 'Thu, 06 Feb 2020 07:32:54 GMT'
+     *
      * @return the UTC format string
      */
     public static String getDateUTCString() {
@@ -102,6 +110,7 @@ public class Common {
 
     /**
      * If not set the real, use default value
+     *
      * @return the return string
      */
     public static String defaultString(String str, String defaultStr) {
@@ -113,6 +122,7 @@ public class Common {
 
     /**
      * If not set the real, use default value
+     *
      * @return the return string
      */
     public static Number defaultNumber(Number number, Number defaultNumber) {
@@ -124,6 +134,7 @@ public class Common {
 
     /**
      * Format a map to form string, like a=a%20b%20c
+     *
      * @return the form string
      */
     public static String toFormString(Map<String, ?> map) throws UnsupportedEncodingException {
@@ -150,6 +161,7 @@ public class Common {
 
     /**
      * If not set the real, use default value
+     *
      * @return the return string
      */
     public static String toJSONString(Object object) {
@@ -158,6 +170,7 @@ public class Common {
 
     /**
      * Check the string is empty?
+     *
      * @return if string is null or zero length, return true
      */
     public static boolean empty(String str) {
@@ -166,6 +179,7 @@ public class Common {
 
     /**
      * Check one string equals another one?
+     *
      * @return if equals, return true
      */
     public static boolean equalString(String str, String val) {
@@ -177,6 +191,7 @@ public class Common {
 
     /**
      * Check one number equals another one?
+     *
      * @return if equals, return true
      */
     public static boolean equalNumber(Number num, Number val) {
@@ -188,10 +203,25 @@ public class Common {
 
     /**
      * Check one value is unset
+     *
      * @return if unset, return true
      */
     public static boolean isUnset(Object object) {
         return null == object;
+    }
+
+    /**
+     * Stringify the value of map
+     *
+     * @return the new stringified map
+     */
+    public static Map<String, String> stringifyMapValue(Map<String, ?> map) {
+        Map<String, String> result = new HashMap<>();
+        if (null == map) {
+            return null;
+        }
+        map.forEach((key, value) -> result.put(key, String.valueOf(value)));
+        return result;
     }
 }
 
