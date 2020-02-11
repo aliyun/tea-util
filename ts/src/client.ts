@@ -161,4 +161,16 @@ export default class Client {
 
     return false;
   }
+
+  static stringifyMapValue(m: {[key: string]: any} ): {[key: string]: string} {
+    if (!m) {
+      return m;
+    }
+
+    const result: {[key: string]: string} = {};
+    for (const [key, value] of Object.entries(m)) {
+      result[key] = String(value);
+    }
+    return result;
+  }
 }

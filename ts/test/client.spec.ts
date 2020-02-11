@@ -109,4 +109,11 @@ describe('Tea Util', function() {
         const casted = $tea.cast({}, opts);
         assert.ok(casted);
     });
+
+    it('stringifyMapValue', function () {
+        assert.deepStrictEqual(Client.stringifyMapValue({}), {});
+        assert.deepStrictEqual(Client.stringifyMapValue({'number': 100}), {'number': '100'});
+        assert.deepStrictEqual(Client.stringifyMapValue({'bool': true}), {'bool': 'true'});
+        assert.deepStrictEqual(Client.stringifyMapValue(null), null);
+    });
 });
