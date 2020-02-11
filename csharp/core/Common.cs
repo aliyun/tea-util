@@ -139,5 +139,21 @@ namespace AlibabaCloud.TeaUtil
         {
             return obj == null;
         }
+
+        public static Dictionary<string,string> StringifyMapValue(Dictionary<string,object> dict)
+        {
+            if(dict == null)
+            {
+                return null;
+            }
+
+            Dictionary<string, string> dictStr = new Dictionary<string, string>();
+            foreach(var keypair in dict)
+            {
+                dictStr.Add(keypair.Key, keypair.Value.ToSafeString());
+            }
+
+            return dictStr;
+        }
     }
 }
