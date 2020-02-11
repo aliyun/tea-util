@@ -173,4 +173,11 @@ export default class Client {
     }
     return result;
   }
+
+  static assertAsMap(value: any): {[key: string]: any} {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      return value as {[key: string]: any};
+    }
+    throw new Error(`The value is not a object`);
+  }
 }
