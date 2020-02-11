@@ -8,6 +8,7 @@ using System.Web;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AlibabaCloud.TeaUtil
 {
@@ -140,20 +141,30 @@ namespace AlibabaCloud.TeaUtil
             return obj == null;
         }
 
-        public static Dictionary<string,string> StringifyMapValue(Dictionary<string,object> dict)
+        public static Dictionary<string, string> StringifyMapValue(Dictionary<string, object> dict)
         {
-            if(dict == null)
+            if (dict == null)
             {
                 return null;
             }
 
             Dictionary<string, string> dictStr = new Dictionary<string, string>();
-            foreach(var keypair in dict)
+            foreach (var keypair in dict)
             {
                 dictStr.Add(keypair.Key, keypair.Value.ToSafeString());
             }
 
             return dictStr;
+        }
+
+        public static Dictionary<string, object> AssertAsMap(object value)
+        {
+            if (value != null && value is JObject)
+            {
+                return (Dictionary<string, object>) ReadJsonUtil.DeserializeToDic(value);
+            }
+
+            throw new ArgumentException("The value is not a object");
         }
     }
 }
