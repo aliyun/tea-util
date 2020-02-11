@@ -59,11 +59,11 @@ func Test_Empty(t *testing.T) {
 	utils.AssertEqual(t, false, ok)
 }
 
-func Test_Equal(t *testing.T) {
-	ok := Equal("v1", "v1")
+func Test_EqualString(t *testing.T) {
+	ok := EqualString("v1", "v1")
 	utils.AssertEqual(t, true, ok)
 
-	ok = Equal("v1", "v2")
+	ok = EqualString("v1", "v2")
 	utils.AssertEqual(t, false, ok)
 }
 
