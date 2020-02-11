@@ -118,4 +118,20 @@ public class CommonTest {
         byte[] bytes = Common.toBytes("test");
         Assert.assertEquals("test", Common.toString(bytes));
     }
+
+    @Test
+    public void stringifyMapValueTest() {
+        Assert.assertNull(Common.stringifyMapValue(null));
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("testNull", null);
+        map.put("testString", "string");
+        map.put("testNum", 1);
+        map.put("testBoo", true);
+        Map<String, String> result = Common.stringifyMapValue(map);
+        Assert.assertEquals("true", result.get("testBoo"));
+        Assert.assertEquals("null", result.get("testNull"));
+        Assert.assertEquals("string", result.get("testString"));
+        Assert.assertEquals("1", result.get("testNum"));
+    }
 }
