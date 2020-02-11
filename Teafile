@@ -4,7 +4,7 @@
 	"version": "0.0.3",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/aliyun/tea-util/golang/service:v1.0.0",
+		"go": "github.com/aliyun/tea-util/golang/service:v0.0.2",
 		"ts": "@alicloud/tea-util:^1.0.0",
 		"csharp": "AlibabaCloud.TeaUtil:0.0.1",
 		"java": "com.aliyun:tea-util:0.0.1"
