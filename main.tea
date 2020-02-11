@@ -131,3 +131,9 @@ static function isUnset(value: any): boolean;
  * @return the new stringified map
  */
 static function stringifyMapValue(m: map[string]any): map[string]string;
+
+/**
+ * Assert a value, if it is a map, return it, otherwise throws
+ * @return the map value
+ */
+static function assertAsMap(value: any): map[string]any;
