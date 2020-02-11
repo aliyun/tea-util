@@ -11,5 +11,8 @@
 	},
 	"java": {
 		"package": "com.aliyun.teautil"
+	},
+	"csharp":{
+		"namespace": "AlibabaCloud.TeaUtil"
 	}
 }
