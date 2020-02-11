@@ -23,8 +23,5 @@
     "@alicloud/tea-typescript": "^1.5.1",
     "kitx": "^2.0.0"
   },
-  "publishConfig": {
-    "registry": "https://registry.npm.alibaba-inc.com"
-  },
   "files":["dist", "src"]
 }
