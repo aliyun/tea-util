@@ -3,7 +3,7 @@ package com.aliyun.teautil.models;
 
 import com.aliyun.tea.*;
 
-public class RuntimeObject extends TeaModel {
+public class RuntimeOptions extends TeaModel {
     @NameInMap("autoretry")
     @Validation(required = true)
     public boolean autoretry;
@@ -48,8 +48,8 @@ public class RuntimeObject extends TeaModel {
     @Validation(required = true)
     public Integer maxIdleConns;
 
-    public static RuntimeObject build(java.util.Map<String, ?> map) throws Exception {
-        RuntimeObject self = new RuntimeObject();
+    public static RuntimeOptions build(java.util.Map<String, ?> map) throws Exception {
+        RuntimeOptions self = new RuntimeOptions();
         return TeaModel.build(map, self);
     }
 
