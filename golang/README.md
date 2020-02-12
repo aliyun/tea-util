@@ -20,7 +20,7 @@ $ go mod tidy
 Detailed changes for each release are documented in the [release notes](./ChangeLog.txt).
 
 ## References
-* [Latest Release](https://github.com/aliyun/tea-util/tree/master/baseclient/go)
+* [Latest Release](https://github.com/aliyun/tea-util/releases)
 
 ## License
 [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
