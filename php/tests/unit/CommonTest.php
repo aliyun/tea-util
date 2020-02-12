@@ -92,6 +92,9 @@ final class CommonTest extends TestCase
             'withWhiteSpace' => 'a b',
         ];
         $this->assertEquals('foo=bar&empty=&withWhiteSpace=a%20b', Common::toFormString($query));
+
+        $object = json_decode(json_encode($query));
+        $this->assertEquals('foo=bar&empty=&withWhiteSpace=a%20b', Common::toFormString($object));
     }
 
     public function testToJSONString()
@@ -118,7 +121,7 @@ final class CommonTest extends TestCase
         $this->assertFalse(Common::equalNumber(1, 2));
     }
 
-    public function isUnset()
+    public function testIsUnset()
     {
         $this->assertTrue(Common::isUnset($a));
         $b = 1;
@@ -150,7 +153,7 @@ final class CommonTest extends TestCase
 
         try {
             $map = ['foo' => 'bar'];
-            $this->assertEquals($map, Common::assertAsMap(['foo' => 'bar']));
+            $this->assertEquals($map, Common::assertAsMap($map));
         } catch (\Exception $e) {
             // should not be here
             $this->assertTrue(false);
