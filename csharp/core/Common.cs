@@ -118,7 +118,7 @@ namespace AlibabaCloud.TeaUtil
 
         public static string ToJSONString(Object value)
         {
-            return JsonConvert.SerializeObject(dict);
+            return JsonConvert.SerializeObject(value);
         }
 
         public static bool Empty(string val)
