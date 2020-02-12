@@ -130,7 +130,7 @@ export default class Client {
     return querystring.stringify(val);
   }
 
-  static toJSONString(val: {[key: string]: any}): string {
+  static toJSONString(val: any): string {
     return JSON.stringify(val);
   }
 

@@ -116,7 +116,7 @@ namespace AlibabaCloud.TeaUtil
             return result.ToString();
         }
 
-        public static string ToJSONString(Dictionary<string, object> dict)
+        public static string ToJSONString(Object value)
         {
             return JsonConvert.SerializeObject(dict);
         }
