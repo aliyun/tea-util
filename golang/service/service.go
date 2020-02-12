@@ -62,7 +62,7 @@ func DefaultString(reaStr, defaultStr string) string {
 	return reaStr
 }
 
-func ToJSONString(a map[string]interface{}) string {
+func ToJSONString(a interface{}) string {
 	byt, _ := json.Marshal(a)
 	return string(byt)
 }

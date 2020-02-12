@@ -15,4 +15,5 @@ csharp/**/.vs/
 .idea
 target/
 *.iml
-
+java/.project
+java/.settings/
