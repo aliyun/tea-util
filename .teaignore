@@ -5,5 +5,5 @@ csharp
 .git
 .gitignore
 .teaignore
-README.md
+.travis.yml
 README-CN.md
