@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
          executionOrder="depends,defects"
-         forceCoversAnnotation="true"
-         beStrictAboutCoversAnnotation="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         verbose="true">
+         processIsolation="false"
+         stopOnFailure="false"
+         logIncompleteSkipped="true">
     <testsuites>
         <testsuite name="default">
             <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
+
+    <logging>
+        <log type="coverage-html" target="cache/coverage" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="cache/coverage.clover"/>
+    </logging>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
