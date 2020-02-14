@@ -174,6 +174,13 @@ export default class Client {
     return result;
   }
 
+  static assertAsBoolean(value: any): boolean {
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    throw new Error(`The value is not a boolean`);
+  }
+
   static assertAsMap(value: any): {[key: string]: any} {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       return value as {[key: string]: any};
