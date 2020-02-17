@@ -181,6 +181,20 @@ export default class Client {
     throw new Error(`The value is not a boolean`);
   }
 
+  static assertAsString(value: any): string {
+    if (typeof value === 'string') {
+      return value;
+    }
+    throw new Error(`The value is not a string`);
+  }
+
+  static assertAsNumber(value: any): number {
+    if (typeof value === 'number') {
+      return value;
+    }
+    throw new Error(`The value is not a number`);
+  }
+
   static assertAsMap(value: any): {[key: string]: any} {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       return value as {[key: string]: any};
