@@ -14,6 +14,7 @@ function run_swift {
   swift package generate-xcodeproj --enable-code-coverage
   xcodebuild clean build -project TeaUtils.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test
   xcodebuild test -project TeaUtils.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test
+  cd ../
   upload_codecov_report swift swift
 }
 
