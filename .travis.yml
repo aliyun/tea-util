@@ -28,6 +28,10 @@ jobs:
     - language: node_js
       node_js: 12
       env: TEA_UTIL_ENV="ts"
+    - language: swift
+      os: osx
+      osx_image: xcode11.3
+      env: TEA_UTIL_ENV="swift" SCHEME="AlibabaCloudCommons-Package" DESTINATION="platform=OS X,arch=x86_64" SDK=macosx PLATFORM="OSX"
 
 script:
   - bash ut.sh ${TEA_UTIL_ENV}
