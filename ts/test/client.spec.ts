@@ -117,6 +117,20 @@ describe('Tea Util', function() {
         assert.deepStrictEqual(Client.stringifyMapValue(null), null);
     });
 
+    it('assertAsBoolean', function () {
+        assert.deepStrictEqual(Client.assertAsBoolean(true), true);
+        assert.deepStrictEqual(Client.assertAsBoolean(false), false);
+        assert.throws(() => {
+            Client.assertAsBoolean('true');
+        }, /The value is not a boolean/);
+        assert.throws(() => {
+            Client.assertAsBoolean('false');
+        }, /The value is not a boolean/);
+        assert.throws(() => {
+            Client.assertAsBoolean(undefined);
+        }, /The value is not a boolean/);
+    });
+
     it('assertAsMap', function () {
         assert.deepStrictEqual(Client.assertAsMap({}), {});
         assert.throws(() => {
