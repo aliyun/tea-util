@@ -133,10 +133,22 @@ static function isUnset(value: any): boolean;
 static function stringifyMapValue(m: map[string]any): map[string]string;
 
 /**
- * Assert a value, if it is a boolean, return boolean
+ * Assert a value, if it is a boolean, return it, otherwise throws
  * @return the boolean value
  */
 static function assertAsBoolean(value: any): boolean;
+
+/**
+ * Assert a value, if it is a string, return it, otherwise throws
+ * @return the string value
+ */
+static function assertAsString(value: any): string;
+
+/**
+ * Assert a value, if it is a number, return it, otherwise throws
+ * @return the number value
+ */
+static function assertAsNumber(value: any): number;
 
 /**
  * Assert a value, if it is a map, return it, otherwise throws

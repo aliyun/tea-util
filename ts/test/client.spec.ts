@@ -131,6 +131,35 @@ describe('Tea Util', function() {
         }, /The value is not a boolean/);
     });
 
+    it('assertAsString', function () {
+        assert.deepStrictEqual(Client.assertAsString('string'), 'string');
+        assert.deepStrictEqual(Client.assertAsString(''), '');
+        assert.throws(() => {
+            Client.assertAsString(1);
+        }, /The value is not a string/);
+        assert.throws(() => {
+            Client.assertAsString(true);
+        }, /The value is not a string/);
+        assert.throws(() => {
+            Client.assertAsString(undefined);
+        }, /The value is not a string/);
+    });
+
+    it('assertAsNumber', function () {
+        assert.deepStrictEqual(Client.assertAsNumber(1), 1);
+        assert.deepStrictEqual(Client.assertAsNumber(-1), -1);
+        assert.deepStrictEqual(Client.assertAsNumber(0), 0);
+        assert.throws(() => {
+            Client.assertAsNumber('1');
+        }, /The value is not a number/);
+        assert.throws(() => {
+            Client.assertAsNumber(true);
+        }, /The value is not a number/);
+        assert.throws(() => {
+            Client.assertAsNumber(undefined);
+        }, /The value is not a number/);
+    });
+
     it('assertAsMap', function () {
         assert.deepStrictEqual(Client.assertAsMap({}), {});
         assert.throws(() => {
