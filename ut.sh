@@ -9,6 +9,15 @@ function upload_codecov_report {
   return $?
 }
 
+function run_swift {
+  cd swift/ || rerturn 126
+  swift package generate-xcodeproj --enable-code-coverage
+  xcodebuild clean build -project TeaUtils.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test
+  xcodebuild test -project TeaUtils.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test
+  cd ../
+  upload_codecov_report swift swift
+}
+
 function run_php {
   cd php/ || return 126
   composer --version
@@ -102,6 +111,10 @@ elif [ "$lang" == "ts" ]
 then
   echo "run ts"
   run_ts
+elif [ "$lang" == "swift" ]
+then
+  echo "run swift"
+  run_swift
 fi
 
 exit $?
