@@ -146,3 +146,36 @@ func Test_AssertAsMap(t *testing.T) {
 	out := AssertAsMap(in)
 	utils.AssertEqual(t, "10", out["num"].(string))
 }
+
+func Test_AssertAsString(t *testing.T) {
+	out := AssertAsString("ok")
+	utils.AssertEqual(t, "ok", out)
+
+	defer func() {
+		err := recover()
+		utils.AssertEqual(t, "10 is not a string", err)
+	}()
+	out = AssertAsString(10)
+}
+
+func Test_AssertAsNumber(t *testing.T) {
+	out := AssertAsNumber(10)
+	utils.AssertEqual(t, 10, out)
+
+	defer func() {
+		err := recover()
+		utils.AssertEqual(t, "false is not a int", err)
+	}()
+	out = AssertAsNumber(false)
+}
+
+func Test_AssertAsBoolean(t *testing.T) {
+	out := AssertAsBoolean(true)
+	utils.AssertEqual(t, true, out)
+
+	defer func() {
+		err := recover()
+		utils.AssertEqual(t, "10 is not a bool", err)
+	}()
+	out = AssertAsBoolean(10)
+}

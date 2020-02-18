@@ -117,6 +117,30 @@ func AssertAsMap(a interface{}) map[string]interface{} {
 	return res
 }
 
+func AssertAsNumber(a interface{}) int {
+	res, ok := a.(int)
+	if !ok {
+		panic(fmt.Sprintf("%v is not a int", a))
+	}
+	return res
+}
+
+func AssertAsBoolean(a interface{}) bool {
+	res, ok := a.(bool)
+	if !ok {
+		panic(fmt.Sprintf("%v is not a bool", a))
+	}
+	return res
+}
+
+func AssertAsString(a interface{}) string {
+	res, ok := a.(string)
+	if !ok {
+		panic(fmt.Sprintf("%v is not a string", a))
+	}
+	return res
+}
+
 func ParseJSON(a string) interface{} {
 	tmp := make(map[string]interface{})
 	err := json.Unmarshal([]byte(a), &tmp)
