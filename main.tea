@@ -155,3 +155,9 @@ static function assertAsNumber(value: any): number;
  * @return the map value
  */
 static function assertAsMap(value: any): map[string]any;
+
+/**
+ * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return defaultUserAgent
+ * @return the string value
+ */
+static function getUserAgent(userAgent: string): string;

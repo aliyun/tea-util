@@ -7,11 +7,15 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"runtime"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/aliyun/tea-util/golang/utils"
 )
+
+var defaultUserAgent = fmt.Sprintf("AlibabaCloud (%s; %s) Golang/%s Core/%s TeaDSL/1", runtime.GOOS, runtime.GOARCH, strings.Trim(runtime.Version(), "go"), "0.01")
 
 type RuntimeOptions struct {
 	Autoretry      *bool   `json:"autoretry" xml:"autoretry"`
@@ -108,11 +112,9 @@ func ToBytes(a string) []byte {
 }
 
 func AssertAsMap(a interface{}) map[string]interface{} {
-	byt, _ := json.Marshal(a)
-	res := make(map[string]interface{})
-	err := json.Unmarshal(byt, &res)
-	if err == nil {
-		return res
+	res, ok := a.(map[string]interface{})
+	if !ok {
+		panic(fmt.Sprintf("%v is not a map[string]interface{}", a))
 	}
 	return res
 }
@@ -187,4 +189,11 @@ func ToFormString(a map[string]interface{}) string {
 
 func GetDateUTCString() string {
 	return time.Now().UTC().Format(http.TimeFormat)
+}
+
+func GetUserAgent(userAgent string) string {
+	if userAgent != "" {
+		return defaultUserAgent + " " + userAgent
+	}
+	return defaultUserAgent
 }
