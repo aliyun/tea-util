@@ -1,7 +1,7 @@
 {
 	"scope": "alibabacloud",
 	"name": "Util",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"main": "./main.tea",
 	"releases": {
 		"go": "github.com/aliyun/tea-util/golang/service:v0.0.2",
