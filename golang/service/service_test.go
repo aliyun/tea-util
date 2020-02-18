@@ -140,11 +140,17 @@ func Test_StringifyMapValue(t *testing.T) {
 }
 
 func Test_AssertAsMap(t *testing.T) {
-	in := map[string]string{
+	in := map[string]interface{}{
 		"num": "10",
 	}
 	out := AssertAsMap(in)
 	utils.AssertEqual(t, "10", out["num"].(string))
+
+	defer func() {
+		err := recover()
+		utils.AssertEqual(t, "10 is not a map[string]interface{}", err)
+	}()
+	AssertAsMap(10)
 }
 
 func Test_AssertAsString(t *testing.T) {
@@ -155,7 +161,7 @@ func Test_AssertAsString(t *testing.T) {
 		err := recover()
 		utils.AssertEqual(t, "10 is not a string", err)
 	}()
-	out = AssertAsString(10)
+	AssertAsString(10)
 }
 
 func Test_AssertAsNumber(t *testing.T) {
@@ -166,7 +172,7 @@ func Test_AssertAsNumber(t *testing.T) {
 		err := recover()
 		utils.AssertEqual(t, "false is not a int", err)
 	}()
-	out = AssertAsNumber(false)
+	AssertAsNumber(false)
 }
 
 func Test_AssertAsBoolean(t *testing.T) {
@@ -177,5 +183,11 @@ func Test_AssertAsBoolean(t *testing.T) {
 		err := recover()
 		utils.AssertEqual(t, "10 is not a bool", err)
 	}()
-	out = AssertAsBoolean(10)
+	AssertAsBoolean(10)
+}
+
+func Test_UserAgent(t *testing.T) {
+	utils.AssertEqual(t, len(GetUserAgent("")), 61)
+	utils.AssertEqual(t, len(GetUserAgent("ccp")), 65)
+	utils.AssertContains(t, GetUserAgent("ccp"), " ccp")
 }
