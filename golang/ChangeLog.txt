@@ -1,3 +1,6 @@
+2020-02-19 Version: v0.0.3
+- Add GetUserAgent.
+
 2020-02-11 Version: v0.0.2
 - Add AssertAsMap and StringifyMapValue.
 
