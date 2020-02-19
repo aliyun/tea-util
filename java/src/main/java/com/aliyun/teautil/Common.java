@@ -12,6 +12,21 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Common {
+
+    private static final String defaultUserAgent;
+    static {
+        Properties sysProps = System.getProperties();
+        String coreVersion = "";
+        Properties props = new Properties();
+        try {
+            props.load(Common.class.getClassLoader().getResourceAsStream("project.properties"));
+            coreVersion = props.getProperty("sdk.project.version");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        defaultUserAgent = String.format("AlibabaCloud (%s; %s) Java/%s %s/%s", sysProps.getProperty("os.name"), sysProps
+                .getProperty("os.arch"), sysProps.getProperty("java.runtime.version"), "tea-util", coreVersion);
+    }
     /**
      * Convert a string(utf8) to bytes
      *
@@ -234,6 +249,13 @@ public class Common {
         }
         map.forEach((key, value) -> result.put(key, String.valueOf(value)));
         return result;
+    }
+
+    public static String getUserAgent(String val) throws Exception {
+        if (StringUtils.isEmpty(val)) {
+            return defaultUserAgent;
+        }
+        return defaultUserAgent + " " + val;
     }
 }
 
