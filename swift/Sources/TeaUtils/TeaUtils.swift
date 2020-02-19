@@ -118,4 +118,8 @@ public class TeaUtils {
         }
         return true
     }
+
+    public static func getUserAgent(_ userAgent: String) -> String {
+        getDefaultUserAgent() + " " + userAgent
+    }
 }
