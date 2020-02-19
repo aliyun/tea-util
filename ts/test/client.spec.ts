@@ -4,6 +4,7 @@ import { Readable } from 'stream';
 import * as $tea from '@alicloud/tea-typescript';
 import assert from 'assert';
 import 'mocha';
+import { platform, arch } from 'os';
 
 class MyReadable extends Readable {
     value: Buffer
@@ -171,6 +172,11 @@ describe('Tea Util', function() {
         assert.throws(() => {
             Client.assertAsMap(123);
         }, /The value is not a object/);
+    });
+
+    it('getUserAgent', function () {
+        assert.strictEqual(Client.getUserAgent(''), `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`);
+        assert.strictEqual(Client.getUserAgent('2019'), `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1 2019`);
     });
 
 });
