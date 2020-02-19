@@ -150,4 +150,10 @@ public class CommonTest {
 
         Assert.assertEquals("test", Common.assertAsMap("{\"test\":\"test\"}").get("test"));
     }
+
+    @Test
+    public void getUserAgentTest() throws Exception {
+        Assert.assertTrue(Common.getUserAgent(null).contains("tea-util"));
+        Assert.assertTrue(Common.getUserAgent("test").contains("test"));
+    }
 }
