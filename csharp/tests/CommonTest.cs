@@ -201,5 +201,13 @@ namespace tests
             Assert.NotNull(dict);
             Assert.Equal(6, dict.Count);
         }
+
+        [Fact]
+        public void Test_GetUserAgent()
+        {
+            Assert.NotNull(Common.GetUserAgent(null));
+
+            Assert.Contains("test", Common.GetUserAgent("test"));
+        }
     }
 }
