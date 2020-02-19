@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -14,6 +17,13 @@ namespace AlibabaCloud.TeaUtil
 {
     public static class Common
     {
+        private static readonly string _defaultUserAgent;
+
+        static Common()
+        {
+            _defaultUserAgent = GetDefaultUserAgent();
+        }
+
         public static byte[] ToBytes(string val)
         {
             return Encoding.UTF8.GetBytes(val);
@@ -51,16 +61,60 @@ namespace AlibabaCloud.TeaUtil
 
         public static byte[] ReadAsBytes(Stream stream)
         {
-            byte[] bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
-            return bytes;
+            int bufferLength = 4096;
+            using(var ms = new MemoryStream())
+            {
+                var buffer = new byte[bufferLength];
+
+                while (true)
+                {
+                    var length = stream.Read(buffer, 0, bufferLength);
+                    if (length == 0)
+                    {
+                        break;
+                    }
+
+                    ms.Write(buffer, 0, length);
+                }
+
+                ms.Seek(0, SeekOrigin.Begin);
+                var bytes = new byte[ms.Length];
+                ms.Read(bytes, 0, bytes.Length);
+
+                stream.Close();
+                stream.Dispose();
+
+                return bytes;
+            }
         }
 
         public async static Task<byte[]> ReadAsBytesAsync(Stream stream)
         {
-            byte[] bytes = new byte[stream.Length];
-            await stream.ReadAsync(bytes, 0, bytes.Length);
-            return bytes;
+            int bufferLength = 4096;
+            using(var ms = new MemoryStream())
+            {
+                var buffer = new byte[bufferLength];
+
+                while (true)
+                {
+                    var length = await stream.ReadAsync(buffer, 0, bufferLength);
+                    if (length == 0)
+                    {
+                        break;
+                    }
+
+                    await ms.WriteAsync(buffer, 0, length);
+                }
+
+                ms.Seek(0, SeekOrigin.Begin);
+                var bytes = new byte[ms.Length];
+                await ms.ReadAsync(bytes, 0, bytes.Length);
+
+                stream.Close();
+                stream.Dispose();
+
+                return bytes;
+            }
         }
 
         public static string GetNonce()
@@ -165,6 +219,56 @@ namespace AlibabaCloud.TeaUtil
             }
 
             throw new ArgumentException("The value is not a object");
+        }
+
+        public static string GetUserAgent(string userAgent)
+        {
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                return _defaultUserAgent + " " + userAgent;
+            }
+            return _defaultUserAgent;
+        }
+
+        internal static string GetDefaultUserAgent()
+        {
+            string defaultUserAgent = string.Empty;
+            string OSVersion = Environment.OSVersion.ToString();
+            string ClientVersion = GetRuntimeRegexValue(RuntimeEnvironment.GetRuntimeDirectory());
+            string CoreVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            defaultUserAgent = "Alibaba Cloud (" + OSVersion + ") ";
+            defaultUserAgent += ClientVersion;
+            defaultUserAgent += " Core/" + CoreVersion;
+            defaultUserAgent += " TeaDSL/1";
+            return defaultUserAgent;
+        }
+
+        internal static string GetRuntimeRegexValue(string value)
+        {
+            var rx = new Regex(@"(\.NET).*(\\|\/).*(\d)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var matches = rx.Match(value);
+            char[] separator = { '\\', '/' };
+
+            if (matches.Success)
+            {
+                var clientValueArray = matches.Value.Split(separator);
+                return BuildClientVersion(clientValueArray);
+            }
+
+            return "RuntimeNotFound";
+        }
+
+        internal static string BuildClientVersion(string[] value)
+        {
+            var finalValue = "";
+            for (var i = 0; i < value.Length - 1; ++i)
+            {
+                finalValue += value[i].Replace(".", "").ToLower();
+            }
+
+            finalValue += "/" + value[value.Length - 1];
+
+            return finalValue;
         }
     }
 }
