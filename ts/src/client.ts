@@ -2,6 +2,8 @@ import { Readable } from 'stream';
 import * as $tea from '@alicloud/tea-typescript';
 import * as kitx from 'kitx';
 import querystring from 'querystring';
+import { platform, arch } from 'os';
+const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`;
 
 export class RuntimeOptions extends $tea.Model {
   autoretry?: boolean;
@@ -200,5 +202,12 @@ export default class Client {
       return value as {[key: string]: any};
     }
     throw new Error(`The value is not a object`);
+  }
+
+  static getUserAgent(userAgent: string): string {
+    if(!userAgent || !userAgent.length){
+      return DEFAULT_USER_AGENT;
+    }
+    return DEFAULT_USER_AGENT + " " + userAgent;
   }
 }
