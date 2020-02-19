@@ -126,6 +126,12 @@ final class TeaUtilsTests: XCTestCase {
         XCTAssertTrue(TeaUtils.assertAsMap(map))
     }
 
+    func testGetUserAgent() {
+        let userAgent: String = TeaUtils.getUserAgent("CustomizedUserAgent")
+        print(userAgent)
+        XCTAssertTrue(userAgent.contains("CustomizedUserAgent"))
+    }
+
     static var allTests = [
         ("testToBytes", testToBytes),
     ]
