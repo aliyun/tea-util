@@ -24,7 +24,7 @@ public class Common {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        defaultUserAgent = String.format("AlibabaCloud (%s; %s) Java/%s %s/%s", sysProps.getProperty("os.name"), sysProps
+        defaultUserAgent = String.format("AlibabaCloud (%s; %s) Java/%s %s/%s TeaDSL/1", sysProps.getProperty("os.name"), sysProps
                 .getProperty("os.arch"), sysProps.getProperty("java.runtime.version"), "tea-util", coreVersion);
     }
     /**
