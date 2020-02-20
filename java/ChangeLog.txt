@@ -1,3 +1,6 @@
+2020-02-20 Version: 0.1.2
+1. Add getUserAgent
+
 2020-02-12 Version: 0.1.1
 1. Change RuntimeObject to RuntimeOptions
 
