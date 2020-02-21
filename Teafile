@@ -7,7 +7,7 @@
 		"go": "github.com/aliyun/tea-util/golang/service:v0.0.3",
 		"ts": "@alicloud/tea-util:^1.1.0",
 		"csharp": "AlibabaCloud.TeaUtil:0.0.3",
-		"java": "com.aliyun:tea-util:0.1.3"
+		"java": "com.aliyun:tea-util:0.1.4"
 	},
 	"java": {
 		"package": "com.aliyun.teautil",
