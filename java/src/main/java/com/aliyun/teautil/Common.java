@@ -60,8 +60,8 @@ public class Common {
      * @return the map value
      */
     public static Map<String, Object> assertAsMap(Object object) {
-        if (null != object && !List.class.isAssignableFrom(object.getClass())) {
-            return new Gson().fromJson(String.valueOf(object), Map.class);
+        if (null != object && Map.class.isAssignableFrom(object.getClass())) {
+            return (Map<String, Object>) object;
         }
         throw new RuntimeException("The value is not a object");
     }

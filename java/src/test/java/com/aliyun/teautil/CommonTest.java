@@ -148,7 +148,9 @@ public class CommonTest {
             Assert.assertEquals("The value is not a object", e.getMessage());
         }
 
-        Assert.assertEquals("test", Common.assertAsMap("{\"test\":\"test\"}").get("test"));
+        Map<String, String> map = new HashMap<>();
+        map.put("test", "test");
+        Assert.assertEquals("test", Common.assertAsMap(map).get("test"));
     }
 
     @Test
