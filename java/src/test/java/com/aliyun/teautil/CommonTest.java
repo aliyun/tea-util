@@ -23,8 +23,8 @@ public class CommonTest {
 
     @Test
     public void getDateUTCStringTest() throws Exception {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(new SimpleTimeZone(0, "UTC"));
+        SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        df.setTimeZone(new SimpleTimeZone(0, "GMT"));
         Date date = df.parse(Common.getDateUTCString());
         Assert.assertNotNull(date);
     }
