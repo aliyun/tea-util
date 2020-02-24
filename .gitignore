@@ -17,3 +17,5 @@ target/
 *.iml
 java/.project
 java/.settings/
+java/bin/
+java/.classpath
