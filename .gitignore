@@ -19,3 +19,5 @@ java/.project
 java/.settings/
 java/bin/
 java/.classpath
+.vscode/
+cc/*.o
