@@ -197,3 +197,19 @@ func GetUserAgent(userAgent string) string {
 	}
 	return defaultUserAgent
 }
+
+func Is2xx(code int) bool {
+	return code >= 200 && code < 300
+}
+
+func Is3xx(code int) bool {
+	return code >= 300 && code < 400
+}
+
+func Is4xx(code int) bool {
+	return code >= 400 && code < 500
+}
+
+func Is5xx(code int) bool {
+	return code >= 500 && code < 600
+}

@@ -191,3 +191,23 @@ func Test_UserAgent(t *testing.T) {
 	utils.AssertEqual(t, len(GetUserAgent("ccp")), 65)
 	utils.AssertContains(t, GetUserAgent("ccp"), " ccp")
 }
+
+func Test_Is2xx(t *testing.T) {
+	utils.AssertEqual(t, Is2xx(200), true)
+	utils.AssertEqual(t, Is2xx(300), false)
+}
+
+func Test_Is3xx(t *testing.T) {
+	utils.AssertEqual(t, Is3xx(300), true)
+	utils.AssertEqual(t, Is3xx(400), false)
+}
+
+func Test_Is4xx(t *testing.T) {
+	utils.AssertEqual(t, Is4xx(400), true)
+	utils.AssertEqual(t, Is4xx(500), false)
+}
+
+func Test_Is5xx(t *testing.T) {
+	utils.AssertEqual(t, Is5xx(500), true)
+	utils.AssertEqual(t, Is5xx(600), false)
+}
