@@ -161,3 +161,28 @@ static function assertAsMap(value: any): map[string]any;
  * @return the string value
  */
 static function getUserAgent(userAgent: string): string;
+
+/**
+ * If the code between 200 and 300, return true, or return false
+ * @return boolean
+ */
+static function is2xx(code: number): boolean;
+
+/**
+ * If the code between 300 and 400, return true, or return false
+ * @return boolean
+ */
+static function is3xx(code: number): boolean;
+
+/**
+ * If the code between 400 and 500, return true, or return false
+ * @return boolean
+ */
+static function is4xx(code: number): boolean;
+
+/**
+ * If the code between 500 and 600, return true, or return false
+ * @return boolean
+ */
+static function is5xx(code: number): boolean;
+
