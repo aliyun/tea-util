@@ -209,5 +209,25 @@ namespace tests
 
             Assert.Contains("test", Common.GetUserAgent("test"));
         }
+
+        [Fact]
+        public void Test_CodeIsXX()
+        {
+            Assert.False(Common.Is2xx(100));
+            Assert.True(Common.Is2xx(200));
+            Assert.False(Common.Is2xx(300));
+
+            Assert.False(Common.Is3xx(100));
+            Assert.True(Common.Is3xx(300));
+            Assert.False(Common.Is3xx(400));
+
+            Assert.False(Common.Is4xx(100));
+            Assert.True(Common.Is4xx(400));
+            Assert.False(Common.Is4xx(500));
+
+            Assert.False(Common.Is5xx(100));
+            Assert.True(Common.Is5xx(500));
+            Assert.False(Common.Is5xx(600));
+        }
     }
 }
