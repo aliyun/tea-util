@@ -230,6 +230,50 @@ namespace AlibabaCloud.TeaUtil
             return _defaultUserAgent;
         }
 
+        /// <summary>
+        /// Is2xx
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        /// <remarks>If the code between 200 and 300, return true, or return false</remarks>
+        public static bool Is2xx(int? code)
+        {
+            return code >= 200 && code < 300;
+        }
+
+        /// <summary>
+        /// Is3xx
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        /// <remarks>If the code between 300 and 400, return true, or return false</remarks>
+        public static bool Is3xx(int? code)
+        {
+            return code >= 300 && code < 400;
+        }
+
+        /// <summary>
+        /// Is4xx
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        /// <remarks>If the code between 400 and 500, return true, or return false</remarks>
+        public static bool Is4xx(int? code)
+        {
+            return code >= 400 && code < 500;
+        }
+
+        /// <summary>
+        /// Is5xx
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        /// <remarks>If the code between 500 and 600, return true, or return false</remarks>
+        public static bool Is5xx(int? code)
+        {
+            return code >= 500 && code < 600;
+        }
+
         internal static string GetDefaultUserAgent()
         {
             string defaultUserAgent = string.Empty;
