@@ -158,4 +158,36 @@ public class CommonTest {
         Assert.assertTrue(Common.getUserAgent(null).contains("tea-util"));
         Assert.assertTrue(Common.getUserAgent("test").contains("test"));
     }
+
+    @Test
+    public void is2xxTest() throws Exception{
+        Assert.assertFalse(Common.is2xx(null));
+        Assert.assertFalse(Common.is2xx(66));
+        Assert.assertFalse(Common.is2xx(400));
+        Assert.assertTrue(Common.is2xx(200));
+    }
+
+    @Test
+    public void is3xxTest() throws Exception {
+        Assert.assertFalse(Common.is3xx(null));
+        Assert.assertFalse(Common.is3xx(66));
+        Assert.assertFalse(Common.is3xx(500));
+        Assert.assertTrue(Common.is3xx(300));
+    }
+
+    @Test
+    public void is4xxTest() throws Exception {
+        Assert.assertFalse(Common.is4xx(null));
+        Assert.assertFalse(Common.is4xx(66));
+        Assert.assertFalse(Common.is4xx(600));
+        Assert.assertTrue(Common.is4xx(400));
+    }
+
+    @Test
+    public void is5xxTest() throws Exception {
+        Assert.assertFalse(Common.is5xx(null));
+        Assert.assertFalse(Common.is5xx(66));
+        Assert.assertFalse(Common.is5xx(700));
+        Assert.assertTrue(Common.is5xx(500));
+    }
 }
