@@ -14,6 +14,7 @@ import java.util.*;
 public class Common {
 
     private static final String defaultUserAgent;
+
     static {
         Properties sysProps = System.getProperties();
         String coreVersion = "";
@@ -27,6 +28,7 @@ public class Common {
         defaultUserAgent = String.format("AlibabaCloud (%s; %s) Java/%s %s/%s TeaDSL/1", sysProps.getProperty("os.name"), sysProps
                 .getProperty("os.arch"), sysProps.getProperty("java.runtime.version"), "tea-util", coreVersion);
     }
+
     /**
      * Convert a string(utf8) to bytes
      *
@@ -251,11 +253,64 @@ public class Common {
         return result;
     }
 
+    /**
+     * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return defaultUserAgent
+     *
+     * @return the string value
+     */
     public static String getUserAgent(String val) throws Exception {
         if (StringUtils.isEmpty(val)) {
             return defaultUserAgent;
         }
         return defaultUserAgent + " " + val;
+    }
+
+    /**
+     * If the code between 200 and 300, return true, or return false
+     *
+     * @return boolean
+     */
+    public static boolean is2xx(Number code) throws Exception {
+        if (null == code) {
+            return false;
+        }
+        return code.intValue() >= 200 && code.intValue() < 300 ? true : false;
+    }
+
+    /**
+     * If the code between 300 and 400, return true, or return false
+     *
+     * @return boolean
+     */
+    public static boolean is3xx(Number code) throws Exception {
+        if (null == code) {
+            return false;
+        }
+        return code.intValue() >= 300 && code.intValue() < 400 ? true : false;
+    }
+
+    /**
+     * If the code between 400 and 500, return true, or return false
+     *
+     * @return boolean
+     */
+    public static boolean is4xx(Number code) throws Exception {
+        if (null == code) {
+            return false;
+        }
+        return code.intValue() >= 400 && code.intValue() < 500 ? true : false;
+    }
+
+    /**
+     * If the code between 500 and 600, return true, or return false
+     *
+     * @return boolean
+     */
+    public static boolean is5xx(Number code) throws Exception {
+        if (null == code) {
+            return false;
+        }
+        return code.intValue() >= 500 && code.intValue() < 600 ? true : false;
     }
 }
 
