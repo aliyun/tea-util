@@ -1,3 +1,6 @@
+### 2020-02-28 Version 0.0.4
+* Supported Func conde `IsXX`
+
 ### 2020-02-20 Version 0.0.3
 * Improved Function `GetUserAgent()`
 
