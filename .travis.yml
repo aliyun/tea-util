@@ -31,7 +31,7 @@ jobs:
     - language: swift
       os: osx
       osx_image: xcode11.3
-      env: TEA_UTIL_ENV="swift" SCHEME="TeaUtils" DESTINATION="platform=OS X,arch=x86_64" SDK=macosx PLATFORM="OSX"
+      env: TEA_UTIL_ENV="swift"
 
 script:
   - bash ut.sh ${TEA_UTIL_ENV}
