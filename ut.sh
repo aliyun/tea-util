@@ -12,8 +12,8 @@ function upload_codecov_report {
 function run_swift {
   cd swift/ || rerturn 126
   swift package generate-xcodeproj --enable-code-coverage
-  xcodebuild clean build -project TeaUtils.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test
-  xcodebuild test -project TeaUtils.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test
+  xcodebuild clean build -project TeaUtils.xcodeproj -scheme "TeaUtils-Package" -sdk "macosx" -destination "platform=OS X,arch=x86_64" -configuration Debug ONLY_ACTIVE_ARCH=NO test
+  xcodebuild test -project TeaUtils.xcodeproj -scheme "TeaUtils-Package" -sdk "macosx" -destination "platform=OS X,arch=x86_64" -configuration Debug ONLY_ACTIVE_ARCH=NO test
   cd ../
   upload_codecov_report swift swift
 }
