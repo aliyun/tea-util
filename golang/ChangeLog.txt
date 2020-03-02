@@ -1,3 +1,6 @@
+2020-03-02 Version: v0.0.5
+- Modify StringifyMapValue.
+
 2020-02-27 Version: v0.0.4
 - Add more function.
 
