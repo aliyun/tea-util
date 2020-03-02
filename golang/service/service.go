@@ -45,8 +45,15 @@ func ReadAsString(body io.Reader) (string, error) {
 func StringifyMapValue(a map[string]interface{}) map[string]string {
 	res := make(map[string]string)
 	for key, value := range a {
-		byt, _ := json.Marshal(value)
-		res[key] = string(byt)
+		if value != nil {
+			switch value.(type) {
+			case string:
+				res[key] = value.(string)
+			default:
+				byt, _ := json.Marshal(value)
+				res[key] = string(byt)
+			}
+		}
 	}
 	return res
 }
