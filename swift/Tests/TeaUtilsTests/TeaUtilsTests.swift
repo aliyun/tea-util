@@ -71,8 +71,7 @@ final class TeaUtilsTests: XCTestCase {
     func testToJSONString() {
         var dict: [String: String] = [String: String]()
         dict["foo"] = "bar"
-        dict["a"] = "b"
-        XCTAssertEqual("{\"foo\":\"bar\",\"a\":\"b\"}", TeaUtils.toJSONString(dict))
+        XCTAssertEqual("{\"foo\":\"bar\"}", TeaUtils.toJSONString(dict))
     }
 
     func testEmpty() {
