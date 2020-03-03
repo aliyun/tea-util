@@ -17,8 +17,8 @@ Pod::Spec.new do |spec|
   spec.watchos.deployment_target = '3.0'
   spec.tvos.deployment_target    = '9.0'
 
-  spec.dependency 'https://github.com/krzyzanowskim/CryptoSwift.git',  '1.3.0'
-  spec.dependency 'https://github.com/SwiftyJSON/SwiftyJSON.git',  '5.0.0'
+  spec.dependency 'CryptoSwift.git',  '~> 1.3.0'
+  spec.dependency 'SwiftyJSON.git',  '~> 5.0.0'
   spec.swift_version = '5.1'
 
 end
