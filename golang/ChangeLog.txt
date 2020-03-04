@@ -1,3 +1,6 @@
+2020-03-04 Version: v0.0.6
+- Add Set Func for RuntimeOptions.
+
 2020-03-02 Version: v0.0.5
 - Modify StringifyMapValue.
 

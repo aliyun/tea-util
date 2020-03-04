@@ -21,3 +21,4 @@ java/bin/
 java/.classpath
 .vscode/
 cc/*.o
+*.sum
