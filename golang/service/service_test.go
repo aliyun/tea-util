@@ -4,8 +4,41 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/tea-util/golang/utils"
 )
+
+func Test_SetFunc(t *testing.T) {
+	runtime := new(RuntimeOptions).SetAutoretry(true).
+		SetBackoffPeriod(10).
+		SetBackoffPolicy("no").
+		SetConnectTimeout(100).
+		SetHttpProxy("httpproxy").
+		SetHttpsProxy("httpsproxy").
+		SetIgnoreSSL(true).
+		SetLocalAddr("localaddr").
+		SetMaxAttempts(3).
+		SetMaxIdleConns(5).
+		SetNoProxy("noproxy").
+		SetReadTimeout(50).
+		SetSocks5NetWork("tcp").
+		SetSocks5Proxy("sock5proxy")
+	utils.AssertEqual(t, true, tea.BoolValue(runtime.Autoretry))
+	utils.AssertEqual(t, true, tea.BoolValue(runtime.IgnoreSSL))
+	utils.AssertEqual(t, 10, tea.IntValue(runtime.BackoffPeriod))
+	utils.AssertEqual(t, 100, tea.IntValue(runtime.ConnectTimeout))
+	utils.AssertEqual(t, 50, tea.IntValue(runtime.ReadTimeout))
+	utils.AssertEqual(t, 3, tea.IntValue(runtime.MaxAttempts))
+	utils.AssertEqual(t, 5, tea.IntValue(runtime.MaxIdleConns))
+	utils.AssertEqual(t, "no", tea.StringValue(runtime.BackoffPolicy))
+	utils.AssertEqual(t, "httpproxy", tea.StringValue(runtime.HttpProxy))
+	utils.AssertEqual(t, "httpsproxy", tea.StringValue(runtime.HttpsProxy))
+	utils.AssertEqual(t, "localaddr", tea.StringValue(runtime.LocalAddr))
+	utils.AssertEqual(t, "noproxy", tea.StringValue(runtime.NoProxy))
+	utils.AssertEqual(t, "tcp", tea.StringValue(runtime.Socks5NetWork))
+	utils.AssertEqual(t, "sock5proxy", tea.StringValue(runtime.Socks5Proxy))
+	runtime.GoString()
+}
 
 func Test_ReadAsString(t *testing.T) {
 	str, err := ReadAsString(strings.NewReader("common"))
