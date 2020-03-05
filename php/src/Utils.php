@@ -1,9 +1,11 @@
 <?php
 
-namespace AlibabaCloud\Tea\Utils;
+namespace AlibabaCloud\Tea;
 
-class Common
+class Utils
 {
+    private static $defaultUserAgent = "";
+
     /**
      * Convert a string(utf8) to bytes.
      *
@@ -95,7 +97,7 @@ class Common
      */
     public static function getNonce()
     {
-        return md5('alibabacloud.tea.utils' . uniqid(md5(microtime(true)), true));
+        return md5(uniqid() . uniqid(md5(microtime(true)), true));
     }
 
     /**
@@ -236,6 +238,42 @@ class Common
     }
 
     /**
+     * Assert a value, if it is a boolean, return it, otherwise throws
+     *
+     * @param mixed $value
+     *
+     * @return bool the boolean value
+     */
+    public static function assertAsBoolean($value)
+    {
+        return is_bool($value);
+    }
+
+    /**
+     * Assert a value, if it is a string, return it, otherwise throws
+     *
+     * @param mixed $value
+     *
+     * @return bool the string value
+     */
+    public static function assertAsString($value)
+    {
+        return is_string($value);
+    }
+
+    /**
+     * Assert a value, if it is a number, return it, otherwise throws
+     *
+     * @param mixed $value
+     *
+     * @return bool the number value
+     */
+    public static function assertAsNumber($value)
+    {
+        return is_numeric($value);
+    }
+
+    /**
      * Assert a value, if it is a map, return it, otherwise throws.
      *
      * @param $any
@@ -248,5 +286,72 @@ class Common
             return $any;
         }
         throw new \InvalidArgumentException('It is not a map value.');
+    }
+
+    /**
+     * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return
+     * defaultUserAgent
+     *
+     * @param string $userAgent
+     *
+     * @return string the string value
+     */
+    public static function getUserAgent($userAgent = "")
+    {
+        if (empty(self::$defaultUserAgent)) {
+            self::$defaultUserAgent = sprintf("AlibabaCloud OS/%s PHP/%s TeaDSL/1", PHP_OS, PHP_VERSION);
+        }
+        if (!empty($userAgent)) {
+            return self::$defaultUserAgent . " " . $userAgent;
+        }
+        return self::$defaultUserAgent;
+    }
+
+    /**
+     * If the code between 200 and 300, return true, or return false
+     *
+     * @param integer $code
+     *
+     * @return boolean
+     */
+    public static function is2xx($code)
+    {
+        return $code >= 200 && $code < 300;
+    }
+
+    /**
+     * If the code between 300 and 400, return true, or return false
+     *
+     * @param integer $code
+     *
+     * @return boolean
+     */
+    public static function is3xx($code)
+    {
+        return $code >= 300 && $code < 400;
+    }
+
+    /**
+     * If the code between 400 and 500, return true, or return false
+     *
+     * @param integer $code
+     *
+     * @return boolean
+     */
+    public static function is4xx($code)
+    {
+        return $code >= 400 && $code < 500;
+    }
+
+    /**
+     * If the code between 500 and 600, return true, or return false
+     *
+     * @param integer $code
+     *
+     * @return boolean
+     */
+    public static function is5xx($code)
+    {
+        return $code >= 500 && $code < 600;
     }
 }
