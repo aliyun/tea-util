@@ -8,6 +8,9 @@
 #include <iostream>
 #include <unordered_map>
 #include <sstream>
+#include <string>
+#include <ctime>
+#include <iomanip>
 #include "Util.h"
 
 using namespace std;
@@ -40,15 +43,9 @@ string Client::toString(char * buff) {
 //   }
 
 string Client::getDateUTCString() {
-    std::time_t t = std::time(nullptr);
-    std::stringstream date;
-    #if defined(__GNUG__) && __GNUC__ < 5
-    char tmbuff[26];
-    strftime(tmbuff, 26, "%a, %d %b %Y %T", std::gmtime(&t));
-    date << tmbuff << " GMT";
-    #else
-    date << std::put_time(std::gmtime(&t), "%a, %d %b %Y %T GMT");
-    #endif
+    time_t t = time(nullptr);
+    stringstream date;
+    date << put_time(gmtime(&t), "%a, %d %b %Y %T GMT");
     return date.str();
 }
 
