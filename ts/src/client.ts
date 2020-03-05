@@ -210,4 +210,22 @@ export default class Client {
     }
     return DEFAULT_USER_AGENT + " " + userAgent;
   }
+
+  static is2xx(code: number): boolean {
+    return code >= 200 && code < 300;
+  }
+
+  static is3xx(code: number): boolean {
+    return code >= 300 && code < 400;
+  }
+
+  static is4xx(code: number): boolean {
+    return code >= 400 && code < 500;
+  }
+
+  static is5xx(code: number): boolean {
+    return code >= 500 && code < 600;
+  }
 }
+
+

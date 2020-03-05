@@ -77,7 +77,7 @@ describe('Tea Util', function() {
     });
 
     it('getDateUTCString', function () {
-        let regexp = /[A-Z][a-z]{2}, \d{2} Feb \d{4} \d{2}:\d{2}:\d{2} GMT/;
+        let regexp = /[A-Z][a-z]{2}, \d{2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}:\d{2} GMT/;
         assert.ok(regexp.test(Client.getDateUTCString()));
     });
 
@@ -177,6 +177,35 @@ describe('Tea Util', function() {
     it('getUserAgent', function () {
         assert.strictEqual(Client.getUserAgent(''), `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`);
         assert.strictEqual(Client.getUserAgent('2019'), `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1 2019`);
+    });
+
+    it('is2xx', function () {
+        assert.strictEqual(Client.is2xx(200), true);
+        assert.strictEqual(Client.is2xx(222), true);
+        assert.strictEqual(Client.is2xx(199), false);
+        assert.strictEqual(Client.is2xx(300), false);
+    });
+
+    it('is3xx', function () {
+        assert.strictEqual(Client.is3xx(300), true);
+        assert.strictEqual(Client.is3xx(322), true);
+        assert.strictEqual(Client.is3xx(299), false);
+        assert.strictEqual(Client.is3xx(400), false);
+    });
+
+    it('is4xx', function () {
+        assert.strictEqual(Client.is4xx(400), true);
+        assert.strictEqual(Client.is4xx(422), true);
+        assert.strictEqual(Client.is4xx(399), false);
+        assert.strictEqual(Client.is4xx(500), false);
+    });
+
+
+    it('is5xx', function () {
+        assert.strictEqual(Client.is5xx(500), true);
+        assert.strictEqual(Client.is5xx(522), true);
+        assert.strictEqual(Client.is5xx(499), false);
+        assert.strictEqual(Client.is5xx(600), false);
     });
 
 });
