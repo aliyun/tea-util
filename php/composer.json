@@ -1,12 +1,12 @@
 {
-  "name": "alibabacloud/tea-util",
+  "name": "alibabacloud/tea-utils",
   "description": "Aliyun Tea Util for PHP",
   "type": "library",
   "license": "Apache-2.0",
   "authors": [
     {
-      "name": "wb-hx510875",
-      "email": "wb-hx510875@alibaba-inc.com"
+      "name": "Alibaba Cloud SDK",
+      "email": "sdk-team@alibabacloud.com"
     }
   ],
   "support": {
@@ -22,12 +22,12 @@
   },
   "autoload": {
     "psr-4": {
-      "AlibabaCloud\\Tea\\Utils\\": "src"
+      "AlibabaCloud\\Tea\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "AlibabaCloud\\Tea\\Utils\\Tests\\": "tests"
+      "AlibabaCloud\\Tea\\Tests\\": "tests"
     }
   },
   "scripts": {
