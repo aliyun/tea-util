@@ -22,12 +22,12 @@
   },
   "autoload": {
     "psr-4": {
-      "AlibabaCloud\\Tea\\": "src"
+      "AlibabaCloud\\Tea\\Utils\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "AlibabaCloud\\Tea\\Tests\\": "tests"
+      "AlibabaCloud\\Tea\\Utils\\Tests\\": "tests"
     }
   },
   "scripts": {

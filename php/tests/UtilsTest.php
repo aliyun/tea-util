@@ -1,8 +1,8 @@
 <?php
 
-namespace AlibabaCloud\Tea\Tests;
+namespace AlibabaCloud\Tea\Utils\Tests;
 
-use AlibabaCloud\Tea\Utils;
+use AlibabaCloud\Tea\Utils\Utils;
 use PHPUnit\Framework\TestCase;
 
 final class UtilsTest extends TestCase
