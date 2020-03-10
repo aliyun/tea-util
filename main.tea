@@ -133,6 +133,12 @@ static function isUnset(value: any): boolean;
 static function stringifyMapValue(m: map[string]any): map[string]string;
 
 /**
+ * Anyify the value of map
+ * @return the new anyfied map
+ */
+static function anyifyMapValue(m: map[string]string): map[string]any;
+
+/**
  * Assert a value, if it is a boolean, return it, otherwise throws
  * @return the boolean value
  */

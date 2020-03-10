@@ -174,6 +174,14 @@ func Test_StringifyMapValue(t *testing.T) {
 	utils.AssertEqual(t, "ok", out["str"])
 }
 
+func Test_AnyifyMapValue(t *testing.T) {
+	in := map[string]string{
+		"str": "ok",
+	}
+	out := AnyifyMapValue(in)
+	utils.AssertEqual(t, "ok", out["str"].(string))
+}
+
 func Test_AssertAsMap(t *testing.T) {
 	in := map[string]interface{}{
 		"num": "10",

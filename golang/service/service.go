@@ -137,6 +137,14 @@ func StringifyMapValue(a map[string]interface{}) map[string]string {
 	return res
 }
 
+func AnyifyMapValue(a map[string]string) map[string]interface{} {
+	res := make(map[string]interface{})
+	for key, value := range a {
+		res[key] = value
+	}
+	return res
+}
+
 func ReadAsBytes(body io.Reader) ([]byte, error) {
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
