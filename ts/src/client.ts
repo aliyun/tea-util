@@ -176,6 +176,10 @@ export default class Client {
     return result;
   }
 
+  static anyifyMapValue(m: { [key: string]: string }): {[key: string]: any } {
+    return m;
+  }
+
   static assertAsBoolean(value: any): boolean {
     if (typeof value === 'boolean') {
       return value;
