@@ -238,6 +238,18 @@ class Utils
     }
 
     /**
+     * Anyify the value of map
+     *
+     * @param array $m
+     *
+     * @return array the new anyfied map
+     */
+    public static function anyifyMapValue($m)
+    {
+        return $m;
+    }
+
+    /**
      * Assert a value, if it is a boolean, return it, otherwise throws
      *
      * @param mixed $value
