@@ -118,6 +118,13 @@ describe('Tea Util', function() {
         assert.deepStrictEqual(Client.stringifyMapValue(null), null);
     });
 
+    it('anyifyMapValue', function () {
+        assert.deepStrictEqual(Client.anyifyMapValue({}), {});
+        assert.deepStrictEqual(Client.anyifyMapValue({'number': '100'}), {'number': '100'});
+        assert.deepStrictEqual(Client.anyifyMapValue({'string': 'string'}), {'string': 'string'});
+        assert.deepStrictEqual(Client.anyifyMapValue(null), null);
+    });
+
     it('assertAsBoolean', function () {
         assert.deepStrictEqual(Client.assertAsBoolean(true), true);
         assert.deepStrictEqual(Client.assertAsBoolean(false), false);
