@@ -274,6 +274,26 @@ namespace AlibabaCloud.TeaUtil
             return code >= 500 && code < 600;
         }
 
+        /// <summary>
+        /// Anyify the value of map
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns>return the new anyfied map</returns>
+        public static Dictionary<string, object> AnyifyMapValue(Dictionary<string, string> m)
+        {
+            if (m == null)
+            {
+                return null;
+            }
+
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            foreach(var keypair in m)
+            {
+                dict.Add(keypair.Key,keypair.Value);
+            }
+            return dict;
+        }
+
         internal static string GetDefaultUserAgent()
         {
             string defaultUserAgent = string.Empty;

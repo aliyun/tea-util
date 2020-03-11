@@ -229,5 +229,13 @@ namespace tests
             Assert.True(Common.Is5xx(500));
             Assert.False(Common.Is5xx(600));
         }
+
+        [Fact]
+        public void Test_AnyifyMapValue()
+        {
+            Assert.Equal(new Dictionary<string, object>(), Common.AnyifyMapValue(new Dictionary<string, string>()));
+            Assert.Equal("100", Common.AnyifyMapValue(new Dictionary<string, string> { { "number", "100" } }) ["number"]);
+            Assert.Null(Common.StringifyMapValue(null));
+        }
     }
 }
