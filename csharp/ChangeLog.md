@@ -1,3 +1,6 @@
+### 2020-03-11 Version 0.0.5
+* Supported Func `AnyifyMapValue`
+
 ### 2020-02-28 Version 0.0.4
 * Supported Func code `IsXX`
 
