@@ -145,6 +145,23 @@ final class UtilsTest extends TestCase
         ]));
     }
 
+    public function testAnyifyMapValue()
+    {
+        $this->assertEquals([
+            'foo'    => 'bar',
+            'null'   => null,
+            'true'   => true,
+            'false'  => false,
+            'number' => 1000
+        ], Utils::anyifyMapValue([
+            'foo'    => 'bar',
+            'null'   => null,
+            'true'   => true,
+            'false'  => false,
+            'number' => 1000
+        ]));
+    }
+
     public function testAssertAsBoolean()
     {
         $this->assertTrue(Utils::assertAsBoolean(true));
