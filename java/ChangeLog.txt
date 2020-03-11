@@ -1,3 +1,6 @@
+2020-03-10 Version: 0.1.6
+1. Add anyifyMapValue method
+
 2020-02-27 Version: 0.1.5
 1. Add isXXX method
 

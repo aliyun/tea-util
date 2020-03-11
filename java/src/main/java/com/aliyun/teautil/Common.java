@@ -254,6 +254,21 @@ public class Common {
     }
 
     /**
+     * Anyify the value of map
+     *
+     * @return the new anyfied map
+     */
+    public static Map<String, Object> anyifyMapValue(Map<String, ?> map) {
+        Map<String, Object> result = new HashMap<>();
+        if (null == map) {
+            return null;
+        }
+        map.forEach((key, value) -> result.put(key, value));
+        return result;
+    }
+
+
+    /**
      * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return defaultUserAgent
      *
      * @return the string value
