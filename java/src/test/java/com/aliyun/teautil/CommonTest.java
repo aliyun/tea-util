@@ -133,6 +133,20 @@ public class CommonTest {
     }
 
     @Test
+    public void anyifyMapValueTest() {
+        Assert.assertNull(Common.anyifyMapValue(null));
+
+        Map<String, String> map = new HashMap<>();
+        map.put("testString", "string");
+        map.put("testNum", "1");
+        map.put("testBoo", "true");
+        Map<String, Object> result = Common.anyifyMapValue(map);
+        Assert.assertEquals("true", result.get("testBoo"));
+        Assert.assertEquals("string", result.get("testString"));
+        Assert.assertEquals("1", result.get("testNum"));
+    }
+
+    @Test
     public void assertAsMapTest() {
         try {
             Common.assertAsMap(new ArrayList<>());
