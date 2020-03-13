@@ -1,6 +1,6 @@
 {
   "name": "alibabacloud/tea-utils",
-  "description": "Aliyun Tea Util for PHP",
+  "description": "Alibaba Cloud Tea Util for PHP",
   "type": "library",
   "license": "Apache-2.0",
   "authors": [
