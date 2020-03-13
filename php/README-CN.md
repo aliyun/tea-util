@@ -2,7 +2,7 @@ English | [简体中文](README-CN.md)
 
 ![](https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg)
 
-## Aliyun Tea Util for PHP
+## Alibaba Cloud Tea Util for PHP
 
 ## Installation
 
