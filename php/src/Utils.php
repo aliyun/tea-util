@@ -6,7 +6,7 @@ use Psr\Http\Message\StreamInterface;
 
 class Utils
 {
-    private static $defaultUserAgent = "";
+    private static $defaultUserAgent = '';
 
     /**
      * Convert a string(utf8) to bytes.
@@ -18,8 +18,8 @@ class Utils
     public static function toBytes($string)
     {
         $bytes = [];
-        for ($i = 0; $i < strlen($string); ++$i) {
-            $bytes[] = ord($string[$i]);
+        for ($i = 0; $i < \strlen($string); ++$i) {
+            $bytes[] = \ord($string[$i]);
         }
 
         return $bytes;
@@ -36,7 +36,7 @@ class Utils
     {
         $str = '';
         foreach ($bytes as $ch) {
-            $str .= chr($ch);
+            $str .= \chr($ch);
         }
 
         return $str;
@@ -77,13 +77,14 @@ class Utils
      */
     public static function readAsString($stream)
     {
-        return $stream->getContents();
+        return (string) $stream;
     }
 
     /**
      * Read data from a readable stream, and parse it by JSON format.
      *
      * @param StreamInterface the readable stream
+     * @param mixed $stream
      *
      * @return array the parsed result
      */
@@ -109,7 +110,7 @@ class Utils
      */
     public static function getDateUTCString()
     {
-        return gmdate("Y-m-d\TH:i:s\Z");
+        return gmdate('Y-m-d\\TH:i:s\\Z');
     }
 
     /**
@@ -147,7 +148,7 @@ class Utils
      */
     public static function toFormString($query)
     {
-        if (is_object($query)) {
+        if (\is_object($query)) {
             $query = json_decode(self::toJSONString($query), true);
         }
 
@@ -213,7 +214,7 @@ class Utils
      */
     public static function isUnset(&$value = null)
     {
-        return !isset($value) || is_null($value);
+        return !isset($value) || null === $value;
     }
 
     /**
@@ -227,20 +228,21 @@ class Utils
     {
         foreach ($map as &$node) {
             if (is_numeric($node)) {
-                $node = strval($node);
-            } elseif (is_null($node)) {
+                $node = (string) $node;
+            } elseif (null === $node) {
                 $node = '';
-            } elseif (is_bool($node)) {
-                $node = $node === true ? 'true' : 'false';
-            } elseif (is_object($node)) {
+            } elseif (\is_bool($node)) {
+                $node = true === $node ? 'true' : 'false';
+            } elseif (\is_object($node)) {
                 $node = json_decode(json_encode($node), true);
             }
         }
+
         return $map;
     }
 
     /**
-     * Anyify the value of map
+     * Anyify the value of map.
      *
      * @param array $m
      *
@@ -252,7 +254,7 @@ class Utils
     }
 
     /**
-     * Assert a value, if it is a boolean, return it, otherwise throws
+     * Assert a value, if it is a boolean, return it, otherwise throws.
      *
      * @param mixed $value
      *
@@ -260,11 +262,11 @@ class Utils
      */
     public static function assertAsBoolean($value)
     {
-        return is_bool($value);
+        return \is_bool($value);
     }
 
     /**
-     * Assert a value, if it is a string, return it, otherwise throws
+     * Assert a value, if it is a string, return it, otherwise throws.
      *
      * @param mixed $value
      *
@@ -272,11 +274,11 @@ class Utils
      */
     public static function assertAsString($value)
     {
-        return is_string($value);
+        return \is_string($value);
     }
 
     /**
-     * Assert a value, if it is a number, return it, otherwise throws
+     * Assert a value, if it is a number, return it, otherwise throws.
      *
      * @param mixed $value
      *
@@ -296,37 +298,39 @@ class Utils
      */
     public static function assertAsMap($any)
     {
-        if (is_array($any)) {
+        if (\is_array($any)) {
             return $any;
         }
+
         throw new \InvalidArgumentException('It is not a map value.');
     }
 
     /**
      * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return
-     * defaultUserAgent
+     * defaultUserAgent.
      *
      * @param string $userAgent
      *
      * @return string the string value
      */
-    public static function getUserAgent($userAgent = "")
+    public static function getUserAgent($userAgent = '')
     {
         if (empty(self::$defaultUserAgent)) {
-            self::$defaultUserAgent = sprintf("AlibabaCloud OS/%s PHP/%s TeaDSL/1", PHP_OS, PHP_VERSION);
+            self::$defaultUserAgent = sprintf('AlibabaCloud OS/%s PHP/%s TeaDSL/1', PHP_OS, PHP_VERSION);
         }
         if (!empty($userAgent)) {
-            return self::$defaultUserAgent . " " . $userAgent;
+            return self::$defaultUserAgent . ' ' . $userAgent;
         }
+
         return self::$defaultUserAgent;
     }
 
     /**
-     * If the code between 200 and 300, return true, or return false
+     * If the code between 200 and 300, return true, or return false.
      *
-     * @param integer $code
+     * @param int $code
      *
-     * @return boolean
+     * @return bool
      */
     public static function is2xx($code)
     {
@@ -334,11 +338,11 @@ class Utils
     }
 
     /**
-     * If the code between 300 and 400, return true, or return false
+     * If the code between 300 and 400, return true, or return false.
      *
-     * @param integer $code
+     * @param int $code
      *
-     * @return boolean
+     * @return bool
      */
     public static function is3xx($code)
     {
@@ -346,11 +350,11 @@ class Utils
     }
 
     /**
-     * If the code between 400 and 500, return true, or return false
+     * If the code between 400 and 500, return true, or return false.
      *
-     * @param integer $code
+     * @param int $code
      *
-     * @return boolean
+     * @return bool
      */
     public static function is4xx($code)
     {
@@ -358,11 +362,11 @@ class Utils
     }
 
     /**
-     * If the code between 500 and 600, return true, or return false
+     * If the code between 500 and 600, return true, or return false.
      *
-     * @param integer $code
+     * @param int $code
      *
-     * @return boolean
+     * @return bool
      */
     public static function is5xx($code)
     {
