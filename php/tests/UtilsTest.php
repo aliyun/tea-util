@@ -3,8 +3,13 @@
 namespace AlibabaCloud\Tea\Utils\Tests;
 
 use AlibabaCloud\Tea\Utils\Utils;
+use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class UtilsTest extends TestCase
 {
     private $stream;
@@ -12,7 +17,7 @@ final class UtilsTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->stream = fopen('http://httpbin.org/get', 'r');
+        $this->stream = new Stream(fopen('http://httpbin.org/get', 'r'));
     }
 
     public function testToBytes()
@@ -132,16 +137,16 @@ final class UtilsTest extends TestCase
     {
         $this->assertEquals([
             'foo'    => 'bar',
-            'null'   => "",
+            'null'   => '',
             'true'   => 'true',
             'false'  => 'false',
-            'number' => '1000'
+            'number' => '1000',
         ], Utils::stringifyMapValue([
             'foo'    => 'bar',
             'null'   => null,
             'true'   => true,
             'false'  => false,
-            'number' => 1000
+            'number' => 1000,
         ]));
     }
 
@@ -152,32 +157,32 @@ final class UtilsTest extends TestCase
             'null'   => null,
             'true'   => true,
             'false'  => false,
-            'number' => 1000
+            'number' => 1000,
         ], Utils::anyifyMapValue([
             'foo'    => 'bar',
             'null'   => null,
             'true'   => true,
             'false'  => false,
-            'number' => 1000
+            'number' => 1000,
         ]));
     }
 
     public function testAssertAsBoolean()
     {
         $this->assertTrue(Utils::assertAsBoolean(true));
-        $this->assertFalse(Utils::assertAsBoolean("true"));
+        $this->assertFalse(Utils::assertAsBoolean('true'));
     }
 
     public function testAssertAsString()
     {
-        $this->assertTrue(Utils::assertAsString("123"));
+        $this->assertTrue(Utils::assertAsString('123'));
         $this->assertFalse(Utils::assertAsString(123));
     }
 
     public function testAssertAsNumber()
     {
         $this->assertTrue(Utils::assertAsNumber(123));
-        $this->assertFalse(Utils::assertAsNumber("string"));
+        $this->assertFalse(Utils::assertAsNumber('string'));
     }
 
     public function testAssertAsMap()
@@ -197,7 +202,7 @@ final class UtilsTest extends TestCase
 
     public function testGetUserAgent()
     {
-        $this->assertTrue(false !== strpos(Utils::getUserAgent("CustomUserAgent"), "CustomUserAgent"));
+        $this->assertTrue(false !== strpos(Utils::getUserAgent('CustomUserAgent'), 'CustomUserAgent'));
     }
 
     public function testIs2xx()
