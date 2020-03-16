@@ -2,6 +2,8 @@
 
 namespace AlibabaCloud\Tea\Utils;
 
+use Psr\Http\Message\StreamInterface;
+
 class Utils
 {
     private static $defaultUserAgent = "";
@@ -55,7 +57,7 @@ class Utils
     /**
      * Read data from a readable stream, and compose it to a bytes.
      *
-     * @param resource $stream the readable stream
+     * @param StreamInterface $stream the readable stream
      *
      * @return array the bytes result
      */
@@ -69,19 +71,19 @@ class Utils
     /**
      * Read data from a readable stream, and compose it to a string.
      *
-     * @param resource the readable stream
+     * @param StreamInterface $stream the readable stream
      *
      * @return string the string result
      */
     public static function readAsString($stream)
     {
-        return stream_get_contents($stream);
+        return $stream->getContents();
     }
 
     /**
      * Read data from a readable stream, and parse it by JSON format.
      *
-     * @param resource the readable stream
+     * @param StreamInterface the readable stream
      *
      * @return array the parsed result
      */
