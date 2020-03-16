@@ -3,6 +3,7 @@
 namespace AlibabaCloud\Tea\Utils\Tests;
 
 use AlibabaCloud\Tea\Utils\Utils;
+use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 
 final class UtilsTest extends TestCase
@@ -12,7 +13,7 @@ final class UtilsTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->stream = fopen('http://httpbin.org/get', 'r');
+        $this->stream = new Stream(fopen('http://httpbin.org/get', 'r'));
     }
 
     public function testToBytes()
