@@ -77,14 +77,13 @@ class Utils
      */
     public static function readAsString($stream)
     {
-        return (string) $stream;
+        return $stream->getContents();
     }
 
     /**
      * Read data from a readable stream, and parse it by JSON format.
      *
-     * @param StreamInterface the readable stream
-     * @param mixed $stream
+     * @param StreamInterface $stream the readable stream
      *
      * @return array the parsed result
      */
