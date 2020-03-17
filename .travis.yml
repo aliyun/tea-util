@@ -2,19 +2,19 @@ jobs:
   include:
     - language: php
       php: '5.6'
-      env: TEA_UTIL_ENV="php56"
+      env: TEA_UTIL_ENV="php"
     - language: php
       php: '7.0'
-      env: TEA_UTIL_ENV="php70"
+      env: TEA_UTIL_ENV="php"
     - language: php
       php: '7.1'
-      env: TEA_UTIL_ENV="php71"
+      env: TEA_UTIL_ENV="php"
     - language: php
       php: '7.2'
-      env: TEA_UTIL_ENV="php72"
+      env: TEA_UTIL_ENV="php"
     - language: php
       php: '7.3'
-      env: TEA_UTIL_ENV="php73"
+      env: TEA_UTIL_ENV="php"
     - language: csharp
       mono: none
       dist: xenial
