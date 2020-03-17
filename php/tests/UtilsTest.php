@@ -12,12 +12,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class UtilsTest extends TestCase
 {
-    private $stream;
-
-    public function setUp()
+    public function getStream()
     {
-        parent::setUp();
-        $this->stream = new Stream(fopen('http://httpbin.org/get', 'r'));
+        return new Stream(fopen('http://httpbin.org/get', 'r'));
     }
 
     public function testToBytes()
@@ -43,19 +40,19 @@ final class UtilsTest extends TestCase
 
     public function testReadAsBytes()
     {
-        $bytes = Utils::readAsBytes($this->stream);
+        $bytes = Utils::readAsBytes($this->getStream());
         $this->assertEquals(123, $bytes[0]);
     }
 
     public function testReadAsString()
     {
-        $string = Utils::readAsString($this->stream);
+        $string = Utils::readAsString($this->getStream());
         $this->assertEquals($string[0], '{');
     }
 
     public function testReadAsJSON()
     {
-        $result = Utils::readAsJSON($this->stream);
+        $result = Utils::readAsJSON($this->getStream());
         $this->assertEquals('http://httpbin.org/get', $result['url']);
     }
 

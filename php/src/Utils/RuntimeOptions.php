@@ -6,9 +6,8 @@ namespace AlibabaCloud\Tea\Utils\Utils;
 
 use AlibabaCloud\Tea\Model;
 
-class RuntimeOptions extends Model{
-    protected $_name = [];
-
+class RuntimeOptions extends Model
+{
     public $autoretry;
 
     public $ignoreSSL;
@@ -36,5 +35,5 @@ class RuntimeOptions extends Model{
     public $socks5Proxy;
 
     public $socks5NetWork;
-
+    protected $_name = [];
 }
