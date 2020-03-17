@@ -2,7 +2,7 @@
 
 // This file is auto-generated, don't edit it. Thanks.
 
-namespace alibabacloud\sdk\Models;
+namespace AlibabaCloud\Tea\Utils\Utils;
 
 use AlibabaCloud\Tea\Model;
 
