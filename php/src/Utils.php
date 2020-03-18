@@ -77,6 +77,10 @@ class Utils
      */
     public static function readAsString($stream)
     {
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
         return $stream->getContents();
     }
 
