@@ -177,6 +177,9 @@ func ReadAsJSON(body io.Reader) (result interface{}, err error) {
 	if err != nil {
 		return
 	}
+	if string(byt) == "" {
+		return
+	}
 	err = json.Unmarshal(byt, &result)
 	return
 }
