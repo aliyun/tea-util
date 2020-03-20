@@ -75,8 +75,9 @@ func Test_DefaultString(t *testing.T) {
 
 func Test_ReadAsJSON(t *testing.T) {
 	result, err := ReadAsJSON(strings.NewReader(`{"cleint":"test"}`))
+	res := AssertAsMap(result)
 	utils.AssertNil(t, err)
-	utils.AssertEqual(t, "test", result["cleint"])
+	utils.AssertEqual(t, "test", res["cleint"])
 }
 
 func Test_GetNonce(t *testing.T) {

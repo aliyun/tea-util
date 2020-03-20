@@ -172,7 +172,7 @@ func DefaultNumber(reaNum, defaultNum int) int {
 	return reaNum
 }
 
-func ReadAsJSON(body io.Reader) (result map[string]interface{}, err error) {
+func ReadAsJSON(body io.Reader) (result interface{}, err error) {
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
 		return
