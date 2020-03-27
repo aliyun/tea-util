@@ -89,6 +89,23 @@ func Test_GetNonce(t *testing.T) {
 	utils.AssertEqual(t, 32, len(nonce))
 }
 
+type validateTest struct {
+	Num *int `json:"num" require:"true"`
+}
+
+func Test_ValidateModel(t *testing.T) {
+	a := new(validateTest)
+	err := ValidateModel(a)
+	utils.AssertEqual(t, err.Error(), "num should be setted")
+
+	a.Num = tea.Int(1)
+	err = ValidateModel(a)
+	utils.AssertNil(t, err)
+
+	err = ValidateModel(nil)
+	utils.AssertNil(t, err)
+}
+
 func Test_Empty(t *testing.T) {
 	ok := Empty("")
 	utils.AssertEqual(t, true, ok)
