@@ -192,6 +192,14 @@ func Empty(val string) bool {
 	return val == ""
 }
 
+func ValidateModel(a interface{}) error {
+	if a == nil {
+		return nil
+	}
+	err := tea.Validate(a)
+	return err
+}
+
 func EqualString(val1, val2 string) bool {
 	return val1 == val2
 }
