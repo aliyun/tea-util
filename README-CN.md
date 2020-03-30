@@ -3,6 +3,9 @@
 
 ## Alibaba Cloud Tea Util
 
+[![Travis Build Status](https://travis-ci.org/aliyun/tea-util.svg?branch=master)](https://travis-ci.org/aliyun/tea-util)
+[![codecov](https://codecov.io/gh/aliyun/tea-util/branch/master/graph/badge.svg)](https://codecov.io/gh/aliyun/tea-util)
+
 ## 安装
 
 - [Go](./golang/README-CN.md)
