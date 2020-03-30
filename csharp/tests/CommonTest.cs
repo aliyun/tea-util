@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 
 using AlibabaCloud.TeaUtil;
+using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json.Linq;
 
@@ -61,7 +62,24 @@ namespace tests
             byte[] array = Encoding.UTF8.GetBytes(jsonStr);
             using(MemoryStream stream = new MemoryStream(array))
             {
-                Assert.NotNull(Common.ReadAsJSON(stream));
+                Dictionary<string, object> dic = (Dictionary<string, object>) Common.ReadAsJSON(stream);
+                Assert.NotNull(dic);
+                List<object> listResult = (List<object>) dic["items"];
+                Dictionary<string, object> item1 = (Dictionary<string, object>) listResult[0];
+                Assert.Equal(18L, item1["total_size"]);
+                Assert.Empty((string) dic["next_marker"]);
+                Assert.Equal(2, ((List<object>) dic["arrayObj"]).Count);
+            }
+
+            jsonStr = "[{\"itemName\":\"item\",\"itemInt\":1},{\"itemName\":\"item2\",\"itemInt\":2}]";
+            array = Encoding.UTF8.GetBytes(jsonStr);
+            using(MemoryStream stream = new MemoryStream(array))
+            {
+                List<object> listResult = (List<object>) Common.ReadAsJSON(stream);
+                Assert.NotNull(listResult);
+                Dictionary<string, object> item1 = (Dictionary<string, object>) listResult[0];
+                Assert.Equal("item", item1["itemName"]);
+                Assert.Equal(1L, item1["itemInt"]);
             }
         }
 
@@ -72,7 +90,24 @@ namespace tests
             byte[] array = Encoding.UTF8.GetBytes(jsonStr);
             using(MemoryStream stream = new MemoryStream(array))
             {
-                Assert.NotNull(await Common.ReadAsJSONAsync(stream));
+                Dictionary<string, object> dic = (Dictionary<string, object>) await Common.ReadAsJSONAsync(stream);
+                Assert.NotNull(dic);
+                List<object> listResult = (List<object>) dic["items"];
+                Dictionary<string, object> item1 = (Dictionary<string, object>) listResult[0];
+                Assert.Equal(18L, item1["total_size"]);
+                Assert.Empty((string) dic["next_marker"]);
+                Assert.Equal(2, ((List<object>) dic["arrayObj"]).Count);
+            }
+
+            jsonStr = "[{\"itemName\":\"item\",\"itemInt\":1},{\"itemName\":\"item2\",\"itemInt\":2}]";
+            array = Encoding.UTF8.GetBytes(jsonStr);
+            using(MemoryStream stream = new MemoryStream(array))
+            {
+                List<object> listResult = (List<object>) await Common.ReadAsJSONAsync(stream);
+                Assert.NotNull(listResult);
+                Dictionary<string, object> item1 = (Dictionary<string, object>) listResult[0];
+                Assert.Equal("item", item1["itemName"]);
+                Assert.Equal(1L, item1["itemInt"]);
             }
         }
 
@@ -197,9 +232,12 @@ namespace tests
             Assert.Throws<ArgumentException>(() => { Common.AssertAsMap(null); });
             string jsonStr = "{\"arrayObj\":[[{\"itemName\":\"item\",\"itemInt\":1},{\"itemName\":\"item2\",\"itemInt\":2}],[{\"itemName\":\"item3\",\"itemInt\":3}]],\"arrayList\":[[[1,2],[3,4]],[[5,6],[7]],[]],\"listStr\":[1,2,3],\"items\":[{\"total_size\":18,\"partNumber\":1,\"tags\":[{\"aa\":\"11\"}]},{\"total_size\":20,\"partNumber\":2,\"tags\":[{\"aa\":\"22\"}]}],\"next_marker\":\"\",\"test\":{\"total_size\":19,\"partNumber\":1,\"tags\":[{\"aa\":\"11\"}]}}";
             JObject obj = JObject.Parse(jsonStr);
-            Dictionary<string, object> dict = Common.AssertAsMap(obj);
+            object map = ReadJsonUtil.Deserialize(obj);
+            Dictionary<string, object> dict = Common.AssertAsMap(map);
             Assert.NotNull(dict);
             Assert.Equal(6, dict.Count);
+
+            Assert.Throws<ArgumentException>(() => Common.AssertAsMap("string"));
         }
 
         [Fact]
