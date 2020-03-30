@@ -11,7 +11,6 @@ using System.Web;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AlibabaCloud.TeaUtil
 {
@@ -51,12 +50,16 @@ namespace AlibabaCloud.TeaUtil
 
         public static object ReadAsJSON(Stream stream)
         {
-            return ParseJSON(ReadAsString(stream));
+            object jResult = ParseJSON(ReadAsString(stream));
+            object result = ReadJsonUtil.Deserialize(jResult);
+            return result;
         }
 
         public async static Task<object> ReadAsJSONAsync(Stream stream)
         {
-            return ParseJSON(await ReadAsStringAsync(stream));
+            object jResult = ParseJSON(await ReadAsStringAsync(stream));
+            object result = ReadJsonUtil.Deserialize(jResult);
+            return result;
         }
 
         public static byte[] ReadAsBytes(Stream stream)
@@ -213,12 +216,12 @@ namespace AlibabaCloud.TeaUtil
 
         public static Dictionary<string, object> AssertAsMap(object value)
         {
-            if (value != null && value is JObject)
+            if (value != null && value is Dictionary<string, object>)
             {
-                return (Dictionary<string, object>) ReadJsonUtil.DeserializeToDic(value);
+                return (Dictionary<string, object>) value;
             }
 
-            throw new ArgumentException("The value is not a object");
+            throw new ArgumentException("The value is not Dictionary<string, object>");
         }
 
         public static string GetUserAgent(string userAgent)
@@ -287,9 +290,9 @@ namespace AlibabaCloud.TeaUtil
             }
 
             Dictionary<string, object> dict = new Dictionary<string, object>();
-            foreach(var keypair in m)
+            foreach (var keypair in m)
             {
-                dict.Add(keypair.Key,keypair.Value);
+                dict.Add(keypair.Key, keypair.Value);
             }
             return dict;
         }

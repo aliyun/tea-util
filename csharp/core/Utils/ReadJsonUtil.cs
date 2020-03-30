@@ -6,7 +6,7 @@ namespace AlibabaCloud.TeaUtil.Utils
 {
     internal static class ReadJsonUtil
     {
-        internal static object DeserializeToDic(object obj)
+        internal static object Deserialize(object obj)
         {
             if (obj == null)
             {
@@ -15,11 +15,11 @@ namespace AlibabaCloud.TeaUtil.Utils
             Dictionary<string, object> dic = new Dictionary<string, object>();
             if (obj is JArray)
             {
-                return JArrayToDictionary((JArray) obj);
+                return DeserializeJArray((JArray) obj);
             }
             else if (obj is JObject)
             {
-                return JObjToDictionary((JObject) obj);
+                return DeserializeJObject((JObject) obj);
             }
             else
             {
@@ -27,18 +27,18 @@ namespace AlibabaCloud.TeaUtil.Utils
             }
         }
 
-        private static Dictionary<string, object> JObjToDictionary(JObject obj)
+        private static Dictionary<string, object> DeserializeJObject(JObject obj)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             Dictionary<string, object> dicJObj = obj.ToObject<Dictionary<string, object>>();
             foreach (var keypair in dicJObj)
             {
-                dic.Add(keypair.Key, DeserializeToDic(keypair.Value));
+                dic.Add(keypair.Key, Deserialize(keypair.Value));
             }
             return dic;
         }
 
-        private static object JArrayToDictionary(JArray obj)
+        private static List<object> DeserializeJArray(JArray obj)
         {
             if (obj.Count == 0)
             {
@@ -47,14 +47,14 @@ namespace AlibabaCloud.TeaUtil.Utils
 
             if (obj[0].Type == JTokenType.Object)
             {
-                List<Dictionary<string, object>> dicList = new List<Dictionary<string, object>>();
+                List<object> dicList = new List<object>();
                 List<Dictionary<string, object>> dicObjList = obj.ToObject<List<Dictionary<string, object>>>();
                 foreach (Dictionary<string, object> objItem in dicObjList)
                 {
                     Dictionary<string, object> objDict = new Dictionary<string, object>();
                     foreach (var keypair in objItem)
                     {
-                        objDict.Add(keypair.Key, DeserializeToDic(keypair.Value));
+                        objDict.Add(keypair.Key, Deserialize(keypair.Value));
                     }
                     dicList.Add(objDict);
                 }
@@ -66,7 +66,7 @@ namespace AlibabaCloud.TeaUtil.Utils
                 List<object> dicList = new List<object>();
                 foreach (var item in dicObjList)
                 {
-                    dicList.Add(DeserializeToDic((JArray) item));
+                    dicList.Add(Deserialize((JArray) item));
                 }
 
                 return dicList;
