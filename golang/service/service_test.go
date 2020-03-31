@@ -135,6 +135,17 @@ func Test_ToBytes(t *testing.T) {
 	utils.AssertEqual(t, "test", string(byt))
 }
 
+func Test_ToMap(t *testing.T) {
+	in := map[string]string{
+		"key": "value",
+	}
+	res := ToMap(in)
+	utils.AssertEqual(t, "value", res["key"].(string))
+
+	res = ToMap(nil)
+	utils.AssertNil(t, res)
+}
+
 func Test_ToString(t *testing.T) {
 	str := ToString([]byte("test"))
 	utils.AssertEqual(t, "test", str)

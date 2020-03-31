@@ -273,6 +273,14 @@ func ToString(a []byte) string {
 	return string(a)
 }
 
+func ToMap(in interface{}) map[string]interface{} {
+	if in == nil {
+		return nil
+	}
+	res := tea.ToMap(in)
+	return res
+}
+
 func ToFormString(a map[string]interface{}) string {
 	if a == nil {
 		return ""
