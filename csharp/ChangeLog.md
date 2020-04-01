@@ -1,3 +1,6 @@
+### 2020-04-01 Version 0.1.1
+* Fixed `ReadAsJson()`
+
 ### 2020-03-11 Version 0.0.5
 * Supported Func `AnyifyMapValue`
 
