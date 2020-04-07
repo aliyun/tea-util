@@ -11,6 +11,7 @@ using System.Web;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json;
+using Tea;
 
 namespace AlibabaCloud.TeaUtil
 {
@@ -295,6 +296,25 @@ namespace AlibabaCloud.TeaUtil
                 dict.Add(keypair.Key, keypair.Value);
             }
             return dict;
+        }
+
+        /// <summary>
+        /// Validate model
+        /// </summary>
+        /// <param name="model"></param>
+        public static void ValidateModel(TeaModel model)
+        {
+            model.Validate();
+        }
+
+        /// <summary>
+        /// Model transforms to map[string]any
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>map[string]any</returns>
+        public static Dictionary<string, object> ToMap(TeaModel model)
+        {
+            return model.ToMap();
         }
 
         internal static string GetDefaultUserAgent()

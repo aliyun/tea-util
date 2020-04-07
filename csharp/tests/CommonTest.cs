@@ -7,7 +7,7 @@ using AlibabaCloud.TeaUtil;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json.Linq;
-
+using Tea;
 using Xunit;
 
 namespace tests
@@ -275,5 +275,127 @@ namespace tests
             Assert.Equal("100", Common.AnyifyMapValue(new Dictionary<string, string> { { "number", "100" } }) ["number"]);
             Assert.Null(Common.StringifyMapValue(null));
         }
+
+        [Fact]
+        public void Test_ToMap()
+        {
+            TeaModel modelNull = null;
+            Assert.Empty(modelNull.ToMap());
+
+            TestRegModel model = new TestRegModel();
+            model.RequestId = "requestID";
+            model.Items = new List<TestRegSubModel> { new TestRegSubModel { RequestId = "sub" }, null };
+            model.NextMarker = "next";
+            model.testNoAttr = "noAttr";
+            model.subModel = new TestRegSubModel();
+            model.testListStr = new List<string> { "str" };
+            Dictionary<string, object> dic = model.ToMap();
+            Assert.NotNull(dic);
+            Assert.IsType<List<Dictionary<string, object>>>(dic["items"]);
+
+            TestRegModel modelEmpty = new TestRegModel();
+            modelEmpty.RequestId = "1";
+            Dictionary<string, object> dicEmpty = modelEmpty.ToMap();
+            Assert.Null(dicEmpty["items"]);
+            Assert.Null(dicEmpty["subModel"]);
+        }
+
+        [Fact]
+        public void Test_ValidateModel()
+        {
+            TeaModel modelNull = null;
+            Assert.Throws<ArgumentException>(() => { modelNull.Validate(); });
+
+            TestRegModel successModel = new TestRegModel();
+            successModel.RequestId = "reTest";
+            successModel.NextMarker = "nextMarker";
+            successModel.testListStr = new List<string> { "listStr1" };
+            successModel.Items = new List<TestRegSubModel> { new TestRegSubModel { RequestId = "rTest" } };
+            successModel.subModel = new TestRegSubModel { RequestId = "rTest", testInt = 10 };
+            successModel.Validate();
+
+            successModel.testListStr = null;
+            successModel.Validate();
+
+            TestRegModel modelRequired = new TestRegModel();
+            Assert.Equal("RequestId is required.",
+                Assert.Throws<ArgumentException>(() => { modelRequired.Validate(); }).Message
+            );
+
+            modelRequired.RequestId = "reTest";
+            modelRequired.NextMarker = "nextMarker";
+            Assert.Equal("Items is required.",
+                Assert.Throws<ArgumentException>(() => { modelRequired.Validate(); }).Message
+            );
+
+            TestRegModel modelReg = new TestRegModel();
+            modelReg.RequestId = "123";
+            modelReg.Items = new List<TestRegSubModel> { new TestRegSubModel { RequestId = "rTest" } };
+            modelReg.NextMarker = "nextMarker";
+            Assert.Equal("RequestId is not match re",
+                Assert.Throws<ArgumentException>(() => { modelReg.Validate(); }).Message
+            );
+
+            modelReg.RequestId = "reTest";
+            modelReg.testListStr = new List<string> { "test" };
+            Assert.Equal("testListStr is not match listStr",
+                Assert.Throws<ArgumentException>(() => { modelReg.Validate(); }).Message
+            );
+        }
+    }
+
+    public class TestRegModel : TeaModel
+    {
+        [NameInMap("requestId")]
+        [Validation(Pattern = "re", MaxLength = 0, Required = true)]
+        public string RequestId { get; set; }
+
+        [NameInMap("items")]
+        [Validation(Required = true)]
+        public List<TestRegSubModel> Items { get; set; }
+
+        [NameInMap("next_marker")]
+        [Validation(Pattern = "next", MaxLength = 0, Required = true)]
+        public string NextMarker { get; set; }
+
+        public string testNoAttr { get; set; }
+
+        [NameInMap("testListStr")]
+        [Validation(Pattern = "listStr", MaxLength = 0)]
+        public List<string> testListStr { get; set; }
+
+        public TestRegSubModel subModel { get; set; }
+
+        public Dictionary<string, object> dict { get; set; }
+
+        public int? testInt32 { get; set; }
+
+        public long? testLong { get; set; }
+
+        public float? testFloat { get; set; }
+
+        public double? testDouble { get; set; }
+
+        public bool? testBool { get; set; }
+
+        public short? testShort { get; set; }
+
+        public ushort? testUShort { get; set; }
+
+        public uint? testUInt { get; set; }
+
+        public ulong? testULong { get; set; }
+
+        public string testNull { get; set; }
+
+    }
+
+    public class TestRegSubModel : TeaModel
+    {
+        [NameInMap("requestId")]
+        [Validation(Pattern = "r", MaxLength = 0, Required = true)]
+        public string RequestId { get; set; }
+
+        public int? testInt { get; set; }
     }
 }
