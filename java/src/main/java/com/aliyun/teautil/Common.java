@@ -1,5 +1,7 @@
 package com.aliyun.teautil;
 
+import com.aliyun.tea.TeaModel;
+import com.aliyun.tea.ValidateException;
 import com.aliyun.tea.utils.StringUtils;
 import com.google.gson.Gson;
 
@@ -326,6 +328,27 @@ public class Common {
             return false;
         }
         return code.intValue() >= 500 && code.intValue() < 600 ? true : false;
+    }
+
+    /**
+     * Validate model
+     *
+     * @return void
+     */
+    public static void validateModel(TeaModel m) throws Exception {
+        if (null == m) {
+            throw new ValidateException("parameter is not allowed as null");
+        }
+        m.validate();
+    }
+
+    /**
+     * Model transforms to map[string]any
+     *
+     * @return map[string]any
+     */
+    public static java.util.Map<String, Object> toMap(TeaModel in) throws Exception {
+        return TeaModel.toMap(in);
     }
 }
 

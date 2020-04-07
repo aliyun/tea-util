@@ -1,5 +1,6 @@
 package com.aliyun.teautil;
 
+import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.TeaRequest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -203,5 +204,23 @@ public class CommonTest {
         Assert.assertFalse(Common.is5xx(66));
         Assert.assertFalse(Common.is5xx(700));
         Assert.assertTrue(Common.is5xx(500));
+    }
+
+    @Test
+    public void validateModelTest() {
+        try {
+            Common.validateModel(new TeaModel());
+            Common.validateModel(null);
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("parameter is not allowed as null", e.getMessage());
+        }
+
+    }
+
+    @Test
+    public void toMapTest() throws Exception{
+        Map map = Common.toMap(new ToMapTest());
+        Assert.assertEquals("test", map.get("test"));
     }
 }
