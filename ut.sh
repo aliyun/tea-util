@@ -100,11 +100,8 @@ function contains {
 }
 
 lang=$1
-php_env="php56 php70 php71 php72 php73"
 
-is_php=$(contains "${php_env}" "$lang")
-
-if [ "$is_php" == "y" ]
+if [ "$lang" == "php" ]
 then
   echo "run php"
   run_php
