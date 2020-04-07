@@ -1,3 +1,7 @@
+### 2020-04-07 Version 0.1.2
+* Supported `ToMap()`
+* Supported `ValidateModel()`
+
 ### 2020-04-01 Version 0.1.1
 * Fixed `ReadAsJson()`
 
