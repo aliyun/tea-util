@@ -1,3 +1,6 @@
+2020-04-07 Version: 0.1.8
+1. add toMap and validateModel
+
 2020-03-27 Version: 0.1.7
 1. update runtime
 
