@@ -20,8 +20,8 @@ class MyReadable extends Readable {
     }
 }
 
-describe('Tea Util', function() {
-    it('Module should ok', function() {
+describe('Tea Util', function () {
+    it('Module should ok', function () {
         assert.ok(Client);
     });
 
@@ -41,37 +41,37 @@ describe('Tea Util', function() {
 
     it('toFormString should ok', function () {
         assert.deepStrictEqual(Client.toFormString({}), '');
-        assert.deepStrictEqual(Client.toFormString({a: 'b c d'}), 'a=b%20c%20d');
+        assert.deepStrictEqual(Client.toFormString({ a: 'b c d' }), 'a=b%20c%20d');
     });
 
     it('toBytes', function () {
         assert.deepStrictEqual(Client.toBytes('Hello world!'), Buffer.from('Hello world!'));
     });
 
-    it('equalString', function() {
+    it('equalString', function () {
         assert.deepStrictEqual(Client.equalString('100', '120'), false);
         assert.deepStrictEqual(Client.equalString('100', '100'), true);
     });
 
-    it('equalNumber', function() {
+    it('equalNumber', function () {
         assert.deepStrictEqual(Client.equalNumber(100, 120), false);
         assert.deepStrictEqual(Client.equalNumber(100, 100), true);
     });
 
     it('readAsJSON', async function () {
-        const readable = new MyReadable(Buffer.from(JSON.stringify({'a': 'b'})));
+        const readable = new MyReadable(Buffer.from(JSON.stringify({ 'a': 'b' })));
         const result = await Client.readAsJSON(readable);
-        assert.deepStrictEqual(result, {'a': 'b'});
+        assert.deepStrictEqual(result, { 'a': 'b' });
     });
 
     it('readAsBytes', async function () {
-        const readable = new MyReadable(Buffer.from(JSON.stringify({'a': 'b'})));
+        const readable = new MyReadable(Buffer.from(JSON.stringify({ 'a': 'b' })));
         const result = await Client.readAsBytes(readable);
         assert.deepStrictEqual(result, Buffer.from('{"a":"b"}'));
     });
 
     it('readAsString', async function () {
-        const readable = new MyReadable(Buffer.from(JSON.stringify({'a': 'b'})));
+        const readable = new MyReadable(Buffer.from(JSON.stringify({ 'a': 'b' })));
         const result = await Client.readAsString(readable);
         assert.deepStrictEqual(result, '{"a":"b"}');
     });
@@ -113,15 +113,15 @@ describe('Tea Util', function() {
 
     it('stringifyMapValue', function () {
         assert.deepStrictEqual(Client.stringifyMapValue({}), {});
-        assert.deepStrictEqual(Client.stringifyMapValue({'number': 100}), {'number': '100'});
-        assert.deepStrictEqual(Client.stringifyMapValue({'bool': true}), {'bool': 'true'});
+        assert.deepStrictEqual(Client.stringifyMapValue({ 'number': 100 }), { 'number': '100' });
+        assert.deepStrictEqual(Client.stringifyMapValue({ 'bool': true }), { 'bool': 'true' });
         assert.deepStrictEqual(Client.stringifyMapValue(null), null);
     });
 
     it('anyifyMapValue', function () {
         assert.deepStrictEqual(Client.anyifyMapValue({}), {});
-        assert.deepStrictEqual(Client.anyifyMapValue({'number': '100'}), {'number': '100'});
-        assert.deepStrictEqual(Client.anyifyMapValue({'string': 'string'}), {'string': 'string'});
+        assert.deepStrictEqual(Client.anyifyMapValue({ 'number': '100' }), { 'number': '100' });
+        assert.deepStrictEqual(Client.anyifyMapValue({ 'string': 'string' }), { 'string': 'string' });
         assert.deepStrictEqual(Client.anyifyMapValue(null), null);
     });
 
@@ -213,6 +213,34 @@ describe('Tea Util', function() {
         assert.strictEqual(Client.is5xx(522), true);
         assert.strictEqual(Client.is5xx(499), false);
         assert.strictEqual(Client.is5xx(600), false);
+    });
+
+    it('validate', function () {
+        // assert.ok(Client.validateModel(new $tea.Model({ test: 'test' })));
+    });
+
+    it('toMap', function () {
+        class TestModel extends $tea.Model {
+            test: string;
+            static names(): { [key: string]: string } {
+                return {
+                    test: 'test',
+                };
+            }
+
+            static types(): { [key: string]: any } {
+                return {
+                    test: 'string',
+                };
+            }
+
+            constructor(map: { [key: string]: any }) {
+                super(map);
+            }
+        }
+        let inputModel = new TestModel({test: 'testValue'});
+        let result = Client.toMap(inputModel);
+        assert.strictEqual(result['test'], 'testValue');
     });
 
 });

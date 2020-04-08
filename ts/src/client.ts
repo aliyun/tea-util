@@ -230,6 +230,13 @@ export default class Client {
   static is5xx(code: number): boolean {
     return code >= 500 && code < 600;
   }
+  static validateModel(m: $tea.Model): void {
+  
+  }
+
+  static toMap(inputModel: $tea.Model): { [key: string]: any } {
+    return $tea.toMap(inputModel);
+  }
 }
 
 
