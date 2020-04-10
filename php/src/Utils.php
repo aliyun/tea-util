@@ -173,11 +173,24 @@ class Utils
     /**
      * Check the string is empty?
      *
+     * @deprecated
      * @param string $val
      *
      * @return bool if string is null or zero length, return true
      */
     public static function _empty($val)
+    {
+        return empty($val);
+    }
+
+    /**
+     * Check the string is empty?
+     *
+     * @param string $val
+     *
+     * @return bool if string is null or zero length, return true
+     */
+    public static function emptyWithSuffix($val)
     {
         return empty($val);
     }
