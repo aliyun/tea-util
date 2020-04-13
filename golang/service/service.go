@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
@@ -208,8 +209,23 @@ func EqualNumber(val1, val2 int) bool {
 	return val1 == val2
 }
 
+func isNil(a interface{}) bool {
+	defer func() {
+		recover()
+	}()
+	vi := reflect.ValueOf(a)
+	return vi.IsNil()
+}
+
 func IsUnset(val interface{}) bool {
-	return val == nil
+	if val == nil {
+		return true
+	}
+
+	if isNil(val) {
+		return true
+	}
+	return false
 }
 
 func ToBytes(a string) []byte {

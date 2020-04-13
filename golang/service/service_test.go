@@ -191,6 +191,10 @@ func Test_IsUnset(t *testing.T) {
 
 	ok = IsUnset("str")
 	utils.AssertEqual(t, false, ok)
+
+	var a map[string]string
+	ok = IsUnset(a)
+	utils.AssertEqual(t, true, ok)
 }
 
 func Test_StringifyMapValue(t *testing.T) {
