@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/alibabacloud-go/tea/tea"
-	"github.com/aliyun/tea-util/golang/utils"
 )
 
 var defaultUserAgent = fmt.Sprintf("AlibabaCloud (%s; %s) Golang/%s Core/%s TeaDSL/1", runtime.GOOS, runtime.GOARCH, strings.Trim(runtime.Version(), "go"), "0.01")
@@ -186,7 +185,7 @@ func ReadAsJSON(body io.Reader) (result interface{}, err error) {
 }
 
 func GetNonce() string {
-	return utils.GetUUID()
+	return getUUID()
 }
 
 func Empty(val string) bool {
@@ -209,23 +208,15 @@ func EqualNumber(val1, val2 int) bool {
 	return val1 == val2
 }
 
-func isNil(a interface{}) bool {
-	defer func() {
-		recover()
-	}()
-	vi := reflect.ValueOf(a)
-	return vi.IsNil()
-}
-
 func IsUnset(val interface{}) bool {
 	if val == nil {
 		return true
 	}
 
-	if isNil(val) {
-		return true
-	}
-	return false
+	valType := reflect.TypeOf(val)
+	valZero := reflect.Zero(valType)
+	v := reflect.ValueOf(val)
+	return valZero == v
 }
 
 func ToBytes(a string) []byte {
