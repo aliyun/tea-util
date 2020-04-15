@@ -1,4 +1,4 @@
-package utils
+package service
 
 import (
 	"crypto/md5"
@@ -12,13 +12,13 @@ type UUID [16]byte
 
 const numBytes = "1234567890"
 
-func GetUUID() (uuidHex string) {
-	uuid := NewUUID()
+func getUUID() (uuidHex string) {
+	uuid := newUUID()
 	uuidHex = hex.EncodeToString(uuid[:])
 	return
 }
 
-func RandStringBytes(n int) string {
+func randStringBytes(n int) string {
 	b := make([]byte, n)
 	for i := range b {
 		b[i] = numBytes[rand2.Intn(len(numBytes))]
@@ -26,10 +26,10 @@ func RandStringBytes(n int) string {
 	return string(b)
 }
 
-func NewUUID() UUID {
+func newUUID() UUID {
 	ns := UUID{}
 	safeRandom(ns[:])
-	u := newFromHash(md5.New(), ns, RandStringBytes(16))
+	u := newFromHash(md5.New(), ns, randStringBytes(16))
 	u[6] = (u[6] & 0x0f) | (byte(2) << 4)
 	u[8] = (u[8]&(0xff>>2) | (0x02 << 6))
 
