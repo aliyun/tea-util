@@ -31,7 +31,7 @@ function run_go {
   cd golang/ || return 126
   export GO111MODULE=on
   go mod tidy
-  go test -race -coverprofile=coverage.txt -covermode=atomic ./service/... ./utils...
+  go test -race -coverprofile=coverage.txt -covermode=atomic ./service/...
   cd ../
   upload_codecov_report golang go
 }
