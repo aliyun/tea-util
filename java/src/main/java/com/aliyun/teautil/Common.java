@@ -175,7 +175,7 @@ public class Common {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, ?> entry : map.entrySet()) {
-            if (entry.getValue() == null) {
+            if (StringUtils.isEmpty(entry.getValue())) {
                 continue;
             }
             if (first) {
