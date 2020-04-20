@@ -113,12 +113,12 @@ func (s *RuntimeOptions) SetSocks5NetWork(v string) *RuntimeOptions {
 	return s
 }
 
-func ReadAsString(body io.Reader) (string, error) {
+func ReadAsString(body io.Reader) (*string, error) {
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
-		return "", err
+		return tea.String(""), err
 	}
-	return string(byt), nil
+	return tea.String(string(byt)), nil
 }
 
 func StringifyMapValue(a map[string]interface{}) map[string]string {
@@ -153,20 +153,20 @@ func ReadAsBytes(body io.Reader) ([]byte, error) {
 	return byt, nil
 }
 
-func DefaultString(reaStr, defaultStr string) string {
-	if reaStr == "" {
+func DefaultString(reaStr, defaultStr *string) *string {
+	if reaStr == nil {
 		return defaultStr
 	}
 	return reaStr
 }
 
-func ToJSONString(a interface{}) string {
+func ToJSONString(a interface{}) *string {
 	byt, _ := json.Marshal(a)
-	return string(byt)
+	return tea.String(string(byt))
 }
 
-func DefaultNumber(reaNum, defaultNum int) int {
-	if reaNum == 0 {
+func DefaultNumber(reaNum, defaultNum *int) *int {
+	if reaNum == nil {
 		return defaultNum
 	}
 	return reaNum
@@ -184,12 +184,12 @@ func ReadAsJSON(body io.Reader) (result interface{}, err error) {
 	return
 }
 
-func GetNonce() string {
-	return getUUID()
+func GetNonce() *string {
+	return tea.String(getUUID())
 }
 
-func Empty(val string) bool {
-	return val == ""
+func Empty(val *string) *bool {
+	return tea.Bool(val == nil || tea.StringValue(val) == "")
 }
 
 func ValidateModel(a interface{}) error {
@@ -200,27 +200,27 @@ func ValidateModel(a interface{}) error {
 	return err
 }
 
-func EqualString(val1, val2 string) bool {
-	return val1 == val2
+func EqualString(val1, val2 *string) *bool {
+	return tea.Bool(tea.StringValue(val1) == tea.StringValue(val2))
 }
 
-func EqualNumber(val1, val2 int) bool {
-	return val1 == val2
+func EqualNumber(val1, val2 *int) *bool {
+	return tea.Bool(tea.IntValue(val1) == tea.IntValue(val2))
 }
 
-func IsUnset(val interface{}) bool {
+func IsUnset(val interface{}) *bool {
 	if val == nil {
-		return true
+		return tea.Bool(true)
 	}
 
 	valType := reflect.TypeOf(val)
 	valZero := reflect.Zero(valType)
 	v := reflect.ValueOf(val)
-	return valZero == v
+	return tea.Bool(valZero == v)
 }
 
-func ToBytes(a string) []byte {
-	return []byte(a)
+func ToBytes(a *string) []byte {
+	return []byte(tea.StringValue(a))
 }
 
 func AssertAsMap(a interface{}) map[string]interface{} {
@@ -231,53 +231,53 @@ func AssertAsMap(a interface{}) map[string]interface{} {
 	return res
 }
 
-func AssertAsNumber(a interface{}) int {
-	res, ok := a.(int)
+func AssertAsNumber(a interface{}) *int {
+	res, ok := a.(*int)
 	if !ok {
 		panic(fmt.Sprintf("%v is not a int", a))
 	}
 	return res
 }
 
-func AssertAsBoolean(a interface{}) bool {
-	res, ok := a.(bool)
+func AssertAsBoolean(a interface{}) *bool {
+	res, ok := a.(*bool)
 	if !ok {
 		panic(fmt.Sprintf("%v is not a bool", a))
 	}
 	return res
 }
 
-func AssertAsString(a interface{}) string {
-	res, ok := a.(string)
+func AssertAsString(a interface{}) *string {
+	res, ok := a.(*string)
 	if !ok {
 		panic(fmt.Sprintf("%v is not a string", a))
 	}
 	return res
 }
 
-func ParseJSON(a string) interface{} {
+func ParseJSON(a *string) interface{} {
 	tmp := make(map[string]interface{})
-	err := json.Unmarshal([]byte(a), &tmp)
+	err := json.Unmarshal([]byte(tea.StringValue(a)), &tmp)
 	if err == nil {
 		return tmp
 	}
 
-	if num, err := strconv.Atoi(a); err == nil {
+	if num, err := strconv.Atoi(tea.StringValue(a)); err == nil {
 		return num
 	}
 
-	if ok, err := strconv.ParseBool(a); err == nil {
+	if ok, err := strconv.ParseBool(tea.StringValue(a)); err == nil {
 		return ok
 	}
 
-	if floa64tVal, err := strconv.ParseFloat(a, 64); err == nil {
+	if floa64tVal, err := strconv.ParseFloat(tea.StringValue(a), 64); err == nil {
 		return floa64tVal
 	}
 	return nil
 }
 
-func ToString(a []byte) string {
-	return string(a)
+func ToString(a []byte) *string {
+	return tea.String(string(a))
 }
 
 func ToMap(in interface{}) map[string]interface{} {
@@ -288,9 +288,9 @@ func ToMap(in interface{}) map[string]interface{} {
 	return res
 }
 
-func ToFormString(a map[string]interface{}) string {
+func ToFormString(a map[string]interface{}) *string {
 	if a == nil {
-		return ""
+		return tea.String("")
 	}
 	res := ""
 	first := true
@@ -304,32 +304,36 @@ func ToFormString(a map[string]interface{}) string {
 		res += "="
 		res += url.QueryEscape(fmt.Sprintf("%v", v))
 	}
-	return res
+	return tea.String(res)
 }
 
-func GetDateUTCString() string {
-	return time.Now().UTC().Format(http.TimeFormat)
+func GetDateUTCString() *string {
+	return tea.String(time.Now().UTC().Format(http.TimeFormat))
 }
 
-func GetUserAgent(userAgent string) string {
-	if userAgent != "" {
-		return defaultUserAgent + " " + userAgent
+func GetUserAgent(userAgent *string) *string {
+	if userAgent != nil && tea.StringValue(userAgent) != "" {
+		return tea.String(defaultUserAgent + " " + tea.StringValue(userAgent))
 	}
-	return defaultUserAgent
+	return tea.String(defaultUserAgent)
 }
 
-func Is2xx(code int) bool {
-	return code >= 200 && code < 300
+func Is2xx(code *int) *bool {
+	tmp := tea.IntValue(code)
+	return tea.Bool(tmp >= 200 && tmp < 300)
 }
 
-func Is3xx(code int) bool {
-	return code >= 300 && code < 400
+func Is3xx(code *int) *bool {
+	tmp := tea.IntValue(code)
+	return tea.Bool(tmp >= 300 && tmp < 400)
 }
 
-func Is4xx(code int) bool {
-	return code >= 400 && code < 500
+func Is4xx(code *int) *bool {
+	tmp := tea.IntValue(code)
+	return tea.Bool(tmp >= 400 && tmp < 500)
 }
 
-func Is5xx(code int) bool {
-	return code >= 500 && code < 600
+func Is5xx(code *int) *bool {
+	tmp := tea.IntValue(code)
+	return tea.Bool(tmp >= 500 && tmp < 600)
 }
