@@ -43,12 +43,12 @@ func Test_SetFunc(t *testing.T) {
 func Test_ReadAsString(t *testing.T) {
 	str, err := ReadAsString(strings.NewReader("common"))
 	utils.AssertNil(t, err)
-	utils.AssertEqual(t, "common", str)
+	utils.AssertEqual(t, "common", tea.StringValue(str))
 }
 
 func Test_ToJSONString(t *testing.T) {
 	str := ToJSONString(map[string]interface{}{"test": "ok"})
-	utils.AssertEqual(t, `{"test":"ok"}`, str)
+	utils.AssertEqual(t, `{"test":"ok"}`, tea.StringValue(str))
 }
 
 func Test_ReadAsBytes(t *testing.T) {
@@ -58,19 +58,19 @@ func Test_ReadAsBytes(t *testing.T) {
 }
 
 func Test_DefaultNumber(t *testing.T) {
-	num := DefaultNumber(0, 1)
-	utils.AssertEqual(t, 1, num)
+	num := DefaultNumber(tea.Int(0), tea.Int(1))
+	utils.AssertEqual(t, 0, tea.IntValue(num))
 
-	num = DefaultNumber(2, 1)
-	utils.AssertEqual(t, 2, num)
+	num = DefaultNumber(tea.Int(2), tea.Int(1))
+	utils.AssertEqual(t, 2, tea.IntValue(num))
 }
 
 func Test_DefaultString(t *testing.T) {
-	str := DefaultString("", "1")
-	utils.AssertEqual(t, "1", str)
+	str := DefaultString(nil, tea.String("1"))
+	utils.AssertEqual(t, "1", tea.StringValue(str))
 
-	str = DefaultString("2", "1")
-	utils.AssertEqual(t, "2", str)
+	str = DefaultString(tea.String("2"), tea.String("1"))
+	utils.AssertEqual(t, "2", tea.StringValue(str))
 }
 
 func Test_ReadAsJSON(t *testing.T) {
@@ -86,7 +86,7 @@ func Test_ReadAsJSON(t *testing.T) {
 
 func Test_GetNonce(t *testing.T) {
 	nonce := GetNonce()
-	utils.AssertEqual(t, 32, len(nonce))
+	utils.AssertEqual(t, 32, len(tea.StringValue(nonce)))
 }
 
 type validateTest struct {
@@ -107,31 +107,31 @@ func Test_ValidateModel(t *testing.T) {
 }
 
 func Test_Empty(t *testing.T) {
-	ok := Empty("")
-	utils.AssertEqual(t, true, ok)
+	ok := Empty(tea.String(""))
+	utils.AssertEqual(t, true, tea.BoolValue(ok))
 
-	ok = Empty("oss")
-	utils.AssertEqual(t, false, ok)
+	ok = Empty(tea.String("oss"))
+	utils.AssertEqual(t, false, tea.BoolValue(ok))
 }
 
 func Test_EqualString(t *testing.T) {
-	ok := EqualString("v1", "v1")
-	utils.AssertEqual(t, true, ok)
+	ok := EqualString(tea.String("v1"), tea.String("v1"))
+	utils.AssertEqual(t, true, tea.BoolValue(ok))
 
-	ok = EqualString("v1", "v2")
-	utils.AssertEqual(t, false, ok)
+	ok = EqualString(tea.String("v1"), tea.String("v2"))
+	utils.AssertEqual(t, false, tea.BoolValue(ok))
 }
 
 func Test_EqualNumber(t *testing.T) {
-	ok := EqualNumber(1, 1)
-	utils.AssertEqual(t, true, ok)
+	ok := EqualNumber(tea.Int(1), tea.Int(1))
+	utils.AssertEqual(t, true, tea.BoolValue(ok))
 
-	ok = EqualNumber(1, 2)
-	utils.AssertEqual(t, false, ok)
+	ok = EqualNumber(tea.Int(1), tea.Int(2))
+	utils.AssertEqual(t, false, tea.BoolValue(ok))
 }
 
 func Test_ToBytes(t *testing.T) {
-	byt := ToBytes("test")
+	byt := ToBytes(tea.String("test"))
 	utils.AssertEqual(t, "test", string(byt))
 }
 
@@ -148,53 +148,53 @@ func Test_ToMap(t *testing.T) {
 
 func Test_ToString(t *testing.T) {
 	str := ToString([]byte("test"))
-	utils.AssertEqual(t, "test", str)
+	utils.AssertEqual(t, "test", tea.StringValue(str))
 }
 
 func Test_ParseJSON(t *testing.T) {
-	obj := ParseJSON(`{"test":"ok"}`).(map[string]interface{})
+	obj := ParseJSON(tea.String(`{"test":"ok"}`)).(map[string]interface{})
 	utils.AssertEqual(t, "ok", obj["test"])
 
-	num := ParseJSON(`10`).(int)
+	num := ParseJSON(tea.String(`10`)).(int)
 	utils.AssertEqual(t, 10, num)
 
-	boolVal := ParseJSON(`true`).(bool)
+	boolVal := ParseJSON(tea.String(`true`)).(bool)
 	utils.AssertEqual(t, true, boolVal)
 
-	float64Val := ParseJSON(`1.00`).(float64)
+	float64Val := ParseJSON(tea.String(`1.00`)).(float64)
 	utils.AssertEqual(t, 1.00, float64Val)
 
-	null := ParseJSON(`[1.00]`)
+	null := ParseJSON(tea.String(`[1.00]`))
 	utils.AssertEqual(t, nil, null)
 }
 
 func Test_GetDateUTCString(t *testing.T) {
 	time := GetDateUTCString()
-	utils.AssertEqual(t, 29, len(time))
+	utils.AssertEqual(t, 29, len(tea.StringValue(time)))
 }
 
 func Test_ToFormString(t *testing.T) {
 	str := ToFormString(nil)
-	utils.AssertEqual(t, "", str)
+	utils.AssertEqual(t, "", tea.StringValue(str))
 
 	a := map[string]interface{}{
 		"key1": "value1",
 		"key2": "value2",
 	}
 	str = ToFormString(a)
-	utils.AssertContains(t, str, "key1=value1")
+	utils.AssertContains(t, tea.StringValue(str), "key1=value1")
 }
 
 func Test_IsUnset(t *testing.T) {
 	ok := IsUnset(nil)
-	utils.AssertEqual(t, true, ok)
+	utils.AssertEqual(t, true, tea.BoolValue(ok))
 
 	ok = IsUnset("str")
-	utils.AssertEqual(t, false, ok)
+	utils.AssertEqual(t, false, tea.BoolValue(ok))
 
 	var a map[string]string
 	ok = IsUnset(a)
-	utils.AssertEqual(t, true, ok)
+	utils.AssertEqual(t, true, tea.BoolValue(ok))
 }
 
 func Test_StringifyMapValue(t *testing.T) {
@@ -234,8 +234,8 @@ func Test_AssertAsMap(t *testing.T) {
 }
 
 func Test_AssertAsString(t *testing.T) {
-	out := AssertAsString("ok")
-	utils.AssertEqual(t, "ok", out)
+	out := AssertAsString(tea.String("ok"))
+	utils.AssertEqual(t, "ok", tea.StringValue(out))
 
 	defer func() {
 		err := recover()
@@ -245,8 +245,8 @@ func Test_AssertAsString(t *testing.T) {
 }
 
 func Test_AssertAsNumber(t *testing.T) {
-	out := AssertAsNumber(10)
-	utils.AssertEqual(t, 10, out)
+	out := AssertAsNumber(tea.Int(10))
+	utils.AssertEqual(t, 10, tea.IntValue(out))
 
 	defer func() {
 		err := recover()
@@ -256,8 +256,8 @@ func Test_AssertAsNumber(t *testing.T) {
 }
 
 func Test_AssertAsBoolean(t *testing.T) {
-	out := AssertAsBoolean(true)
-	utils.AssertEqual(t, true, out)
+	out := AssertAsBoolean(tea.Bool(true))
+	utils.AssertEqual(t, true, tea.BoolValue(out))
 
 	defer func() {
 		err := recover()
@@ -267,27 +267,27 @@ func Test_AssertAsBoolean(t *testing.T) {
 }
 
 func Test_UserAgent(t *testing.T) {
-	utils.AssertEqual(t, len(GetUserAgent("")), 61)
-	utils.AssertEqual(t, len(GetUserAgent("ccp")), 65)
-	utils.AssertContains(t, GetUserAgent("ccp"), " ccp")
+	utils.AssertEqual(t, len(tea.StringValue(GetUserAgent(tea.String("")))), 61)
+	utils.AssertEqual(t, len(tea.StringValue(GetUserAgent(tea.String("tea")))), 65)
+	utils.AssertContains(t, tea.StringValue(GetUserAgent(tea.String("tea"))), " tea")
 }
 
 func Test_Is2xx(t *testing.T) {
-	utils.AssertEqual(t, Is2xx(200), true)
-	utils.AssertEqual(t, Is2xx(300), false)
+	utils.AssertEqual(t, tea.BoolValue(Is2xx(tea.Int(200))), true)
+	utils.AssertEqual(t, tea.BoolValue(Is2xx(tea.Int(300))), false)
 }
 
 func Test_Is3xx(t *testing.T) {
-	utils.AssertEqual(t, Is3xx(300), true)
-	utils.AssertEqual(t, Is3xx(400), false)
+	utils.AssertEqual(t, tea.BoolValue(Is3xx(tea.Int(300))), true)
+	utils.AssertEqual(t, tea.BoolValue(Is3xx(tea.Int(400))), false)
 }
 
 func Test_Is4xx(t *testing.T) {
-	utils.AssertEqual(t, Is4xx(400), true)
-	utils.AssertEqual(t, Is4xx(500), false)
+	utils.AssertEqual(t, tea.BoolValue(Is4xx(tea.Int(400))), true)
+	utils.AssertEqual(t, tea.BoolValue(Is4xx(tea.Int(500))), false)
 }
 
 func Test_Is5xx(t *testing.T) {
-	utils.AssertEqual(t, Is5xx(500), true)
-	utils.AssertEqual(t, Is5xx(600), false)
+	utils.AssertEqual(t, tea.BoolValue(Is5xx(tea.Int(500))), true)
+	utils.AssertEqual(t, tea.BoolValue(Is5xx(tea.Int(600))), false)
 }
