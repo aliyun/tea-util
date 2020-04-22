@@ -7,7 +7,7 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 
-def __read_part(f, size=1024, encoding="utf-8"):
+def __read_part(f, size=1024):
     while True:
         part = f.read(size)
         if part:
