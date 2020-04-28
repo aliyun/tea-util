@@ -19,16 +19,8 @@ public class Common {
 
     static {
         Properties sysProps = System.getProperties();
-        String coreVersion = "";
-        Properties props = new Properties();
-        try {
-            props.load(Common.class.getClassLoader().getResourceAsStream("project.properties"));
-            coreVersion = props.getProperty("sdk.project.version");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         defaultUserAgent = String.format("AlibabaCloud (%s; %s) Java/%s %s/%s TeaDSL/1", sysProps.getProperty("os.name"), sysProps
-                .getProperty("os.arch"), sysProps.getProperty("java.runtime.version"), "tea-util", coreVersion);
+                .getProperty("os.arch"), sysProps.getProperty("java.runtime.version"), "tea-util", JavaProject.teaUtilVersion);
     }
 
     /**

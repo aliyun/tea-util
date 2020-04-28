@@ -1,3 +1,6 @@
+2020-04-28 Version: 0.1.10
+1. update userAgent
+
 2020-04-17 Version: 0.1.9
 1. add toMap and validateModel
 
