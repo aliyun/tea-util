@@ -2,6 +2,7 @@
 
 namespace AlibabaCloud\Tea\Utils;
 
+use AlibabaCloud\Tea\Model;
 use Psr\Http\Message\StreamInterface;
 
 class Utils
@@ -173,11 +174,11 @@ class Utils
     /**
      * Check the string is empty?
      *
-     * @deprecated
-     *
      * @param string $val
      *
      * @return bool if string is null or zero length, return true
+     *
+     * @deprecated
      */
     public static function _empty($val)
     {
@@ -187,11 +188,11 @@ class Utils
     /**
      * Check the string is empty?
      *
-     * @deprecated
-     *
      * @param string $val
      *
      * @return bool if string is null or zero length, return true
+     *
+     * @deprecated
      */
     public static function emptyWithSuffix($val)
     {
@@ -402,5 +403,23 @@ class Utils
     public static function is5xx($code)
     {
         return $code >= 500 && $code < 600;
+    }
+
+    /**
+     * Validate model.
+     */
+    public static function validateModel(Model $model)
+    {
+        $model->validate();
+    }
+
+    /**
+     * Model transforms to map[string]any.
+     *
+     * @return array
+     */
+    public static function toMap(Model $model)
+    {
+        return $model->toMap();
     }
 }
