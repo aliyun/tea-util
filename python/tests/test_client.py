@@ -69,14 +69,14 @@ class TestClient(unittest.TestCase):
         dic["param"] = "test"
         self.assertEqual("form=test&param=test", client.to_form_string(dic))
 
-    def test_to_json_string(self):
+    def test_to_jsonstring(self):
         self.assertEqual('{"key": "value"}',
-                         client.to_json_string({"key": "value"}))
+                         client.to_jsonstring({"key": "value"}))
 
     def test_empty(self):
-        self.assertTrue(client.empty(None))
-        self.assertTrue(client.empty(""))
-        self.assertFalse(client.empty("test"))
+        self.assertTrue(client.empty_(None))
+        self.assertTrue(client.empty_(""))
+        self.assertFalse(client.empty_("test"))
 
     def test_equal_string(self):
         self.assertTrue(client.equal_string("test", "test"))

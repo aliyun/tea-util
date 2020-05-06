@@ -66,7 +66,7 @@ def get_nonce():
     return uuid.uuid1()
 
 
-def get_date_utc_string():
+def get_date_utcstring():
     return datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
 
 
@@ -84,11 +84,11 @@ def to_form_string(dic):
     return urlencode(dic)
 
 
-def to_json_string(val):
+def to_jsonstring(val):
     return json.dumps(val)
 
 
-def empty(val):
+def empty_(val):
     if val is None or val == "":
         return True
     else:
