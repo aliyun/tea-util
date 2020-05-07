@@ -2,7 +2,7 @@ import unittest
 import json
 import os
 
-from tea_util import client
+from alibabacloudteautil import client
 
 
 class TestClient(unittest.TestCase):
