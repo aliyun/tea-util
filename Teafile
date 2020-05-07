@@ -9,7 +9,7 @@
 		"csharp": "AlibabaCloud.TeaUtil:0.1.2",
 		"java": "com.aliyun:tea-util:0.1.10",
 		"php": "alibabacloud/tea-utils:^0.2.0",
-		"python": "alibabacloud-tea-util:0.0.1"
+		"python": "alibabacloudteautil:0.0.1"
 	},
 	"java": {
 		"package": "com.aliyun.teautil",
@@ -23,7 +23,7 @@
 		"clientName": "Utils"
 	},
 	"python": {
-		"package": "alibabacloud-tea-util",
+		"package": "alibabacloudteautil",
 		"clientName": "client"
 	}
 }
