@@ -2,21 +2,21 @@ import unittest
 import json
 import os
 
-from alibabacloudteautil import client
+from alibabacloud_tea_util.client import Client
 
 
 class TestClient(unittest.TestCase):
 
     def test_to_bytes(self):
-        result = client.to_bytes("test")
+        result = Client.to_bytes("test")
         self.assertEqual(b'test', result)
 
     def test_to_string(self):
-        self.assertEqual("test", client.to_string(b'test'))
+        self.assertEqual("test", Client.to_string(b'test'))
 
     def test_parse_json(self):
         json_str = "{\"arrayObj\":[[{\"itemName\":\"item\",\"itemInt\":1},{\"itemName\":\"item2\",\"itemInt\":2}],[{\"itemName\":\"item3\",\"itemInt\":3}]],\"arrayList\":[[[1,2],[3,4]],[[5,6],[7]],[]],\"listStr\":[1,2,3],\"items\":[{\"total_size\":18,\"partNumber\":1,\"tags\":[{\"aa\":\"11\"}]},{\"total_size\":20,\"partNumber\":2,\"tags\":[{\"aa\":\"22\"}]}],\"next_marker\":\"\",\"test\":{\"total_size\":19,\"partNumber\":1,\"tags\":[{\"aa\":\"11\"}]}}"
-        obj = client.parse_json(json_str)
+        obj = Client.parse_json(json_str)
         self.assertIsNotNone(obj)
 
     def test_read_as_bytes(self):
@@ -24,108 +24,108 @@ class TestClient(unittest.TestCase):
         module_path = os.path.dirname(__file__)
         filename = module_path + "/test_open.txt"
         with open(filename) as f:
-            result = client.read_as_bytes(f)
+            result = Client.read_as_bytes(f)
         self.assertIsNotNone(result)
         self.assertEqual(b'hello alibabaCloud!', result)
-        self.assertEqual(b'test', client.read_as_bytes(b'test'))
-        self.assertEqual(b'testStr', client.read_as_bytes('testStr'))
+        self.assertEqual(b'test', Client.read_as_bytes(b'test'))
+        self.assertEqual(b'testStr', Client.read_as_bytes('testStr'))
 
     def test_read_as_string(self):
         result = None
         module_path = os.path.dirname(__file__)
         filename = module_path + "/test_open.txt"
         with open(filename) as f:
-            result = client.read_as_string(f)
+            result = Client.read_as_string(f)
         self.assertIsNotNone(result)
         self.assertEqual('hello alibabaCloud!', result)
-        self.assertEqual('test', client.read_as_string(b'test'))
-        self.assertEqual('testStr', client.read_as_string('testStr'))
+        self.assertEqual('test', Client.read_as_string(b'test'))
+        self.assertEqual('testStr', Client.read_as_string('testStr'))
 
     def test_read_as_json(self):
         self.assertEqual({"key": "value"},
-                         client.read_as_json('{"key":"value"}'))
+                         Client.read_as_json('{"key":"value"}'))
 
     def test_get_nonce(self):
-        self.assertIsNotNone(client.get_nonce())
+        self.assertIsNotNone(Client.get_nonce())
 
     def test_get_date_utc_string(self):
-        self.assertIn('GMT', client.get_date_utc_string())
+        self.assertIn('GMT', Client.get_date_utc_string())
 
     def test_default_string(self):
-        self.assertEqual("default", client.default_string("", "default"))
-        self.assertEqual("default", client.default_string(None, "default"))
-        self.assertEqual("str", client.default_string("str", "default"))
+        self.assertEqual("default", Client.default_string("", "default"))
+        self.assertEqual("default", Client.default_string(None, "default"))
+        self.assertEqual("str", Client.default_string("str", "default"))
 
     def test_default_number(self):
-        self.assertEqual(100, client.default_number(None, 100))
-        self.assertEqual(100, client.default_number(0, 100))
-        self.assertEqual(1, client.default_number(1, 100))
+        self.assertEqual(100, Client.default_number(None, 100))
+        self.assertEqual(100, Client.default_number(0, 100))
+        self.assertEqual(1, Client.default_number(1, 100))
 
     def test_to_form_string(self):
-        self.assertEqual("", client.to_form_string(None))
-        self.assertEqual("", client.to_form_string({}))
+        self.assertEqual("", Client.to_form_string(None))
+        self.assertEqual("", Client.to_form_string({}))
         dic = {}
         dic["form"] = "test"
         dic["param"] = "test"
-        self.assertEqual("form=test&param=test", client.to_form_string(dic))
+        self.assertEqual("form=test&param=test", Client.to_form_string(dic))
 
     def test_to_json_string(self):
         self.assertEqual('{"key": "value"}',
-                         client.to_json_string({"key": "value"}))
+                         Client.to_json_string({"key": "value"}))
 
     def test_empty(self):
-        self.assertTrue(client.empty(None))
-        self.assertTrue(client.empty(""))
-        self.assertFalse(client.empty("test"))
+        self.assertTrue(Client.empty(None))
+        self.assertTrue(Client.empty(""))
+        self.assertFalse(Client.empty("test"))
 
     def test_equal_string(self):
-        self.assertTrue(client.equal_string("test", "test"))
-        self.assertFalse(client.equal_string("a", "b"))
+        self.assertTrue(Client.equal_string("test", "test"))
+        self.assertFalse(Client.equal_string("a", "b"))
 
     def test_equal_number(self):
-        self.assertTrue(client.equal_number(100, 100))
-        self.assertFalse(client.equal_number(1, 2))
+        self.assertTrue(Client.equal_number(100, 100))
+        self.assertFalse(Client.equal_number(1, 2))
 
     def test_is_unset(self):
-        self.assertTrue(client.is_unset(None))
-        self.assertFalse(client.is_unset(""))
-        self.assertFalse(client.is_unset("11"))
+        self.assertTrue(Client.is_unset(None))
+        self.assertFalse(Client.is_unset(""))
+        self.assertFalse(Client.is_unset("11"))
 
     def test_stringify_map_value(self):
-        self.assertIsNone(client.stringify_map_value(None))
-        self.assertEqual({}, client.stringify_map_value({}))
+        self.assertIsNone(Client.stringify_map_value(None))
+        self.assertEqual({}, Client.stringify_map_value({}))
         dic = {}
         dic["test"] = 100
-        self.assertEqual("100", client.stringify_map_value(dic)["test"])
+        self.assertEqual("100", Client.stringify_map_value(dic)["test"])
 
     def test_assert_as_map(self):
         json_str = '{"key":"value"}'
-        self.assertEqual({'key': 'value'}, client.assert_as_map(json_str))
+        self.assertEqual({'key': 'value'}, Client.assert_as_map(json_str))
         self.assertEqual({'key': 'value'},
-                         client.assert_as_map({'key': 'value'}))
+                         Client.assert_as_map({'key': 'value'}))
 
     def test_get_user_agent(self):
-        self.assertIsNotNone(client.get_user_agent())
-        self.assertIn("test", client.get_user_agent("test"))
+        self.assertIsNotNone(Client.get_user_agent())
+        self.assertIn("test", Client.get_user_agent("test"))
 
     def test_is_xx(self):
-        self.assertFalse(client.is_2xx(100))
-        self.assertTrue(client.is_2xx(200))
-        self.assertFalse(client.is_2xx(300))
+        self.assertFalse(Client.is_2xx(100))
+        self.assertTrue(Client.is_2xx(200))
+        self.assertFalse(Client.is_2xx(300))
 
-        self.assertFalse(client.is_3xx(200))
-        self.assertTrue(client.is_3xx(300))
-        self.assertFalse(client.is_3xx(400))
+        self.assertFalse(Client.is_3xx(200))
+        self.assertTrue(Client.is_3xx(300))
+        self.assertFalse(Client.is_3xx(400))
 
-        self.assertFalse(client.is_4xx(300))
-        self.assertTrue(client.is_4xx(400))
-        self.assertFalse(client.is_4xx(500))
+        self.assertFalse(Client.is_4xx(300))
+        self.assertTrue(Client.is_4xx(400))
+        self.assertFalse(Client.is_4xx(500))
 
-        self.assertFalse(client.is_5xx(400))
-        self.assertTrue(client.is_5xx(500))
-        self.assertFalse(client.is_5xx(600))
+        self.assertFalse(Client.is_5xx(400))
+        self.assertTrue(Client.is_5xx(500))
+        self.assertFalse(Client.is_5xx(600))
 
     def test_anyify_map_value(self):
         dic = {}
         dic["key"] = "value"
-        self.assertEqual(dic, client.anyify_map_value(dic))
+        self.assertEqual(dic, Client.anyify_map_value(dic))
