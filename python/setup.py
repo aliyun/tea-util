@@ -19,12 +19,12 @@ import os
 from setuptools import setup, find_packages
 
 """
-Setup module for alibabacloudteautil.
+Setup module for alibabacloud_tea_util.
 Created on 3/18/2020
 @author: Alibaba Cloud
 """
 
-PACKAGE = "alibabacloudteautil"
+PACKAGE = "alibabacloud_tea_util"
 DESCRIPTION = "The tea-util module of alibabaCloud Python SDK."
 AUTHOR = "Alibaba Cloud"
 AUTHOR_EMAIL = "alibaba-cloud-sdk-dev-team@list.alibaba-inc.com"
@@ -62,4 +62,4 @@ setup_args = {
     )
 }
 
-setup(name='alibabacloudteautil', **setup_args)
+setup(name='alibabacloud_tea_util', **setup_args)

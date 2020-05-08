@@ -10,7 +10,7 @@ Python SDK uses a common package management tool named `pip`. If pip is not inst
 
 ```bash
 # Install the tea-util
-pip install alibabacloudteautil
+pip install alibabacloud_tea_util
 ```
 
 ## Issues

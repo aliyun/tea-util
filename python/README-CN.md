@@ -13,7 +13,7 @@
 
 ```bash
 # 安装 tea-util
-pip install alibabacloudteautil
+pip install alibabacloud_tea_util
 ```
 
 ## 问题
