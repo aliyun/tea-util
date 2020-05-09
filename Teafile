@@ -1,10 +1,10 @@
 {
 	"scope": "alibabacloud",
 	"name": "Util",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/alibabacloud-go/tea-utils/service:v1.0.2",
+		"go": "github.com/alibabacloud-go/tea-utils/service:v1.0.3",
 		"ts": "@alicloud/tea-util:^1.1.0",
 		"csharp": "AlibabaCloud.TeaUtil:0.1.2",
 		"java": "com.aliyun:tea-util:0.1.10",

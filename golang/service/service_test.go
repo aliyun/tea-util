@@ -136,8 +136,8 @@ func Test_ToBytes(t *testing.T) {
 }
 
 func Test_ToMap(t *testing.T) {
-	in := map[string]string{
-		"key": "value",
+	in := map[string]*string{
+		"key": tea.String("value"),
 	}
 	res := ToMap(in)
 	utils.AssertEqual(t, "value", res["key"].(string))
@@ -206,14 +206,14 @@ func Test_StringifyMapValue(t *testing.T) {
 		"str": "ok",
 	}
 	out := StringifyMapValue(in)
-	utils.AssertEqual(t, "10", out["num"])
-	utils.AssertEqual(t, `{"test":"ok"}`, out["json"])
-	utils.AssertEqual(t, "ok", out["str"])
+	utils.AssertEqual(t, "10", tea.StringValue(out["num"]))
+	utils.AssertEqual(t, `{"test":"ok"}`, tea.StringValue(out["json"]))
+	utils.AssertEqual(t, "ok", tea.StringValue(out["str"]))
 }
 
 func Test_AnyifyMapValue(t *testing.T) {
-	in := map[string]string{
-		"str": "ok",
+	in := map[string]*string{
+		"str": tea.String("ok"),
 	}
 	out := AnyifyMapValue(in)
 	utils.AssertEqual(t, "ok", out["str"].(string))
