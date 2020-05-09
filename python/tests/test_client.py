@@ -49,7 +49,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNotNone(Client.get_nonce())
 
     def test_get_date_utc_string(self):
-        self.assertIn('GMT', Client.get_date_utc_string())
+        self.assertIn('GMT', Client.get_date_utcstring())
 
     def test_default_string(self):
         self.assertEqual("default", Client.default_string("", "default"))
@@ -71,7 +71,7 @@ class TestClient(unittest.TestCase):
 
     def test_to_json_string(self):
         self.assertEqual('{"key": "value"}',
-                         Client.to_json_string({"key": "value"}))
+                         Client.to_jsonstring({"key": "value"}))
 
     def test_empty(self):
         self.assertTrue(Client.empty(None))
