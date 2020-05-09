@@ -68,7 +68,7 @@ class Client:
         return uuid.uuid1()
 
     @staticmethod
-    def get_date_utc_string():
+    def get_date_utcstring():
         return datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
 
     @staticmethod
@@ -86,7 +86,7 @@ class Client:
         return urlencode(dic)
 
     @staticmethod
-    def to_json_string(val):
+    def to_jsonstring(val):
         return json.dumps(val)
 
     @staticmethod
