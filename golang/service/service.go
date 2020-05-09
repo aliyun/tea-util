@@ -121,26 +121,26 @@ func ReadAsString(body io.Reader) (*string, error) {
 	return tea.String(string(byt)), nil
 }
 
-func StringifyMapValue(a map[string]interface{}) map[string]string {
-	res := make(map[string]string)
+func StringifyMapValue(a map[string]interface{}) map[string]*string {
+	res := make(map[string]*string)
 	for key, value := range a {
 		if value != nil {
 			switch value.(type) {
 			case string:
-				res[key] = value.(string)
+				res[key] = tea.String(value.(string))
 			default:
 				byt, _ := json.Marshal(value)
-				res[key] = string(byt)
+				res[key] = tea.String(string(byt))
 			}
 		}
 	}
 	return res
 }
 
-func AnyifyMapValue(a map[string]string) map[string]interface{} {
+func AnyifyMapValue(a map[string]*string) map[string]interface{} {
 	res := make(map[string]interface{})
 	for key, value := range a {
-		res[key] = value
+		res[key] = tea.StringValue(value)
 	}
 	return res
 }
