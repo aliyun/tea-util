@@ -234,7 +234,7 @@ func Test_AssertAsMap(t *testing.T) {
 }
 
 func Test_AssertAsString(t *testing.T) {
-	out := AssertAsString(tea.String("ok"))
+	out := AssertAsString("ok")
 	utils.AssertEqual(t, "ok", tea.StringValue(out))
 
 	defer func() {
@@ -245,7 +245,7 @@ func Test_AssertAsString(t *testing.T) {
 }
 
 func Test_AssertAsNumber(t *testing.T) {
-	out := AssertAsNumber(tea.Int(10))
+	out := AssertAsNumber(10)
 	utils.AssertEqual(t, 10, tea.IntValue(out))
 
 	defer func() {
@@ -256,7 +256,7 @@ func Test_AssertAsNumber(t *testing.T) {
 }
 
 func Test_AssertAsBoolean(t *testing.T) {
-	out := AssertAsBoolean(tea.Bool(true))
+	out := AssertAsBoolean(true)
 	utils.AssertEqual(t, true, tea.BoolValue(out))
 
 	defer func() {
