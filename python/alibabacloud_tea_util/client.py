@@ -65,7 +65,7 @@ class Client:
 
     @staticmethod
     def get_nonce():
-        return uuid.uuid1()
+        return str(uuid.uuid1())
 
     @staticmethod
     def get_date_utcstring():
