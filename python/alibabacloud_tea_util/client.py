@@ -151,3 +151,15 @@ class Client:
     @staticmethod
     def anyify_map_value(dic):
         return dic
+
+    @staticmethod
+    def validate_model(model):
+        if model is not None:
+            model.validate()
+
+    @staticmethod
+    def to_map(model):
+        if model is not None:
+            return model.to_map()
+        else:
+            return None
