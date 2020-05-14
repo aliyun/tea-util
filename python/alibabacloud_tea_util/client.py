@@ -1,6 +1,7 @@
 import json
 import uuid
 import platform
+import socket
 
 from _io import TextIOWrapper
 from datetime import datetime
@@ -65,7 +66,9 @@ class Client:
 
     @staticmethod
     def get_nonce():
-        return str(uuid.uuid1())
+        name = socket.gethostname() + str(uuid.uuid1())
+        namespace = uuid.NAMESPACE_URL
+        return str(uuid.uuid5(namespace, name))
 
     @staticmethod
     def get_date_utcstring():
