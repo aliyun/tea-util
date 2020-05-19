@@ -3,9 +3,11 @@ import uuid
 import platform
 import socket
 
-from _io import TextIOWrapper
+from _io import TextIOWrapper, BufferedReader
 from datetime import datetime
 from urllib.parse import urlencode
+
+from Tea.stream import BaseStream
 
 
 class Client:
@@ -16,7 +18,7 @@ class Client:
             if part:
                 yield part
             else:
-                return None
+                return
 
     @staticmethod
     def __get_default_agent():
@@ -43,7 +45,7 @@ class Client:
 
     @staticmethod
     def read_as_bytes(body):
-        if isinstance(body, TextIOWrapper):
+        if isinstance(body, (TextIOWrapper, BufferedReader, BaseStream)):
             bts_array = bytearray()
             for part in Client.__read_part(body, 1024):
                 if not isinstance(part, bytes):
@@ -114,7 +116,7 @@ class Client:
     @staticmethod
     def stringify_map_value(dic):
         if dic is None:
-            return None
+            return
         dic_result = {}
         for k in dic:
             dic_result[k] = str(dic[k])
@@ -164,5 +166,3 @@ class Client:
     def to_map(model):
         if model is not None:
             return model.to_map()
-        else:
-            return None
