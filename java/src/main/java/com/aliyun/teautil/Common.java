@@ -243,7 +243,9 @@ public class Common {
         if (null == map) {
             return null;
         }
-        map.forEach((key, value) -> result.put(key, String.valueOf(value)));
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            result.put(entry.getKey(), String.valueOf(entry.getValue()));
+        }
         return result;
     }
 
@@ -257,7 +259,9 @@ public class Common {
         if (null == map) {
             return null;
         }
-        map.forEach((key, value) -> result.put(key, value));
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            result.put(entry.getKey(), entry.getValue());
+        }
         return result;
     }
 
