@@ -29,19 +29,19 @@ class RuntimeOptions(TeaModel):
     def to_map(self):
         result = {}
         result['autoretry'] = self.autoretry
-        result['ignoreSSL'] = self.ignoreSSL
-        result['max_attempts'] = self.maxAttempts
-        result['backoff_policy'] = self.backoffPolicy
-        result['backoff_period'] = self.backoffPeriod
-        result['readTimeout'] = self.readTimeout
-        result['connectTimeout'] = self.connectTimeout
-        result['httpProxy'] = self.httpProxy
-        result['httpsProxy'] = self.httpsProxy
-        result['noProxy'] = self.noProxy
-        result['maxIdleConns'] = self.maxIdleConns
-        result['localAddr'] = self.localAddr
-        result['socks5Proxy'] = self.socks5Proxy
-        result['socks5NetWork'] = self.socks5NetWork
+        result['ignoreSSL'] = self.ignore_ssl
+        result['max_attempts'] = self.max_attempts
+        result['backoff_policy'] = self.backoff_policy
+        result['backoff_period'] = self.backoff_period
+        result['readTimeout'] = self.read_timeout
+        result['connectTimeout'] = self.connect_timeout
+        result['httpProxy'] = self.http_proxy
+        result['httpsProxy'] = self.https_proxy
+        result['noProxy'] = self.no_proxy
+        result['maxIdleConns'] = self.max_idle_conns
+        result['localAddr'] = self.local_addr
+        result['socks5Proxy'] = self.socks_5proxy
+        result['socks5NetWork'] = self.socks_5net_work
         return result
 
     def from_map(self, map={}):
