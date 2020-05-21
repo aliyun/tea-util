@@ -3,11 +3,10 @@ import uuid
 import platform
 import socket
 
-from _io import TextIOWrapper, BufferedReader
 from datetime import datetime
 from urllib.parse import urlencode
 
-from Tea.stream import BaseStream
+from Tea.stream import STREAM_CLASS
 
 
 class Client:
@@ -45,7 +44,7 @@ class Client:
 
     @staticmethod
     def read_as_bytes(body):
-        if isinstance(body, (TextIOWrapper, BufferedReader, BaseStream)):
+        if isinstance(body, STREAM_CLASS):
             bts_array = bytearray()
             for part in Client.__read_part(body, 1024):
                 if not isinstance(part, bytes):
