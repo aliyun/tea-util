@@ -258,6 +258,9 @@ class Utils
      */
     public static function stringifyMapValue($map)
     {
+        if($map === null){
+            return [];
+        }
         foreach ($map as &$node) {
             if (is_numeric($node)) {
                 $node = (string) $node;
