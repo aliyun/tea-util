@@ -132,6 +132,7 @@ final class UtilsTest extends TestCase
 
     public function testStringifyMapValue()
     {
+        $this->assertEquals([], Utils::stringifyMapValue(null));
         $this->assertEquals([
             'foo'    => 'bar',
             'null'   => '',
