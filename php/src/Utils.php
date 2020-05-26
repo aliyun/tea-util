@@ -114,7 +114,7 @@ class Utils
      */
     public static function getDateUTCString()
     {
-        return gmdate('Y-m-d\\TH:i:s\\Z');
+        return gmdate('D, d M Y H:i:s T');
     }
 
     /**
