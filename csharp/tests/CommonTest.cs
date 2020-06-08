@@ -279,9 +279,6 @@ namespace tests
         [Fact]
         public void Test_ToMap()
         {
-            TeaModel modelNull = null;
-            Assert.Empty(modelNull.ToMap());
-
             TestRegModel model = new TestRegModel();
             model.RequestId = "requestID";
             model.Items = new List<TestRegSubModel> { new TestRegSubModel { RequestId = "sub" }, null };
