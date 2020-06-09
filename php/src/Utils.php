@@ -258,7 +258,7 @@ class Utils
      */
     public static function stringifyMapValue($map)
     {
-        if($map === null){
+        if (null === $map) {
             return [];
         }
         foreach ($map as &$node) {
@@ -310,6 +310,35 @@ class Utils
     public static function assertAsString($value)
     {
         return \is_string($value);
+    }
+
+    /**
+     * Assert a value, if it is a bytes, return it, otherwise throws.
+     *
+     * @param mixed $value
+     *
+     * @return bool the bytes value
+     */
+    public static function assertAsBytes($value)
+    {
+        if (!\is_array($value)) {
+            return false;
+        }
+        $i = 0;
+        foreach ($value as $k => $ord) {
+            if ($k !== $i) {
+                return false;
+            }
+            if (!\is_int($ord)) {
+                return false;
+            }
+            if ($ord < 0 || $ord > 255) {
+                return false;
+            }
+            ++$i;
+        }
+
+        return true;
     }
 
     /**
