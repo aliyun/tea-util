@@ -61,8 +61,8 @@ func Test_DefaultNumber(t *testing.T) {
 	num := DefaultNumber(tea.Int(0), tea.Int(1))
 	utils.AssertEqual(t, 0, tea.IntValue(num))
 
-	num = DefaultNumber(tea.Int(2), tea.Int(1))
-	utils.AssertEqual(t, 2, tea.IntValue(num))
+	num = DefaultNumber(nil, tea.Int(1))
+	utils.AssertEqual(t, 1, tea.IntValue(num))
 }
 
 func Test_DefaultString(t *testing.T) {
@@ -237,6 +237,9 @@ func Test_AssertAsString(t *testing.T) {
 	out := AssertAsString("ok")
 	utils.AssertEqual(t, "ok", tea.StringValue(out))
 
+	out = AssertAsString(tea.String("ok"))
+	utils.AssertEqual(t, "ok", tea.StringValue(out))
+
 	defer func() {
 		err := recover()
 		utils.AssertEqual(t, "10 is not a string", err)
@@ -244,8 +247,22 @@ func Test_AssertAsString(t *testing.T) {
 	AssertAsString(10)
 }
 
+func Test_AssertAsBytes(t *testing.T) {
+	out := AssertAsBytes([]byte("ok"))
+	utils.AssertEqual(t, []byte("ok"), out)
+
+	defer func() {
+		err := recover()
+		utils.AssertEqual(t, "10 is not []byte", err)
+	}()
+	AssertAsBytes(10)
+}
+
 func Test_AssertAsNumber(t *testing.T) {
 	out := AssertAsNumber(10)
+	utils.AssertEqual(t, 10, tea.IntValue(out))
+
+	out = AssertAsNumber(tea.Int(10))
 	utils.AssertEqual(t, 10, tea.IntValue(out))
 
 	defer func() {
@@ -257,6 +274,9 @@ func Test_AssertAsNumber(t *testing.T) {
 
 func Test_AssertAsBoolean(t *testing.T) {
 	out := AssertAsBoolean(true)
+	utils.AssertEqual(t, true, tea.BoolValue(out))
+
+	out = AssertAsBoolean(tea.Bool(true))
 	utils.AssertEqual(t, true, tea.BoolValue(out))
 
 	defer func() {

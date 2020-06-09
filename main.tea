@@ -151,6 +151,12 @@ static function assertAsBoolean(value: any): boolean;
 static function assertAsString(value: any): string;
 
 /**
+ * Assert a value, if it is a bytes, return it, otherwise throws
+ * @return the bytes value
+ */
+static function assertAsBytes(value: any): bytes;
+
+/**
  * Assert a value, if it is a number, return it, otherwise throws
  * @return the number value
  */

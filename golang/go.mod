@@ -1,5 +1,7 @@
 module github.com/alibabacloud-go/tea-utils
 
+go 1.14
+
 require (
 	github.com/alibabacloud-go/tea v1.1.0
 	github.com/yuin/goldmark v1.1.30 // indirect
