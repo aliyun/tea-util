@@ -232,27 +232,59 @@ func AssertAsMap(a interface{}) map[string]interface{} {
 }
 
 func AssertAsNumber(a interface{}) *int {
-	res, ok := a.(int)
-	if !ok {
+	res := 0
+	switch a.(type) {
+	case int:
+		tmp := a.(int)
+		res = tmp
+	case *int:
+		tmp := a.(*int)
+		res = tea.IntValue(tmp)
+	default:
 		panic(fmt.Sprintf("%v is not a int", a))
 	}
+
 	return tea.Int(res)
 }
 
 func AssertAsBoolean(a interface{}) *bool {
-	res, ok := a.(bool)
-	if !ok {
+	res := false
+	switch a.(type) {
+	case bool:
+		tmp := a.(bool)
+		res = tmp
+	case *bool:
+		tmp := a.(*bool)
+		res = tea.BoolValue(tmp)
+	default:
 		panic(fmt.Sprintf("%v is not a bool", a))
 	}
+
 	return tea.Bool(res)
 }
 
 func AssertAsString(a interface{}) *string {
-	res, ok := a.(string)
-	if !ok {
+	res := ""
+	switch a.(type) {
+	case string:
+		tmp := a.(string)
+		res = tmp
+	case *string:
+		tmp := a.(*string)
+		res = tea.StringValue(tmp)
+	default:
 		panic(fmt.Sprintf("%v is not a string", a))
 	}
+
 	return tea.String(res)
+}
+
+func AssertAsBytes(a interface{}) []byte {
+	res, ok := a.([]byte)
+	if !ok {
+		panic(fmt.Sprintf("%v is not []byte", a))
+	}
+	return res
 }
 
 func ParseJSON(a *string) interface{} {
