@@ -7,7 +7,9 @@ using AlibabaCloud.TeaUtil;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json.Linq;
+
 using Tea;
+
 using Xunit;
 
 namespace tests
@@ -238,6 +240,38 @@ namespace tests
             Assert.Equal(6, dict.Count);
 
             Assert.Throws<ArgumentException>(() => Common.AssertAsMap("string"));
+        }
+
+        [Fact]
+        public void Test_AssertAsString()
+        {
+            Assert.Equal("ok", Common.AssertAsString("ok"));
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsString(10); });
+        }
+
+        [Fact]
+        public void Test_AssertAsBytes()
+        {
+            Assert.Equal(Encoding.UTF8.GetBytes("ok"), Common.AssertAsBytes(Encoding.UTF8.GetBytes("ok")));
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsBytes(10); });
+        }
+
+        [Fact]
+        public void Test_AssertAsNumber()
+        {
+            Assert.Equal(10, Common.AssertAsNumber(10));
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsNumber("ok"); });
+        }
+
+        [Fact]
+        public void Test_AssertAsBoolean()
+        {
+            Assert.True(Common.AssertAsBoolean(true));
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsBoolean("ok"); });
         }
 
         [Fact]

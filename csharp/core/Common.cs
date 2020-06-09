@@ -11,6 +11,7 @@ using System.Web;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json;
+
 using Tea;
 
 namespace AlibabaCloud.TeaUtil
@@ -223,6 +224,46 @@ namespace AlibabaCloud.TeaUtil
             }
 
             throw new ArgumentException("The value is not Dictionary<string, object>");
+        }
+
+        public static byte[] AssertAsBytes(object obj)
+        {
+            if (obj is byte[])
+            {
+                return (byte[]) obj;
+            }
+
+            throw new ArgumentException("The value is not byte[]");
+        }
+
+        public static bool AssertAsBoolean(object obj)
+        {
+            if (obj is bool)
+            {
+                return (bool) obj;
+            }
+
+            throw new ArgumentException("The value is not boolean");
+        }
+
+        public static string AssertAsString(object obj)
+        {
+            if (obj is string)
+            {
+                return obj.ToString();
+            }
+
+            throw new ArgumentException("The value is not string");
+        }
+
+        public static int AssertAsNumber(object obj)
+        {
+            if (obj is int)
+            {
+                return (int) obj;
+            }
+
+            throw new ArgumentException("The value is not number");
         }
 
         public static string GetUserAgent(string userAgent)
