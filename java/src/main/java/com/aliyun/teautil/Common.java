@@ -63,6 +63,18 @@ public class Common {
     }
 
     /**
+     * Assert a value, if it is a bytes, return it, otherwise throws
+     *
+     * @return the bytes value
+     */
+    public static byte[] assertAsBytes(Object object) throws Exception {
+        if (object instanceof String) {
+            return object.toString().getBytes("UTF-8");
+        }
+        throw new RuntimeException("The value is not a String");
+    }
+
+    /**
      * Read data from a readable stream, and compose it to a bytes
      *
      * @param stream the readable stream

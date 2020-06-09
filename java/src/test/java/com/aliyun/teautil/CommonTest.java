@@ -223,4 +223,17 @@ public class CommonTest {
         Map map = Common.toMap(new ToMapTest());
         Assert.assertEquals("test", map.get("test"));
     }
+
+    @Test
+    public void assertAsBytesTest() throws Exception {
+        byte[] result = Common.assertAsBytes("test");
+        Assert.assertEquals("test", new String(result, "UTF-8"));
+
+        try {
+            Common.assertAsBytes(1);
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a String", e.getMessage());
+        }
+    }
 }
