@@ -181,6 +181,19 @@ describe('Tea Util', function () {
         }, /The value is not a object/);
     });
 
+    it('assertAsBytes', function () {
+        assert.deepStrictEqual(Client.assertAsBytes(Buffer.from('test')), Buffer.from('test'));
+        assert.throws(() => {
+            Client.assertAsBytes(10);
+        }, /The value is not bytes/);
+        assert.throws(() => {
+            Client.assertAsBytes(true);
+        }, /The value is not bytes/);
+        assert.throws(() => {
+            Client.assertAsBytes('123');
+        }, /The value is not bytes/);
+    });
+
     it('getUserAgent', function () {
         assert.strictEqual(Client.getUserAgent(''), `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`);
         assert.strictEqual(Client.getUserAgent('2019'), `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1 2019`);
