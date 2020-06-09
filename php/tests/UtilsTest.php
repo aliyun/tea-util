@@ -177,6 +177,25 @@ final class UtilsTest extends TestCase
         $this->assertFalse(Utils::assertAsString(123));
     }
 
+    public function testAssertAsBytes()
+    {
+        // failed because $var is not array
+        $this->assertFalse(Utils::assertAsBytes('test'));
+
+        // failed because $var is map not array
+        $this->assertFalse(Utils::assertAsBytes(['foo' => 1]));
+
+        // failed because item value is not int
+        $this->assertFalse(Utils::assertAsBytes(['1']));
+
+        // failed because item value is out off range
+        $this->assertFalse(Utils::assertAsBytes([256]));
+
+        // success
+        $this->assertTrue(Utils::assertAsBytes([1, 2, 3]));
+        $this->assertTrue(Utils::assertAsBytes(Utils::toBytes('string')));
+    }
+
     public function testAssertAsNumber()
     {
         $this->assertTrue(Utils::assertAsNumber(123));
