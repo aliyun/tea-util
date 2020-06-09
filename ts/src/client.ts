@@ -208,6 +208,13 @@ export default class Client {
     throw new Error(`The value is not a object`);
   }
 
+  static assertAsBytes(value: any): Buffer {
+    if (Buffer.isBuffer(value)) {
+      return value;
+    }
+    throw new Error(`The value is not bytes`);
+  }
+
   static getUserAgent(userAgent: string): string {
     if(!userAgent || !userAgent.length){
       return DEFAULT_USER_AGENT;
