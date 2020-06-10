@@ -39,12 +39,5 @@
       "phpunit --colors=always"
     ],
     "clearCache": "rm -rf cache/*"
-  },
-  "config": {
-    "sort-packages": true,
-    "preferred-install": "dist",
-    "optimize-autoloader": true
-  },
-  "prefer-stable": true,
-  "minimum-stability": "dev"
+  }
 }
