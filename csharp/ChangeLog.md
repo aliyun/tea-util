@@ -1,3 +1,6 @@
+### 2020-06-10 Version 0.1.4
+* Supported `AssertAs`
+
 ### 2020-05-14 Version 0.1.3
 * Improved Tea version 0.3.3
 

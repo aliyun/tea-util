@@ -129,3 +129,43 @@ class TestClient(unittest.TestCase):
         dic = {}
         dic["key"] = "value"
         self.assertEqual(dic, Client.anyify_map_value(dic))
+
+    def test_assert_as_bytes(self):
+        s = 'test'
+        b = b'test'
+        res = Client.assert_as_bytes(b)
+        self.assertEqual(b, res)
+        try:
+            Client.assert_as_bytes(s)
+        except ValueError as e:
+            self.assertEqual('test is not a bytes', str(e))
+
+    def test_assert_as_string(self):
+        num = 1
+        s = 'test'
+        res = Client.assert_as_string(s)
+        self.assertEqual(s, res)
+        try:
+            Client.assert_as_string(num)
+        except ValueError as e:
+            self.assertEqual('1 is not a string', str(e))
+
+    def test_assert_as_number(self):
+        s = 'test'
+        num = 1
+        res = Client.assert_as_number(num)
+        self.assertEqual(num, res)
+        try:
+            Client.assert_as_number(s)
+        except ValueError as e:
+            self.assertEqual('test is not a integer', str(e))
+
+    def test_assert_as_boolean(self):
+        s = 'test'
+        boolean = True
+        res = Client.assert_as_boolean(boolean)
+        self.assertEqual(boolean, res)
+        try:
+            Client.assert_as_boolean(s)
+        except ValueError as e:
+            self.assertEqual('test is not a boolean', str(e))
