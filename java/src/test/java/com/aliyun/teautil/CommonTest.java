@@ -112,7 +112,7 @@ public class CommonTest {
     }
 
     @Test
-    public void toStringTest() throws Exception{
+    public void toStringTest() throws Exception {
         byte[] bytes = Common.toBytes("test");
         Assert.assertEquals("test", Common.toString(bytes));
     }
@@ -152,14 +152,14 @@ public class CommonTest {
         try {
             Common.assertAsMap(new ArrayList<>());
             Assert.fail();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Assert.assertEquals("The value is not a object", e.getMessage());
         }
 
         try {
             Common.assertAsMap(null);
             Assert.fail();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Assert.assertEquals("The value is not a object", e.getMessage());
         }
 
@@ -175,7 +175,7 @@ public class CommonTest {
     }
 
     @Test
-    public void is2xxTest() throws Exception{
+    public void is2xxTest() throws Exception {
         Assert.assertFalse(Common.is2xx(null));
         Assert.assertFalse(Common.is2xx(66));
         Assert.assertFalse(Common.is2xx(400));
@@ -219,21 +219,60 @@ public class CommonTest {
     }
 
     @Test
-    public void toMapTest() throws Exception{
+    public void toMapTest() throws Exception {
         Map map = Common.toMap(new ToMapTest());
         Assert.assertEquals("test", map.get("test"));
     }
 
     @Test
     public void assertAsBytesTest() throws Exception {
-        byte[] result = Common.assertAsBytes("test");
-        Assert.assertEquals("test", new String(result, "UTF-8"));
+        byte[] result = Common.assertAsBytes(new byte[]{1});
+        Assert.assertNotNull(result);
 
         try {
             Common.assertAsBytes(1);
             Assert.fail();
         } catch (Exception e) {
+            Assert.assertEquals("The value is not a byteArray", e.getMessage());
+        }
+    }
+
+    @Test
+    public void assertAsNumberTest() throws Exception {
+        Number result = Common.assertAsNumber(1);
+        Assert.assertEquals(1, result);
+
+        try {
+            Common.assertAsNumber("1");
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a Number", e.getMessage());
+        }
+    }
+
+    @Test
+    public void assertAsStringTest() throws Exception {
+        String result = Common.assertAsString("test");
+        Assert.assertEquals("test", result);
+
+        try {
+            Common.assertAsString(1);
+            Assert.fail();
+        } catch (Exception e) {
             Assert.assertEquals("The value is not a String", e.getMessage());
+        }
+    }
+
+    @Test
+    public void assertAsBooleanTest() throws Exception {
+        Boolean result = Common.assertAsBoolean(true);
+        Assert.assertTrue(result);
+
+        try {
+            Common.assertAsBoolean(1);
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a Boolean", e.getMessage());
         }
     }
 }

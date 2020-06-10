@@ -68,10 +68,47 @@ public class Common {
      * @return the bytes value
      */
     public static byte[] assertAsBytes(Object object) throws Exception {
+        if (object instanceof byte[]) {
+            return (byte[]) object;
+        }
+        throw new RuntimeException("The value is not a byteArr");
+    }
+
+    /**
+     * Assert a value, if it is a number, return it, otherwise throws
+     *
+     * @return the number value
+     */
+    public static Number assertAsNumber(Object object) throws Exception {
+        if (object instanceof Number) {
+            return (Number) object;
+        }
+        throw new RuntimeException("The value is not a Number");
+    }
+
+    /**
+     * Assert a value, if it is a string, return it, otherwise throws
+     *
+     * @return the string value
+     */
+    public static String assertAsString(Object object) throws Exception {
         if (object instanceof String) {
-            return object.toString().getBytes("UTF-8");
+            return (String) object;
         }
         throw new RuntimeException("The value is not a String");
+    }
+
+    /**
+     * Assert a value, if it is a boolean, return it, otherwise throws
+     *
+     * @return the boolean value
+     */
+    public static Boolean assertAsBoolean(Object object) throws Exception {
+        try {
+            return (Boolean) object;
+        } catch (Exception e) {
+            throw new RuntimeException("The value is not a Boolean");
+        }
     }
 
     /**
