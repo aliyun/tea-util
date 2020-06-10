@@ -5,7 +5,7 @@ function upload_codecov_report {
   cd "$1" || return 126
   wget --no-check-certificate https://codecov.io/bash -O codecov.sh
   pwd
-  bash codecov.sh -cF "$2" || return 126
+  bash codecov.sh -cF "$2"
 }
 
 function run_swift {
