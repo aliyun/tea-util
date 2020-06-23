@@ -77,11 +77,12 @@ function run_python {
   export PYTHONPATH=$PYTHONPATH:`pwd`/python
   echo $PYTHONPATH 
   # install
-  cd python/tests || return 126
+  cd python || return 126
   pip install coverage
+  pip install alibabacloud-tea
 
-  coverage run --source="tea_util.client" run_test.py
-  cd ../../
+  coverage run --source="./alibabacloud_tea_util" ./tests/run_test.py
+  cd ../
   upload_codecov_report python python
 }
 
