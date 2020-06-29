@@ -71,7 +71,7 @@ public class Common {
         if (object instanceof byte[]) {
             return (byte[]) object;
         }
-        throw new RuntimeException("The value is not a byteArr");
+        throw new RuntimeException("The value is not a byteArray");
     }
 
     /**

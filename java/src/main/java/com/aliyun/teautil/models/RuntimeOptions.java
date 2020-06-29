@@ -8,10 +8,10 @@ import com.aliyun.tea.*;
  */
 public class RuntimeOptions extends TeaModel {
     @NameInMap("autoretry")
-    public Boolean autoretry;
+    public Boolean autoretry = false;
 
     @NameInMap("ignoreSSL")
-    public Boolean ignoreSSL;
+    public Boolean ignoreSSL = true;
 
     @NameInMap("max_attempts")
     public Integer maxAttempts;
