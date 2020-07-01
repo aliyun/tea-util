@@ -1,7 +1,7 @@
 {
 	"scope": "alibabacloud",
 	"name": "Util",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"main": "./main.tea",
 	"releases": {
 		"go": "github.com/alibabacloud-go/tea-utils/service:v1.2.0",
