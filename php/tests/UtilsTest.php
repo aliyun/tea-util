@@ -245,4 +245,16 @@ final class UtilsTest extends TestCase
         $this->assertTrue(Utils::is5xx(500));
         $this->assertFalse(Utils::is5xx(600));
     }
+
+    public function testValidateModel()
+    {
+        // No exceptions thrown
+        Utils::validateModel(null);
+    }
+
+    public function testToMap()
+    {
+        // No exceptions thrown
+        Utils::toMap(null);
+    }
 }

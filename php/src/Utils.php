@@ -439,19 +439,30 @@ class Utils
 
     /**
      * Validate model.
+     *
+     * @param null|Model $model
      */
-    public static function validateModel(Model $model)
+    public static function validateModel($model)
     {
+        if (null === $model) {
+            return;
+        }
         $model->validate();
     }
 
     /**
      * Model transforms to map[string]any.
      *
+     * @param null|Model $model
+     *
      * @return array
      */
-    public static function toMap(Model $model)
+    public static function toMap($model)
     {
+        if (null === $model) {
+            return;
+        }
+
         return $model->toMap();
     }
 }
