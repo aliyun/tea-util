@@ -11,7 +11,7 @@ using System.Web;
 using AlibabaCloud.TeaUtil.Utils;
 
 using Newtonsoft.Json;
-
+using Newtonsoft.Json.Linq;
 using Tea;
 
 namespace AlibabaCloud.TeaUtil
@@ -221,6 +221,10 @@ namespace AlibabaCloud.TeaUtil
             if (value != null && value is Dictionary<string, object>)
             {
                 return (Dictionary<string, object>) value;
+            }
+            else if(value is JObject)
+            {
+                return (Dictionary<string, object>) ReadJsonUtil.Deserialize(value);
             }
 
             throw new ArgumentException("The value is not Dictionary<string, object>");
