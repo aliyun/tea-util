@@ -1,3 +1,7 @@
+### 2020-07-09 Version 0.1.5
+* Fixed AssertAsMap
+* Improved Reference Tea Version
+
 ### 2020-06-10 Version 0.1.4
 * Supported `AssertAs`
 
