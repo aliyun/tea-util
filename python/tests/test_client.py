@@ -99,10 +99,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual("100", Client.stringify_map_value(dic)["test"])
 
     def test_assert_as_map(self):
-        json_str = '{"key":"value"}'
-        self.assertEqual({'key': 'value'}, Client.assert_as_map(json_str))
-        self.assertEqual({'key': 'value'},
-                         Client.assert_as_map({'key': 'value'}))
+        dic = {'key': 'value'}
+        s = 'test'
+        res = Client.assert_as_map(dic)
+        self.assertEqual(dic, res)
+        try:
+            Client.assert_as_map(s)
+        except ValueError as e:
+            self.assertEqual('test is not a dict', str(e))
 
     def test_get_user_agent(self):
         self.assertIsNotNone(Client.get_user_agent())
