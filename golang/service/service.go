@@ -325,17 +325,12 @@ func ToFormString(a map[string]interface{}) *string {
 		return tea.String("")
 	}
 	res := ""
-	first := true
-	for k, v := range a {
-		if first {
-			first = false
-		} else {
-			res += "&"
-		}
-		res += url.QueryEscape(k)
-		res += "="
-		res += url.QueryEscape(fmt.Sprintf("%v", v))
+	urlEncoder := url.Values{}
+	for key, value := range a {
+		v := fmt.Sprintf("%v", value)
+		urlEncoder.Add(key, v)
 	}
+	res = urlEncoder.Encode()
 	return tea.String(res)
 }
 

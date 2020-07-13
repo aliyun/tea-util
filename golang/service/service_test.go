@@ -182,7 +182,7 @@ func Test_ToFormString(t *testing.T) {
 		"key2": "value2",
 	}
 	str = ToFormString(a)
-	utils.AssertContains(t, tea.StringValue(str), "key1=value1")
+	utils.AssertEqual(t, tea.StringValue(str), "key1=value1&key2=value2")
 }
 
 func Test_IsUnset(t *testing.T) {

@@ -1,3 +1,6 @@
+2020-07-13 Version: v1.3.0
+- Fix ToFormString Error.
+
 2020-06-09 Version: v1.2.0
 - Add AssertAsBytes.
 
