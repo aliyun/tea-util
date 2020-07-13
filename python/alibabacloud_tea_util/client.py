@@ -134,6 +134,8 @@ class Client:
         """
         if not dic:
             return ""
+        keys = sorted(list(dic))
+        dic = [(k, dic[k]) for k in keys]
         return urlencode(dic)
 
     @staticmethod
@@ -198,12 +200,9 @@ class Client:
         Assert a value, if it is a map, return it, otherwise throws
         @return the map value
         """
-        if val:
-            if isinstance(val, type("string")):
-                return json.loads(val)
-            else:
-                return val
-        raise NameError("val")
+        if not isinstance(val, dict):
+            ValueError('{} is not a dict'.format(val))
+        return val
 
     @staticmethod
     def get_user_agent(user_agent=""):
