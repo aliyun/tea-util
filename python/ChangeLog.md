@@ -1,3 +1,7 @@
+### 2020-07-14 Version 0.1.1
+
+* Ordered to form string.
+
 ### 2020-06-10 Version 0.1.0
 * Supported assert as bytes.
 
