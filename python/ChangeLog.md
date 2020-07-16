@@ -1,3 +1,7 @@
+### 2020-07-16 Version 0.1.2
+
+* Fix 'None' string appears in query.
+
 ### 2020-07-14 Version 0.1.1
 
 * Ordered to form string.
