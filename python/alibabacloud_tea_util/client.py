@@ -44,7 +44,7 @@ class Client:
         Convert a bytes to string(utf8)
         @return the return string
         """
-        return val.decode()
+        return val.decode('utf-8')
 
     @staticmethod
     def parse_json(val):
