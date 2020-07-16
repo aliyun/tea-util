@@ -189,9 +189,14 @@ class Client:
         """
         if dic is None:
             return
+
         dic_result = {}
         for k in dic:
-            dic_result[k] = str(dic[k])
+            if dic[k] is None:
+                value = dic[k]
+            else:
+                value = str(dic[k])
+            dic_result[k] = value
         return dic_result
 
     @staticmethod
