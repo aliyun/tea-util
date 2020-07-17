@@ -81,7 +81,7 @@ function run_python {
   pip install coverage
   pip install alibabacloud-tea
 
-  coverage run --source="./alibabacloud_tea_util" ./tests/run_test.py
+  coverage run --source="./alibabacloud_tea_util" -m pytest tests/test_* || return 126
   cd ../
   upload_codecov_report python python
 }

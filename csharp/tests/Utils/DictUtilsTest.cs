@@ -14,7 +14,7 @@ namespace tests.Utils
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict.Add("testKey", 1);
             Assert.Null(DictUtils.GetDicValue(dict, "testNull"));
-            Assert.Equal(1, DictUtils.GetDicValue(dict, "testKey"));
+            Assert.Equal(1, DictUtils.GetDicValue(dict, "tesKey"));
 
             Dictionary<string, string> dictStr = new Dictionary<string, string>();
             dictStr.Add("testKey", "testValue");

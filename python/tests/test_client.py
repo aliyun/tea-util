@@ -165,7 +165,7 @@ class TestClient(unittest.TestCase):
             self.assertEqual('test is not a integer', str(e))
 
     def test_assert_as_boolean(self):
-        s = 'test'
+        s = 'tet'
         boolean = True
         res = Client.assert_as_boolean(boolean)
         self.assertEqual(boolean, res)
