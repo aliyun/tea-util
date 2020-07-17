@@ -21,7 +21,7 @@ function run_php {
   cd php/ || return 126
   composer --version
   composer install -vvv
-  composer test
+  composer test || return 126
   cd ../
   upload_codecov_report php php
 }
@@ -30,7 +30,7 @@ function run_go {
   cd golang/ || return 126
   export GO111MODULE=on
   go mod tidy
-  go test -race -coverprofile=coverage.txt -covermode=atomic ./service/...
+  go test -race -coverprofile=coverage.txt -covermode=atomic ./service/... || return 126
   cd ../
   upload_codecov_report golang go
 }
@@ -50,7 +50,7 @@ function run_csharp {
   cd ../
 
   # run tests
-  dotnet test tests/ /p:AltCover=true
+  dotnet test tests/ /p:AltCover=true || return 126
   cd ../
 
   # upload code coverage report
@@ -59,7 +59,7 @@ function run_csharp {
 
 function run_java {
   cd java/ || return 126
-  mvn test -B
+  mvn test -B || return 126
   cd ../
   upload_codecov_report java java
 }
@@ -67,7 +67,7 @@ function run_java {
 function run_ts {
   cd ts/ || return 126
   npm install
-  npm run test-cov
+  npm run test-cov || return 126
   cd ../
   upload_codecov_report ts node_js
 }
@@ -81,7 +81,7 @@ function run_python {
   pip install coverage
   pip install alibabacloud-tea
 
-  coverage run --source="./alibabacloud_tea_util" ./tests/run_test.py
+  coverage run --source="./alibabacloud_tea_util" -m pytest tests/test_* || return 126
   cd ../
   upload_codecov_report python python
 }
