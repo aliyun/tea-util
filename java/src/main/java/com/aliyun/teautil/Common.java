@@ -293,6 +293,9 @@ public class Common {
             return null;
         }
         for (Map.Entry<String, ?> entry : map.entrySet()) {
+            if (null == entry.getValue()) {
+                continue;
+            }
             result.put(entry.getKey(), String.valueOf(entry.getValue()));
         }
         return result;

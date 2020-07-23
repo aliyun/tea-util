@@ -128,7 +128,7 @@ public class CommonTest {
         map.put("testBoo", true);
         Map<String, String> result = Common.stringifyMapValue(map);
         Assert.assertEquals("true", result.get("testBoo"));
-        Assert.assertEquals("null", result.get("testNull"));
+        Assert.assertNull(result.get("testNull"));
         Assert.assertEquals("string", result.get("testString"));
         Assert.assertEquals("1", result.get("testNum"));
     }
