@@ -189,11 +189,18 @@ func Test_IsUnset(t *testing.T) {
 	ok := IsUnset(nil)
 	utils.AssertEqual(t, true, tea.BoolValue(ok))
 
-	ok = IsUnset("str")
+	ok = IsUnset(tea.String(""))
+	utils.AssertEqual(t, false, tea.BoolValue(ok))
+
+	ok = IsUnset("")
 	utils.AssertEqual(t, false, tea.BoolValue(ok))
 
 	var a map[string]string
 	ok = IsUnset(a)
+	utils.AssertEqual(t, true, tea.BoolValue(ok))
+
+	var b []string
+	ok = IsUnset(b)
 	utils.AssertEqual(t, true, tea.BoolValue(ok))
 }
 
