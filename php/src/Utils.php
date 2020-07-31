@@ -152,6 +152,10 @@ class Utils
      */
     public static function toFormString($query)
     {
+        if (null === $query) {
+            return '';
+        }
+
         if (\is_object($query)) {
             $query = json_decode(self::toJSONString($query), true);
         }
@@ -162,12 +166,20 @@ class Utils
     /**
      * If not set the real, use default value.
      *
-     * @param object $object
+     * @param array|Model $object
      *
      * @return string the return string
      */
     public static function toJSONString($object)
     {
+        if (null === $object) {
+            $object = new \stdClass();
+        }
+
+        if ($object instanceof Model) {
+            $object = $object->toMap();
+        }
+
         return json_encode($object);
     }
 
