@@ -451,8 +451,10 @@ class Utils
 
     /**
      * Validate model.
+     *
+     * @param Model $model
      */
-    public static function validateModel(Model $model)
+    public static function validateModel($model)
     {
         $model->validate();
     }
@@ -460,9 +462,11 @@ class Utils
     /**
      * Model transforms to map[string]any.
      *
+     * @param Model $model
+     *
      * @return array
      */
-    public static function toMap(Model $model)
+    public static function toMap($model)
     {
         $map   = $model->toMap();
         $names = $model->getName();
