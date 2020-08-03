@@ -464,6 +464,20 @@ class Utils
      */
     public static function toMap(Model $model)
     {
-        return $model->toMap();
+        $map   = $model->toMap();
+        $names = $model->getName();
+        $vars  = get_object_vars($model);
+        foreach ($vars as $k => $v) {
+            if (false !== strpos($k, 'Shrink') && !isset($names[$k])) {
+                // A field that has the suffix `Shrink` and is not a Model class property.
+                $targetKey = ucfirst(substr($k, 0, \strlen($k) - 6));
+                if (isset($map[$targetKey])) {
+                    // $targetKey exists in $map.
+                    $map[$targetKey] = $v;
+                }
+            }
+        }
+
+        return $map;
     }
 }

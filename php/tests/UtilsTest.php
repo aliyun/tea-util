@@ -2,9 +2,11 @@
 
 namespace AlibabaCloud\Tea\Utils\Tests;
 
+use AlibabaCloud\Tea\Model;
 use AlibabaCloud\Tea\Utils\Utils;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @internal
@@ -244,5 +246,136 @@ final class UtilsTest extends TestCase
     {
         $this->assertTrue(Utils::is5xx(500));
         $this->assertFalse(Utils::is5xx(600));
+    }
+
+    public function testToMap()
+    {
+        $from        = new RequestTest();
+        $from->query = new RequestTestQuery([
+            'booleanParamInQuery' => true,
+            'mapParamInQuery'     => [1, 2, 3],
+        ]);
+        $this->assertTrue($from->query->booleanParamInQuery);
+        $this->assertEquals([1, 2, 3], $from->query->mapParamInQuery);
+
+        $target = new RequestShrinkTest([]);
+        $this->convert($from, $target);
+        $this->assertEquals([
+            'BooleanParamInQuery' => true,
+            'MapParamInQuery'     => [1, 2, 3],
+        ], $target->query->toMap());
+
+        $target->query->mapParamInQueryShrink = json_encode($from->query->mapParamInQuery);
+        $this->assertEquals([
+            'BooleanParamInQuery' => true,
+            'MapParamInQuery'     => '[1,2,3]',
+        ], Utils::toMap($target->query));
+    }
+
+    private function convert($body, &$content)
+    {
+        $class = new \ReflectionClass($body);
+        foreach ($class->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+            $name = $property->getName();
+            if (!$property->isStatic()) {
+                $value = $property->getValue($body);
+                if ($value instanceof StreamInterface) {
+                    continue;
+                }
+                $content->{$name} = $value;
+            }
+        }
+    }
+}
+
+/**
+ * @internal
+ * @coversNothing
+ */
+class RequestTest extends Model
+{
+    /**
+     * @var RequestTestQuery
+     */
+    public $query;
+}
+
+/**
+ * @internal
+ * @coversNothing
+ */
+class RequestShrinkTest extends Model
+{
+    /**
+     * @var RequestTestShrinkQuery
+     */
+    public $query;
+}
+
+class RequestTestQuery extends Model
+{
+    /**
+     * @description test
+     *
+     * @var bool
+     */
+    public $booleanParamInQuery;
+
+    /**
+     * @description test
+     *
+     * @var array
+     */
+    public $mapParamInQuery;
+    protected $_name = [
+        'booleanParamInQuery' => 'BooleanParamInQuery',
+        'mapParamInQuery'     => 'MapParamInQuery',
+    ];
+
+    public function toMap()
+    {
+        $res = [];
+        if (null !== $this->booleanParamInQuery) {
+            $res['BooleanParamInQuery'] = $this->booleanParamInQuery;
+        }
+        if (null !== $this->mapParamInQuery) {
+            $res['MapParamInQuery'] = $this->mapParamInQuery;
+        }
+
+        return $res;
+    }
+}
+
+class RequestTestShrinkQuery extends Model
+{
+    /**
+     * @description test
+     *
+     * @var float
+     */
+    public $booleanParamInQuery;
+
+    /**
+     * @description test
+     *
+     * @var string
+     */
+    public $mapParamInQueryShrink;
+    protected $_name = [
+        'booleanParamInQuery'   => 'BooleanParamInQuery',
+        'mapParamInQueryShrink' => 'MapParamInQuery',
+    ];
+
+    public function toMap()
+    {
+        $res = [];
+        if (null !== $this->booleanParamInQuery) {
+            $res['BooleanParamInQuery'] = $this->booleanParamInQuery;
+        }
+        if (null !== $this->mapParamInQueryShrink) {
+            $res['MapParamInQuery'] = $this->mapParamInQueryShrink;
+        }
+
+        return $res;
     }
 }
