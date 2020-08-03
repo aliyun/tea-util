@@ -456,7 +456,9 @@ class Utils
      */
     public static function validateModel($model)
     {
-        $model->validate();
+        if (null !== $model) {
+            $model->validate();
+        }
     }
 
     /**
@@ -468,6 +470,9 @@ class Utils
      */
     public static function toMap($model)
     {
+        if (null === $model) {
+            return [];
+        }
         $map   = $model->toMap();
         $names = $model->getName();
         $vars  = get_object_vars($model);
