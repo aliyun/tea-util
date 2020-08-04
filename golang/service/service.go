@@ -213,9 +213,13 @@ func IsUnset(val interface{}) *bool {
 		return tea.Bool(true)
 	}
 
+	v := reflect.ValueOf(val)
+	if v.Kind() == reflect.Ptr || v.Kind() == reflect.Slice || v.Kind() == reflect.Map {
+		return tea.Bool(v.IsNil())
+	}
+
 	valType := reflect.TypeOf(val)
 	valZero := reflect.Zero(valType)
-	v := reflect.ValueOf(val)
 	return tea.Bool(valZero == v)
 }
 

@@ -152,6 +152,10 @@ class Utils
      */
     public static function toFormString($query)
     {
+        if (null === $query) {
+            return '';
+        }
+
         if (\is_object($query)) {
             $query = json_decode(self::toJSONString($query), true);
         }
@@ -162,12 +166,20 @@ class Utils
     /**
      * If not set the real, use default value.
      *
-     * @param object $object
+     * @param array|Model $object
      *
      * @return string the return string
      */
     public static function toJSONString($object)
     {
+        if (null === $object) {
+            $object = new \stdClass();
+        }
+
+        if ($object instanceof Model) {
+            $object = $object->toMap();
+        }
+
         return json_encode($object);
     }
 
@@ -439,19 +451,42 @@ class Utils
 
     /**
      * Validate model.
+     *
+     * @param Model $model
      */
-    public static function validateModel(Model $model)
+    public static function validateModel($model)
     {
-        $model->validate();
+        if (null !== $model) {
+            $model->validate();
+        }
     }
 
     /**
      * Model transforms to map[string]any.
      *
+     * @param Model $model
+     *
      * @return array
      */
-    public static function toMap(Model $model)
+    public static function toMap($model)
     {
-        return $model->toMap();
+        if (null === $model) {
+            return [];
+        }
+        $map   = $model->toMap();
+        $names = $model->getName();
+        $vars  = get_object_vars($model);
+        foreach ($vars as $k => $v) {
+            if (false !== strpos($k, 'Shrink') && !isset($names[$k])) {
+                // A field that has the suffix `Shrink` and is not a Model class property.
+                $targetKey = ucfirst(substr($k, 0, \strlen($k) - 6));
+                if (isset($map[$targetKey])) {
+                    // $targetKey exists in $map.
+                    $map[$targetKey] = $v;
+                }
+            }
+        }
+
+        return $map;
     }
 }
