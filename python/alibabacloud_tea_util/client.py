@@ -6,6 +6,7 @@ import socket
 from datetime import datetime
 from urllib.parse import urlencode
 
+from Tea.model import TeaModel
 from Tea.stream import STREAM_CLASS
 
 
@@ -265,7 +266,7 @@ class Client:
         Validate model
         @return void
         """
-        if model is not None:
+        if isinstance(model, TeaModel):
             model.validate()
 
     @staticmethod
@@ -274,8 +275,12 @@ class Client:
         Model transforms to map[string]any
         @return map[string]any
         """
-        if model is not None:
+        if isinstance(model, TeaModel):
             return model.to_map()
+        elif isinstance(model, dict):
+            return model.copy()
+        else:
+            return model
 
     @staticmethod
     def assert_as_bytes(value):
