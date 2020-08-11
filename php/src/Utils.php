@@ -464,7 +464,7 @@ class Utils
     /**
      * Model transforms to map[string]any.
      *
-     * @param Model $model
+     * @param array|Model $model
      *
      * @return array
      */
@@ -472,6 +472,9 @@ class Utils
     {
         if (null === $model) {
             return [];
+        }
+        if (\is_array($model)) {
+            return $model;
         }
         $map   = $model->toMap();
         $names = $model->getName();

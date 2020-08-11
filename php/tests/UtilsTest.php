@@ -250,6 +250,10 @@ final class UtilsTest extends TestCase
 
     public function testToMap()
     {
+        $this->assertEquals([
+            'foo' => 'bar',
+        ], Utils::toMap(['foo' => 'bar']));
+
         $from        = new RequestTest();
         $from->query = new RequestTestQuery([
             'booleanParamInQuery' => true,
