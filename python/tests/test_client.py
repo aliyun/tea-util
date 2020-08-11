@@ -2,10 +2,25 @@ import unittest
 import json
 import os
 
+from Tea.model import TeaModel
 from alibabacloud_tea_util.client import Client
 
 
 class TestClient(unittest.TestCase):
+
+    class TestModel(TeaModel):
+        def __init__(self):
+            self.test_a = 'a'
+            self.test_b = 'b'
+
+        def validate(self):
+            raise ValueError('test validate')
+
+        def to_map(self):
+            return {
+                'test_a': self.test_a,
+                'test_b': self.test_b
+            }
 
     def test_to_bytes(self):
         result = Client.to_bytes("test")
@@ -173,3 +188,30 @@ class TestClient(unittest.TestCase):
             Client.assert_as_boolean(s)
         except ValueError as e:
             self.assertEqual('test is not a boolean', str(e))
+
+    def test_validate_model(self):
+        model = {'t': 'ok'}
+        Client.validate_model(model)
+        model = self.TestModel()
+        try:
+            Client.validate_model(model)
+        except ValueError as e:
+            self.assertEqual('test validate', str(e))
+
+    def test_to_map(self):
+        model = {'t': 'ok'}
+        dic = Client.to_map(model)
+        dic['test'] = 'ok'
+        self.assertEqual(None, model.get('test'))
+
+        model = self.TestModel()
+        dic = Client.to_map(model)
+        self.assertEqual(
+            'a',
+            dic.get('test_a')
+        )
+
+        self.assertEqual(
+            'b',
+            dic.get('test_b')
+        )
