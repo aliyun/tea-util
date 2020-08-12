@@ -294,8 +294,7 @@ func Test_AssertAsBoolean(t *testing.T) {
 }
 
 func Test_UserAgent(t *testing.T) {
-	utils.AssertEqual(t, len(tea.StringValue(GetUserAgent(tea.String("")))), 61)
-	utils.AssertEqual(t, len(tea.StringValue(GetUserAgent(tea.String("tea")))), 65)
+	utils.AssertEqual(t, tea.StringValue(GetUserAgent(tea.String(""))), defaultUserAgent)
 	utils.AssertContains(t, tea.StringValue(GetUserAgent(tea.String("tea"))), " tea")
 }
 
