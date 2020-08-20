@@ -209,3 +209,10 @@ static function validateModel(m: $Model) throws: void;
  * @return map[string]any
  */
 static function toMap(in: $Model): map[string]any;
+
+
+/**
+ * Suspends the current thread for the specified number of milliseconds.
+ */
+static function sleep(millisecond: number): void;
+
