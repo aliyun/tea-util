@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -360,6 +361,11 @@ namespace AlibabaCloud.TeaUtil
         public static Dictionary<string, object> ToMap(TeaModel model)
         {
             return model.ToMap();
+        }
+
+        public static void Sleep(int? millisecond)
+        {
+            Thread.Sleep(1000);
         }
 
         internal static string GetDefaultUserAgent()

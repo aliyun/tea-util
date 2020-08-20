@@ -327,7 +327,7 @@ namespace tests
             model.testListStr = new List<string> { "str" };
             Dictionary<string, object> dic = model.ToMap();
             Assert.NotNull(dic);
-            Assert.IsType<List<Dictionary<string, object>>>(dic["items"]);
+            Assert.IsType<List<object>>(dic["items"]);
 
             TestRegModel modelEmpty = new TestRegModel();
             modelEmpty.RequestId = "1";
@@ -377,6 +377,16 @@ namespace tests
             Assert.Equal("testListStr is not match listStr",
                 Assert.Throws<ArgumentException>(() => { modelReg.Validate(); }).Message
             );
+        }
+
+        [Fact]
+        public void TestSleep()
+        {
+            TimeSpan tsBefore = new TimeSpan(DateTime.Now.Ticks);
+            Common.Sleep(1000);
+            TimeSpan tsAfter = new TimeSpan(DateTime.Now.Ticks);
+            TimeSpan tsSubtract = tsBefore.Subtract(tsAfter).Duration();
+            Assert.InRange(tsSubtract.TotalMilliseconds, 990, 1100);
         }
     }
 
