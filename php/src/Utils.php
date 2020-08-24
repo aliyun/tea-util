@@ -489,4 +489,14 @@ class Utils
 
         return $map;
     }
+
+    /**
+     * Suspends the current thread for the specified number of milliseconds.
+     *
+     * @param int $millisecond
+     */
+    public static function sleep($millisecond)
+    {
+        usleep($millisecond * 1000);
+    }
 }
