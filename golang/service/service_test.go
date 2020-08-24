@@ -3,6 +3,7 @@ package service
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/alibabacloud-go/tea/utils"
@@ -316,4 +317,11 @@ func Test_Is4xx(t *testing.T) {
 func Test_Is5xx(t *testing.T) {
 	utils.AssertEqual(t, tea.BoolValue(Is5xx(tea.Int(500))), true)
 	utils.AssertEqual(t, tea.BoolValue(Is5xx(tea.Int(600))), false)
+}
+
+func Test_Sleep(t *testing.T) {
+	start := time.Now()
+	Sleep(tea.Int(1001))
+	cost := time.Since(start)
+	utils.AssertEqual(t, cost.Seconds() >= 1, true)
 }
