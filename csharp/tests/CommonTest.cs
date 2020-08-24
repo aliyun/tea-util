@@ -244,6 +244,14 @@ namespace tests
             Assert.NotNull(dict);
             Assert.Equal(6, dict.Count);
 
+            Dictionary<string, string> mapStr = new Dictionary<string, string>
+            {
+                { "testStr", "testValue"}
+            };
+            dict = Common.AssertAsMap(mapStr);
+            Assert.NotNull(dict);
+            Assert.Equal("testValue", dict["testStr"]);
+
             Assert.Throws<ArgumentException>(() => Common.AssertAsMap("string"));
         }
 
