@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -219,16 +221,18 @@ namespace AlibabaCloud.TeaUtil
 
         public static Dictionary<string, object> AssertAsMap(object value)
         {
-            if (value != null && value is Dictionary<string, object>)
+            if (value != null && value is IDictionary)
             {
-                return (Dictionary<string, object>) value;
+                var dic = (IDictionary)value;
+                var dicObj = dic.Keys.Cast<string>().ToDictionary(key => key, key => dic[key]);
+                return dicObj;
             }
             else if(value is JObject)
             {
                 return (Dictionary<string, object>) ReadJsonUtil.Deserialize(value);
             }
 
-            throw new ArgumentException("The value is not Dictionary<string, object>");
+            throw new ArgumentException("The value is not Dictionary");
         }
 
         public static byte[] AssertAsBytes(object obj)
