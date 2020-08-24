@@ -1,5 +1,5 @@
 import unittest
-import json
+import time
 import os
 
 from Tea.model import TeaModel
@@ -201,8 +201,7 @@ class TestClient(unittest.TestCase):
     def test_to_map(self):
         model = {'t': 'ok'}
         dic = Client.to_map(model)
-        dic['test'] = 'ok'
-        self.assertEqual(None, model.get('test'))
+        self.assertEqual(dic, model)
 
         model = self.TestModel()
         dic = Client.to_map(model)
@@ -215,3 +214,8 @@ class TestClient(unittest.TestCase):
             'b',
             dic.get('test_b')
         )
+
+    def test_sleep(self):
+        t1 = time.time()
+        Client.sleep(2000)
+        self.assertEqual(2, int(time.time() - t1))
