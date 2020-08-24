@@ -2,6 +2,7 @@ import json
 import uuid
 import platform
 import socket
+import time
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -277,8 +278,6 @@ class Client:
         """
         if isinstance(model, TeaModel):
             return model.to_map()
-        elif isinstance(model, dict):
-            return model.copy()
         else:
             return model
 
@@ -321,3 +320,7 @@ class Client:
         if not isinstance(value, int):
             raise ValueError('{} is not a integer'.format(value))
         return value
+
+    @staticmethod
+    def sleep(ms):
+        time.sleep(ms/1000)
