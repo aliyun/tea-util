@@ -1,3 +1,6 @@
+### 2020-08-24 Version 0.1.6
+* Improved `AssertAsMap` support all Dictionary
+
 ### 2020-07-09 Version 0.1.5
 * Fixed AssertAsMap
 * Improved Reference Tea Version
