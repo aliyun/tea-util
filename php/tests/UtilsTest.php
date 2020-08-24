@@ -272,6 +272,15 @@ final class UtilsTest extends TestCase
         ], Utils::toMap($target->query));
     }
 
+    public function testSleep()
+    {
+        $before = microtime(true) * 1000;
+        Utils::sleep(1000);
+        $after = microtime(true) * 1000;
+        $sub   = $after - $before;
+        $this->assertTrue(990 <= $sub && $sub <= 1100);
+    }
+
     private function convert($body, &$content)
     {
         $class = new \ReflectionClass($body);
