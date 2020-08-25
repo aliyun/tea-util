@@ -373,3 +373,17 @@ func Sleep(millisecond *int) {
 	ms := tea.IntValue(millisecond)
 	time.Sleep(time.Duration(ms) * time.Millisecond)
 }
+
+func ToArray(in interface{}) []map[string]interface{} {
+	if tea.BoolValue(IsUnset(in)) {
+		return nil
+	}
+
+	tmp := make([]map[string]interface{}, 0)
+	byt, _ := json.Marshal(in)
+	err := json.Unmarshal(byt, &tmp)
+	if err != nil {
+		return nil
+	}
+	return tmp
+}
