@@ -372,6 +372,34 @@ namespace AlibabaCloud.TeaUtil
             Thread.Sleep(1000);
         }
 
+        public async static Task SleepAsync(int? millisecond)
+        {
+            await Task.Run(()=>{
+                Thread.Sleep(1000);
+            });
+        }
+
+        public static List<Dictionary<string, object>> ToArray(object input)
+        {
+            try
+            {
+                var listModel = (IList)input;
+                var listResult = new List<Dictionary<string, object>>();
+                foreach(var model in listModel)
+                {
+                    if(model != null)
+                    {
+                        listResult.Add(((TeaModel)model).ToMap());
+                    }
+                }
+                return listResult;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         internal static string GetDefaultUserAgent()
         {
             string defaultUserAgent = string.Empty;
