@@ -281,6 +281,22 @@ final class UtilsTest extends TestCase
         $this->assertTrue(990 <= $sub && $sub <= 1100);
     }
 
+    public function testToArray()
+    {
+        $model        = new RequestTest();
+        $model->query = 'foo';
+        $this->assertEquals([
+            ['query'=>'foo'],
+        ], Utils::toArray([$model]));
+
+        $subModel        = new RequestTest();
+        $subModel->query = 'bar';
+        $model->query    = $subModel;
+        $this->assertEquals([
+            ['query'=>['query'=>'bar']],
+        ], Utils::toArray([$model]));
+    }
+
     private function convert($body, &$content)
     {
         $class = new \ReflectionClass($body);
