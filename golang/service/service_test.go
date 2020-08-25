@@ -325,3 +325,20 @@ func Test_Sleep(t *testing.T) {
 	cost := time.Since(start)
 	utils.AssertEqual(t, cost.Seconds() >= 1, true)
 }
+
+type Str struct {
+	Key string `json:"key"`
+}
+
+func Test_ToArray(t *testing.T) {
+	in := []*Str{
+		&Str{
+			Key: "value",
+		},
+	}
+	res := ToArray(in)
+	utils.AssertEqual(t, res[0]["key"], "value")
+
+	res = ToArray(nil)
+	utils.AssertNil(t, res)
+}

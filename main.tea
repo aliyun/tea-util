@@ -214,5 +214,9 @@ static function toMap(in: $Model): map[string]any;
 /**
  * Suspends the current thread for the specified number of milliseconds.
  */
-static function sleep(millisecond: number): void;
+static async function sleep(millisecond: number): void;
 
+/**
+ * Transform input as array.
+ */
+static function toArray(input: any): [ map[string]any ];
