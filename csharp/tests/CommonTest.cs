@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using System.Threading.Tasks;
 using AlibabaCloud.TeaUtil;
 using AlibabaCloud.TeaUtil.Utils;
 
@@ -395,6 +395,30 @@ namespace tests
             TimeSpan tsAfter = new TimeSpan(DateTime.Now.Ticks);
             TimeSpan tsSubtract = tsBefore.Subtract(tsAfter).Duration();
             Assert.InRange(tsSubtract.TotalMilliseconds, 990, 1100);
+        }
+
+        [Fact]
+        public async Task TestSleepAsync()
+        {
+            TimeSpan tsBefore = new TimeSpan(DateTime.Now.Ticks);
+            await Common.SleepAsync(1000);
+            TimeSpan tsAfter = new TimeSpan(DateTime.Now.Ticks);
+            TimeSpan tsSubtract = tsBefore.Subtract(tsAfter).Duration();
+            Assert.InRange(tsSubtract.TotalMilliseconds, 990, 1100);
+        }
+
+        [Fact]
+        public void TestToArray()
+        {
+            Assert.Null(Common.ToArray("err"));
+
+            List<TestRegSubModel> list =new List<TestRegSubModel>();
+            TestRegSubModel model = new TestRegSubModel();
+            model.RequestId = "test";
+            list.Add(null);
+            list.Add(model);
+
+            Assert.Equal("test", Common.ToArray(list)[0]["requestId"]);
         }
     }
 
