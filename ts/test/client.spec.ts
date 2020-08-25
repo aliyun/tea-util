@@ -256,4 +256,37 @@ describe('Tea Util', function () {
         assert.strictEqual(result['test'], 'testValue');
     });
 
+
+    it('sleep', async function () {
+        assert.strictEqual(await Client.sleep(1000), undefined);
+    });
+
+    it('toArray', async function () {
+        class TestModel extends $tea.Model {
+            test: string;
+            static names(): { [key: string]: string } {
+                return {
+                    test: 'test',
+                };
+            }
+
+            static types(): { [key: string]: any } {
+                return {
+                    test: 'string',
+                };
+            }
+
+            constructor(map: { [key: string]: any }) {
+                super(map);
+            }
+        }
+        let inputModel = new TestModel({ test: 'testValue' });
+        let input: any = [ inputModel ]; 
+        assert.deepStrictEqual(Client.toArray(input), [{
+            test: 'testValue'
+        }]);
+        assert.deepStrictEqual(Client.toArray(inputModel), null);
+        assert.deepStrictEqual(Client.toArray(undefined), null);
+        assert.deepStrictEqual(Client.toArray(null), null);
+    });
 });
