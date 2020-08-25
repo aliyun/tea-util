@@ -1,3 +1,6 @@
+2020-08-25 Version: v1.3.3
+- Support toArray.
+
 2020-08-24 Version: v1.3.2
 - Support sleep.
 
