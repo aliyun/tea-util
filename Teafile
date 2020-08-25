@@ -16,7 +16,8 @@
 		"className" : "Common"
 	},
 	"csharp":{
-		"namespace": "AlibabaCloud.TeaUtil"
+		"namespace": "AlibabaCloud.TeaUtil",
+		"className": "Common"
 	},
 	"php": {
 		"package": "AlibabaCloud.Tea.Utils",
