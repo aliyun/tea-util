@@ -275,4 +275,25 @@ public class CommonTest {
             Assert.assertEquals("The value is not a Boolean", e.getMessage());
         }
     }
+
+    @Test
+    public void sleepTest() throws InterruptedException {
+        long start = System.currentTimeMillis();
+        Common.sleep(10);
+        long end = System.currentTimeMillis();
+        Assert.assertTrue((end-start) >= 10);
+    }
+
+    @Test
+    public void toArrayTest() {
+        Assert.assertNull(Common.toArray(null));
+        Assert.assertNull(Common.toArray("String"));
+
+        List<ToMapTest> list = new ArrayList<>();
+        ToMapTest toMapTest = new ToMapTest();
+        list.add(toMapTest);
+        list.add(null);
+        List<Map<String, Object>> result = Common.toArray(list);
+        Assert.assertEquals("test", result.get(0).get("ToArrayTest"));
+    }
 }

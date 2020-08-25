@@ -398,5 +398,34 @@ public class Common {
     public static java.util.Map<String, Object> toMap(TeaModel in) throws Exception {
         return TeaModel.toMap(in);
     }
+
+    /**
+     * Suspends the current thread for the specified number of milliseconds.
+     */
+    public static void sleep(int millisecond) throws InterruptedException {
+        Thread.sleep(millisecond);
+    }
+
+    /**
+     * Transform input as array.
+     */
+    public static List<Map<String, Object>> toArray(Object input) {
+        if (null == input) {
+            return null;
+        }
+        try {
+            List<TeaModel> teaModels = (List<TeaModel>) input;
+            List<Map<String, Object>> result = new ArrayList<>();
+            for (TeaModel teaModel : teaModels) {
+                if (null == teaModel) {
+                    continue;
+                }
+                result.add(teaModel.toMap());
+            }
+            return result;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
 
