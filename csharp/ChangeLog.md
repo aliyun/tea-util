@@ -1,3 +1,6 @@
+### 2020-08-26 Version 0.1.8
+* Improved package `Tea` version
+
 ### 2020-08-25 Version 0.1.7
 * Supported `Sleep()`
 * Supported `ToArray()`
