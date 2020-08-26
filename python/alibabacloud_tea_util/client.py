@@ -323,4 +323,19 @@ class Client:
 
     @staticmethod
     def sleep(ms):
+        """Suspends the current thread for the specified number of milliseconds."""
         time.sleep(ms/1000)
+
+    @staticmethod
+    def to_array(inp):
+        """Transform input as array."""
+        if inp is None:
+            return None
+
+        out = []
+        for i in inp:
+            if isinstance(i, TeaModel):
+                out.append(i.to_map())
+            else:
+                out.append(i)
+        return out
