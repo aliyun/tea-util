@@ -1,3 +1,8 @@
+### 2020-08-26 Version 0.2.0
+
+* Support to_array.
+* Support sleep.
+
 ### 2020-07-16 Version 0.1.2
 
 * Fix 'None' string appears in query.
