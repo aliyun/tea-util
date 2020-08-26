@@ -1,3 +1,8 @@
+### 2020-08-25 Version 0.1.7
+* Supported `Sleep()`
+* Supported `ToArray()`
+* Supported `SleepAsync()`
+
 ### 2020-08-24 Version 0.1.6
 * Improved `AssertAsMap` support all Dictionary
 
