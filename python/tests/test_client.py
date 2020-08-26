@@ -219,3 +219,11 @@ class TestClient(unittest.TestCase):
         t1 = time.time()
         Client.sleep(2000)
         self.assertEqual(2, int(time.time() - t1))
+
+    def test_to_array(self):
+        tm = self.TestModel()
+        lis = [tm, tm]
+        res = Client.to_array(lis)
+        self.assertEqual('a', res[0]['test_a'])
+        res = Client.to_array(None)
+        self.assertIsNone(res)
