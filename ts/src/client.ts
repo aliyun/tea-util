@@ -244,6 +244,28 @@ export default class Client {
   static toMap(inputModel: $tea.Model): { [key: string]: any } {
     return $tea.toMap(inputModel);
   }
+
+  static async sleep(millisecond: number): Promise<void> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, millisecond)
+    })
+  }
+
+  static toArray(input: any): { [key: string]: any }[] {
+    if (!(input instanceof Array)) {
+      return null;
+    }
+    let ret = [];
+    input.forEach((model) => {
+      if (!model) {
+        return;
+      }
+      ret.push($tea.toMap(model));
+    })
+    return ret;
+  }
 }
 
 
