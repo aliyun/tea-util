@@ -1,3 +1,6 @@
+### 2020-08-27 Version 0.1.9
+* Supported `AssertAsReadable()`
+
 ### 2020-08-26 Version 0.1.8
 * Improved package `Tea` version
 
