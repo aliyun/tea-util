@@ -286,15 +286,28 @@ final class UtilsTest extends TestCase
         $model        = new RequestTest();
         $model->query = 'foo';
         $this->assertEquals([
-            ['query'=>'foo'],
+            ['query' => 'foo'],
         ], Utils::toArray([$model]));
 
         $subModel        = new RequestTest();
         $subModel->query = 'bar';
         $model->query    = $subModel;
         $this->assertEquals([
-            ['query'=>['query'=>'bar']],
+            ['query' => ['query' => 'bar']],
         ], Utils::toArray([$model]));
+    }
+
+    public function testAssertAsReadable()
+    {
+        $s0 = Utils::assertAsReadable('string content');
+        $this->assertTrue($s0 instanceof Stream);
+
+        $s1 = Utils::assertAsReadable($s0);
+        $this->assertEquals($s1, $s0);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a stream value.');
+        Utils::assertAsReadable(0);
     }
 
     private function convert($body, &$content)
