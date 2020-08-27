@@ -1,6 +1,7 @@
 package service
 
 import (
+	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
@@ -234,6 +235,12 @@ func Test_AssertAsMap(t *testing.T) {
 	out := AssertAsMap(in)
 	utils.AssertEqual(t, "10", out["num"].(string))
 
+	out = AssertAsMap(map[string]string{"key": "value"})
+	utils.AssertEqual(t, "value", out["key"].(string))
+
+	out = AssertAsMap(map[string]int{"key": 10})
+	utils.AssertEqual(t, 10, out["key"].(int))
+
 	defer func() {
 		err := recover()
 		utils.AssertEqual(t, "10 is not a map[string]interface{}", err)
@@ -264,6 +271,18 @@ func Test_AssertAsBytes(t *testing.T) {
 		utils.AssertEqual(t, "10 is not []byte", err)
 	}()
 	AssertAsBytes(10)
+}
+
+func Test_AssertAsReadable(t *testing.T) {
+	out := AssertAsReadable(strings.NewReader("test"))
+	byt, _ := ioutil.ReadAll(out)
+	utils.AssertEqual(t, []byte("test"), byt)
+
+	defer func() {
+		err := recover()
+		utils.AssertEqual(t, "10 is not reader", err)
+	}()
+	AssertAsReadable(10)
 }
 
 func Test_AssertAsNumber(t *testing.T) {
