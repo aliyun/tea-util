@@ -400,6 +400,16 @@ namespace AlibabaCloud.TeaUtil
             }
         }
 
+        public static Stream AssertAsReadable(object a)
+        {
+            if(a is Stream)
+            {
+                return (Stream)a;
+            }
+
+            throw new ArgumentException("The value is not Stream");
+        }
+
         internal static string GetDefaultUserAgent()
         {
             string defaultUserAgent = string.Empty;
