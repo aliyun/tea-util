@@ -220,3 +220,9 @@ static async function sleep(millisecond: number): void;
  * Transform input as array.
  */
 static function toArray(input: any): [ map[string]any ];
+
+/**
+ * Assert a value, if it is a readable, return it, otherwise throws
+ * @return the readable value
+ */
+static function assertAsReadable(value: any): readable;

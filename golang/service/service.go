@@ -228,10 +228,17 @@ func ToBytes(a *string) []byte {
 }
 
 func AssertAsMap(a interface{}) map[string]interface{} {
-	res, ok := a.(map[string]interface{})
-	if !ok {
+	r := reflect.ValueOf(a)
+	if r.Kind().String() != "map" {
 		panic(fmt.Sprintf("%v is not a map[string]interface{}", a))
 	}
+
+	res := make(map[string]interface{})
+	tmp := r.MapRange()
+	for tmp.Next() {
+		res[tmp.Key().String()] = tmp.Value().Interface()
+	}
+
 	return res
 }
 
@@ -287,6 +294,14 @@ func AssertAsBytes(a interface{}) []byte {
 	res, ok := a.([]byte)
 	if !ok {
 		panic(fmt.Sprintf("%v is not []byte", a))
+	}
+	return res
+}
+
+func AssertAsReadable(a interface{}) io.Reader {
+	res, ok := a.(io.Reader)
+	if !ok {
+		panic(fmt.Sprintf("%v is not reader", a))
 	}
 	return res
 }
