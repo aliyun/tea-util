@@ -420,6 +420,14 @@ namespace tests
 
             Assert.Equal("test", Common.ToArray(list)[0]["requestId"]);
         }
+
+        [Fact]
+        public void TestAssertAsReadable()
+        {
+            Assert.True(Common.AssertAsReadable(new MemoryStream(Encoding.UTF8.GetBytes("test"))) is Stream);
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsReadable("test"); });
+        }
     }
 
     public class TestRegModel : TeaModel
