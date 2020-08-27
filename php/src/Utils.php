@@ -3,6 +3,7 @@
 namespace AlibabaCloud\Tea\Utils;
 
 use AlibabaCloud\Tea\Model;
+use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 
 class Utils
@@ -510,16 +511,38 @@ class Utils
     public static function toArray($input)
     {
         if (\is_array($input)) {
-            foreach ($input as $k=>&$v) {
+            foreach ($input as $k => &$v) {
                 $v = self::toArray($v);
             }
         } elseif ($input instanceof Model) {
             $input = $input->toMap();
-            foreach ($input as $k=>&$v) {
+            foreach ($input as $k => &$v) {
                 $v = self::toArray($v);
             }
         }
 
         return $input;
+    }
+
+    /**
+     * Assert a value, if it is a readable, return it, otherwise throws.
+     *
+     * @param mixed $value
+     *
+     * @return Stream the readable value
+     */
+    public static function assertAsReadable($value)
+    {
+        if (\is_string($value)) {
+            return new Stream(
+                fopen('data://text/plain;base64,' .
+                    base64_encode($value), 'r')
+            );
+        }
+        if ($value instanceof Stream) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException('It is not a stream value.');
     }
 }
