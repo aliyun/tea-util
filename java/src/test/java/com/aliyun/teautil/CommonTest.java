@@ -296,4 +296,24 @@ public class CommonTest {
         List<Map<String, Object>> result = Common.toArray(list);
         Assert.assertEquals("test", result.get(0).get("ToArrayTest"));
     }
+
+    @Test
+    public void assertAsReadableTest() throws Exception{
+        try {
+            Common.assertAsReadable(new ArrayList<>());
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a readable", e.getMessage());
+        }
+
+        try {
+            Common.assertAsReadable(null);
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a readable", e.getMessage());
+        }
+
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes("UTF-8"));
+        Assert.assertEquals(inputStream, Common.assertAsReadable(inputStream));
+    }
 }

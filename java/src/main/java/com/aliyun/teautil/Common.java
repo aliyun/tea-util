@@ -63,6 +63,18 @@ public class Common {
     }
 
     /**
+     * Assert a value, if it is a readable, return it, otherwise throws
+     *
+     * @return the readable value
+     */
+    public static InputStream assertAsReadable(Object value) {
+        if (null != value && InputStream.class.isAssignableFrom(value.getClass())) {
+            return (InputStream) value;
+        }
+        throw new RuntimeException("The value is not a readable");
+    }
+
+    /**
      * Assert a value, if it is a bytes, return it, otherwise throws
      *
      * @return the bytes value
