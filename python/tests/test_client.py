@@ -5,6 +5,8 @@ import os
 from Tea.model import TeaModel
 from alibabacloud_tea_util.client import Client
 
+base_path = os.path.dirname(__file__)
+
 
 class TestClient(unittest.TestCase):
 
@@ -34,11 +36,8 @@ class TestClient(unittest.TestCase):
         obj = Client.parse_json(json_str)
         self.assertIsNotNone(obj)
 
-    def test_read_as_bytes(self):
-        result = None
-        module_path = os.path.dirname(__file__)
-        filename = module_path + "/test_open.txt"
-        with open(filename) as f:
+        filename = base_path + "/test_open.txt"
+        with open(filename, 'rb') as f:
             result = Client.read_as_bytes(f)
         self.assertIsNotNone(result)
         self.assertEqual(b'hello alibabaCloud!', result)
@@ -46,10 +45,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(b'testStr', Client.read_as_bytes('testStr'))
 
     def test_read_as_string(self):
-        result = None
         module_path = os.path.dirname(__file__)
         filename = module_path + "/test_open.txt"
-        with open(filename) as f:
+        with open(filename, 'rb') as f:
             result = Client.read_as_string(f)
         self.assertIsNotNone(result)
         self.assertEqual('hello alibabaCloud!', result)
@@ -227,3 +225,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual('a', res[0]['test_a'])
         res = Client.to_array(None)
         self.assertIsNone(res)
+
+    def test_assert_as_readable(self):
+        with open(os.path.join(base_path, 'test_open.txt'), 'rb') as f:
+            f = Client.assert_as_readable(f)
+            f.read()
+
+        try:
+            Client.assert_as_readable('readable')
+        except ValueError as e:
+            self.assertEqual('The value is not a readable', str(e))
