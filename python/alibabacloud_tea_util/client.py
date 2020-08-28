@@ -8,7 +8,7 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 from Tea.model import TeaModel
-from Tea.stream import STREAM_CLASS
+from Tea.stream import READABLE
 
 
 class Client:
@@ -63,7 +63,7 @@ class Client:
         @param body: the readable stream
         @return the bytes result
         """
-        if isinstance(body, STREAM_CLASS):
+        if isinstance(body, READABLE):
             bts_array = bytearray()
             for part in Client.__read_part(body, 1024):
                 if not isinstance(part, bytes):
@@ -319,6 +319,16 @@ class Client:
         """
         if not isinstance(value, int):
             raise ValueError('{} is not a integer'.format(value))
+        return value
+
+    @staticmethod
+    def assert_as_readable(value):
+        """
+        Assert a value, if it is a readable, return it, otherwise throws
+        @return the readable value
+        """
+        if not isinstance(value, READABLE):
+            raise ValueError('The value is not a readable'.format(value))
         return value
 
     @staticmethod
