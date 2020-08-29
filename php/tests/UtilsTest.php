@@ -83,6 +83,7 @@ final class UtilsTest extends TestCase
     public function testDefaultNumber()
     {
         $this->assertEquals(0, Utils::defaultNumber(null));
+        $this->assertEquals(0, Utils::defaultNumber(0, 3));
         $this->assertEquals(404, Utils::defaultNumber(null, 404));
         $this->assertEquals(200, Utils::defaultNumber(200, 404));
     }

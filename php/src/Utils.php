@@ -128,7 +128,7 @@ class Utils
      */
     public static function defaultString($real, $default = '')
     {
-        return null == $real ? $default : $real;
+        return null === $real ? $default : $real;
     }
 
     /**
@@ -141,7 +141,10 @@ class Utils
      */
     public static function defaultNumber($real, $default = 0)
     {
-        return empty($real) ? $default : $real;
+        if (null === $real) {
+            return $default;
+        }
+        return \intval($real);
     }
 
     /**
