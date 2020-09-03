@@ -1,5 +1,5 @@
 package com.aliyun.teautil;
 
 public class JavaProject {
-    public static final String teaUtilVersion = "0.2.4";
+    public static final String teaUtilVersion = "0.2.5";
 }

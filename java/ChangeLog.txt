@@ -1,3 +1,6 @@
+2020-09-03 Version: 0.2.5
+1. Change jdk to 7
+
 2020-08-27 Version: 0.2.4
 1. Add assertAsReadable
 
