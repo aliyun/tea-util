@@ -75,6 +75,14 @@ public class CommonTest {
         InputStream is = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(is);
         Assert.assertEquals("test", map.get("test"));
+
+        try {
+            is = new ByteArrayInputStream("<xml>test</xml>".getBytes("UTF-8"));
+            Common.readAsJSON(is);
+            Assert.fail();
+        }catch (RuntimeException e) {
+            Assert.assertEquals("Error: convert to JSON, response is:\n<xml>test</xml>", e.getMessage());
+        }
     }
 
     @Test
