@@ -164,7 +164,11 @@ public class Common {
      */
     public static Object readAsJSON(InputStream stream) throws IOException {
         String body = readAsString(stream);
-        return parseJSON(body);
+        try {
+            return parseJSON(body);
+        } catch (Exception exception) {
+            throw new RuntimeException("Error: convert to JSON, response is:\n" + body);
+        }
     }
 
     /**

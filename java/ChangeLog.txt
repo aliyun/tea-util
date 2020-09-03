@@ -1,3 +1,6 @@
+2020-09-03 Version: 0.2.6
+1. Improve readAsJSON
+
 2020-09-03 Version: 0.2.5
 1. Change jdk to 7
 
