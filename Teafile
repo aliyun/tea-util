@@ -13,9 +13,9 @@
 	},
 	"java": {
 		"package": "com.aliyun.teautil",
-		"className" : "Common"
+		"className": "Common"
 	},
-	"csharp":{
+	"csharp": {
 		"namespace": "AlibabaCloud.TeaUtil",
 		"className": "Common"
 	},
@@ -27,5 +27,13 @@
 	"python": {
 		"package": "alibabacloud_tea_util",
 		"clientName": "client"
+	},
+	"cpp": {
+		"packageInfo": {
+			"git": {
+				"scope": "alibabacloud-sdk-cpp",
+				"project": "dara-util"
+			}
+		}
 	}
 }
