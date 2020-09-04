@@ -43,10 +43,6 @@ sh scripts/install.sh
 [Submit Issue](https://github.com/alibabacloud-sdk-cpp/dara-util/issues/new/choose), Problems that do not meet the guidelines may close immediately.
 
 
-## Release notes
-
-Detailed changes for each version are recorded in the [Release Notes](/CHANGELOG.md).
-
 ## Related
 
 * [OpenAPI Explorer][open-api]
