@@ -23,14 +23,7 @@ class Client:
 
     @staticmethod
     def __get_default_agent():
-        user_agent = ""
-        user_agent += "Alibaba Cloud ("
-        user_agent += platform.platform()
-        user_agent += ") "
-        user_agent += " python/"
-        user_agent += platform.python_version()
-        user_agent += " TeaDSL/1"
-        return user_agent
+        return 'Alibaba Cloud (%s)  python/%s TeaDSL/1' % (platform.platform(), platform.python_version())
 
     @staticmethod
     def to_bytes(val):
@@ -66,10 +59,7 @@ class Client:
         if isinstance(body, READABLE):
             bts_array = bytearray()
             for part in Client.__read_part(body, 1024):
-                if not isinstance(part, bytes):
-                    bts_array.extend(bytes(part, encoding='utf-8'))
-                else:
-                    bts_array.extend(part)
+                bts_array.extend(part)
             return bytes(bts_array)
         elif isinstance(body, bytes):
             return body
@@ -193,12 +183,13 @@ class Client:
             return
 
         dic_result = {}
-        for k in dic:
-            if dic[k] is None:
-                value = dic[k]
-            else:
-                value = str(dic[k])
-            dic_result[k] = value
+        for k, v in dic.items():
+            if v is not None:
+                if isinstance(v, bytes):
+                    v = v.decode('utf-8')
+                else:
+                    v = str(v)
+            dic_result[k] = v
         return dic_result
 
     @staticmethod
@@ -328,7 +319,7 @@ class Client:
         @return the readable value
         """
         if not isinstance(value, READABLE):
-            raise ValueError('The value is not a readable'.format(value))
+            raise ValueError('The value is not a readable')
         return value
 
     @staticmethod
