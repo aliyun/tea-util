@@ -5,6 +5,7 @@ from alibabacloud_tea_util.models import RuntimeOptions
 class TestClient(unittest.TestCase):
     def test_init(self):
         option = RuntimeOptions()
+        option.validate()
         self.assertEqual(False, option.autoretry)
         self.assertEqual(False, option.ignore_ssl)
         self.assertEqual(0, option.max_attempts)
