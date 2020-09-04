@@ -1,147 +1,64 @@
-// This file is auto-generated, don't edit it. Thanks.
-
-#include <darabonba/util.hpp>
 #include <boost/any.hpp>
-#include <boost/exception/all.hpp>
+#include <boost/chrono.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <ctime>
 #include <darabonba/core.hpp>
-#include <fstream>
+#include <darabonba/util.hpp>
 #include <iostream>
 #include <map>
-#include <vector>
 
 using namespace Darabonba;
 using namespace std;
+using namespace boost;
 
-vector<int> Darabonba_Util::Client::toBytes(string val){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
+string Darabonba_Util::Client::getNonce() {
+  boost::uuids::uuid uid = boost::uuids::random_generator()();
+  return boost::uuids::to_string(uid);
 }
 
-string Darabonba_Util::Client::toString(vector<int> val){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
+string Darabonba_Util::Client::getDateUTCString() {
+  char buf[80];
+  time_t time;
+  std::strftime(buf, sizeof buf, "%FT%TZ", gmtime(&time));
+  return buf;
 }
 
-boost::any Darabonba_Util::Client::parseJSON(string val){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
+std::string os_name() {
+#ifdef _WIN32
+  return "Windows32";
+#elif _WIN64
+  return "Windows64";
+#elif __APPLE__ || __MACH__
+  return "MacOS";
+#elif __linux__
+  return "Linux";
+#elif __FreeBSD__
+  return "FreeBSD";
+#elif __unix || __unix__
+  return "Unix";
+#else
+  return "Other";
+#endif
 }
 
-vector<int> Darabonba_Util::Client::readAsBytes(ofstream stream){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
+string Darabonba_Util::Client::getUserAgent(string userAgent) {
+  string _default_user_agent("AlibabaCloud OS/" + os_name() + " DaraDSL/1");
+  if (userAgent.empty()) {
+    return _default_user_agent;
+  }
+  userAgent = _default_user_agent + userAgent;
+  return userAgent;
 }
 
-string Darabonba_Util::Client::readAsString(ofstream stream){
-  vector<int> buff = Client::readAsBytes(stream);
-  return Client::toString(buff);
+void Darabonba_Util::Client::validateModel(Model m) { m.validate(); }
+
+map<string, boost::any> Darabonba_Util::Client::toMap(Model in) {
+  return in.toMap();
 }
 
-boost::any Darabonba_Util::Client::readAsJSON(ofstream stream){
-  return Client::parseJSON(Client::readAsString(stream));
+void Darabonba_Util::Client::sleep(int millisecond) {
+  boost::this_thread::sleep_for(boost::chrono::milliseconds(millisecond));
 }
-
-string Darabonba_Util::Client::getNonce(){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-string Darabonba_Util::Client::getDateUTCString(){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-string Darabonba_Util::Client::defaultString(string real, string default){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-int Darabonba_Util::Client::defaultNumber(int real, int default){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-string Darabonba_Util::Client::toFormString(map<string, boost::any> val){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-string Darabonba_Util::Client::toJSONString(boost::any val){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::empty(string val){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::equalString(string val1, string val2){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::equalNumber(int val1, int val2){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::isUnset(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-map<string, string> Darabonba_Util::Client::stringifyMapValue(map<string, boost::any> m){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-map<string, boost::any> Darabonba_Util::Client::anyifyMapValue(map<string, string> m){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::assertAsBoolean(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-string Darabonba_Util::Client::assertAsString(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-vector<int> Darabonba_Util::Client::assertAsBytes(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-int Darabonba_Util::Client::assertAsNumber(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-map<string, boost::any> Darabonba_Util::Client::assertAsMap(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-string Darabonba_Util::Client::getUserAgent(string userAgent){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::is2xx(int code){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::is3xx(int code){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::is4xx(int code){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-bool Darabonba_Util::Client::is5xx(int code){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-void Darabonba_Util::Client::validateModel(Model m){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-map<string, boost::any> Darabonba_Util::Client::toMap(Model in){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-void Darabonba_Util::Client::sleep(int millisecond){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-vector<map<string, boost::any>> Darabonba_Util::Client::toArray(boost::any input){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-
-ofstream Darabonba_Util::Client::assertAsReadable(boost::any value){
-  BOOST_THROW_EXCEPTION(boost::exception('Un-implemented');
-}
-

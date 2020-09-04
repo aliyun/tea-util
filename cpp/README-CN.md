@@ -41,10 +41,6 @@ sh scripts/install.sh
 
 [提交 Issue](https://github.com/aliyun/tea-cpp/issues/new/choose)，不符合指南的问题可能会立即关闭。
 
-## 发行说明
-
-每个版本的详细更改记录在[发行说明](/CHANGELOG.md)中。
-
 ## 相关
 
 * [OpenAPI Explorer][open-api]

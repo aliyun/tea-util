@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 message("C++ compiler flags: ${CMAKE_CXX_FLAGS}")
 
+option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
 message(STATUS "Enable testing: ${ENABLE_UNIT_TESTS}")
 
 if (CMAKE_CXX_COMPILER_LOADED)
@@ -35,10 +36,13 @@ set(headers
 target_sources(${PROJECT_NAME}
         PRIVATE
         src/util.cpp
+        src/parse.cpp
+        src/assert.cpp
+        src/default.cpp
         ${headers})
 
 target_include_directories(${PROJECT_NAME}
-        PUBLIC
+        PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set_target_properties(${PROJECT_NAME}
@@ -52,7 +56,32 @@ set_target_properties(${PROJECT_NAME}
         WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 add_subdirectory(external/libraries)
-target_link_libraries(${PROJECT_NAME} PRIVATE )
+
+find_package(Boost REQUIRED COMPONENTS thread chrono)
+find_library(CPPREST_LIB cpprest)
+find_package(Boost REQUIRED COMPONENTS random system thread filesystem chrono atomic date_time regex)
+find_package(OpenSSL 1.0.0 REQUIRED)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE jsoncpp ${Boost_LIBRARIES} ${CPPREST_LIB})
+
+if (ENABLE_UNIT_TESTS)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(external/libraries_dev)
+    add_executable(tests
+            tests/main.cpp
+            tests/assert.cpp)
+    target_include_directories(tests
+            PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_link_libraries(tests
+            PRIVATE
+            ${PROJECT_NAME}
+            gtest_main
+            gmock_main)
+    add_test(NAME google_test
+            COMMAND $<TARGET_FILE:tests>)
+endif ()
 
 message(STATUS "Project will be installed to ${CMAKE_INSTALL_PREFIX}")
 
@@ -97,17 +126,50 @@ set_target_properties(${PROJECT_NAME}
 
 install(
         TARGETS
-        ${PROJECT_NAME}
+          ${PROJECT_NAME}
+        EXPORT
+          darabonba_utilTargets
         ARCHIVE
-        DESTINATION ${INSTALL_LIBDIR}
-        COMPONENT lib
+          DESTINATION ${INSTALL_LIBDIR}
+          COMPONENT lib
         RUNTIME
-        DESTINATION ${INSTALL_BINDIR}
-        COMPONENT bin
+          DESTINATION ${INSTALL_BINDIR}
+          COMPONENT bin
         LIBRARY
-        DESTINATION ${INSTALL_LIBDIR}
-        COMPONENT lib
+          DESTINATION ${INSTALL_LIBDIR}
+          COMPONENT lib
         PUBLIC_HEADER
-        DESTINATION ${INSTALL_INCLUDEDIR}/darabonba
-        COMPONENT dev
+          DESTINATION ${INSTALL_INCLUDEDIR}/darabonba
+          COMPONENT dev
+)
+
+# install cmake config
+install(
+        EXPORT
+          darabonba_utilTargets
+        NAMESPACE
+          "darabonba_util::"
+        DESTINATION
+          ${INSTALL_CMAKEDIR}
+        COMPONENT
+          dev
+)
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+)
+configure_package_config_file(
+        ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        INSTALL_DESTINATION ${INSTALL_CMAKEDIR}
+)
+install(
+        FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        DESTINATION
+        ${INSTALL_CMAKEDIR}
 )
