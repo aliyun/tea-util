@@ -36,13 +36,15 @@ class TestClient(unittest.TestCase):
         obj = Client.parse_json(json_str)
         self.assertIsNotNone(obj)
 
+    def test_read_as_bytes(self):
+        self.assertEqual(b'test', Client.read_as_bytes(b'test'))
+        self.assertEqual(b'testStr', Client.read_as_bytes('testStr'))
+
         filename = base_path + "/test_open.txt"
         with open(filename, 'rb') as f:
             result = Client.read_as_bytes(f)
         self.assertIsNotNone(result)
         self.assertEqual(b'hello alibabaCloud!', result)
-        self.assertEqual(b'test', Client.read_as_bytes(b'test'))
-        self.assertEqual(b'testStr', Client.read_as_bytes('testStr'))
 
     def test_read_as_string(self):
         module_path = os.path.dirname(__file__)
@@ -107,8 +109,11 @@ class TestClient(unittest.TestCase):
     def test_stringify_map_value(self):
         self.assertIsNone(Client.stringify_map_value(None))
         self.assertEqual({}, Client.stringify_map_value({}))
-        dic = {}
-        dic["test"] = 100
+        dic = {
+            'test': 100,
+            'bkey': b'bytes',
+            'key': None
+        }
         self.assertEqual("100", Client.stringify_map_value(dic)["test"])
 
     def test_assert_as_map(self):
@@ -143,8 +148,9 @@ class TestClient(unittest.TestCase):
         self.assertFalse(Client.is_5xx(600))
 
     def test_anyify_map_value(self):
-        dic = {}
-        dic["key"] = "value"
+        dic = {
+            'key': 'value'
+        }
         self.assertEqual(dic, Client.anyify_map_value(dic))
 
     def test_assert_as_bytes(self):
@@ -225,6 +231,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual('a', res[0]['test_a'])
         res = Client.to_array(None)
         self.assertIsNone(res)
+        lis = ['tm', 'tm']
+        res = Client.to_array(lis)
+        self.assertEqual(lis, res)
 
     def test_assert_as_readable(self):
         with open(os.path.join(base_path, 'test_open.txt'), 'rb') as f:
