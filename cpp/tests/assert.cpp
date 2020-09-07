@@ -75,7 +75,7 @@ TEST(assert, assertAsString) {
   ASSERT_EQ(string("test"), Client::assertAsString(any(val)));
 
   try {
-    Client::assertAsBoolean(any(true));
+    Client::assertAsString(any(true));
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -89,7 +89,7 @@ TEST(assert, assertAsBytes) {
   ASSERT_EQ(val, Client::assertAsBytes(any(val)));
 
   try {
-    Client::assertAsBoolean(any(true));
+    Client::assertAsBytes(any(true));
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -146,19 +146,19 @@ TEST(assert, is2xx) {
 }
 
 TEST(assert, is3xx) {
-  ASSERT_TRUE(Client::is2xx(300));
-  ASSERT_TRUE(Client::is2xx(301));
-  ASSERT_FALSE(Client::is2xx(400));
+  ASSERT_TRUE(Client::is3xx(300));
+  ASSERT_TRUE(Client::is3xx(301));
+  ASSERT_FALSE(Client::is3xx(400));
 }
 
 TEST(assert, is4xx) {
-  ASSERT_TRUE(Client::is2xx(400));
-  ASSERT_TRUE(Client::is2xx(401));
-  ASSERT_FALSE(Client::is2xx(500));
+  ASSERT_TRUE(Client::is4xx(400));
+  ASSERT_TRUE(Client::is4xx(401));
+  ASSERT_FALSE(Client::is4xx(500));
 }
 
 TEST(assert, is5xx) {
-  ASSERT_TRUE(Client::is2xx(500));
-  ASSERT_TRUE(Client::is2xx(501));
-  ASSERT_FALSE(Client::is2xx(200));
+  ASSERT_TRUE(Client::is5xx(500));
+  ASSERT_TRUE(Client::is5xx(501));
+  ASSERT_FALSE(Client::is5xx(200));
 }

@@ -57,10 +57,9 @@ set_target_properties(${PROJECT_NAME}
 
 add_subdirectory(external/libraries)
 
-find_package(Boost REQUIRED COMPONENTS thread chrono)
-find_library(CPPREST_LIB cpprest)
+SET(BOOST_MIN_VERSION "1.62.0")
 find_package(Boost REQUIRED COMPONENTS random system thread filesystem chrono atomic date_time regex)
-find_package(OpenSSL 1.0.0 REQUIRED)
+find_library(CPPREST_LIB cpprest)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE jsoncpp ${Boost_LIBRARIES} ${CPPREST_LIB})
 
@@ -70,7 +69,8 @@ if (ENABLE_UNIT_TESTS)
     add_subdirectory(external/libraries_dev)
     add_executable(tests
             tests/main.cpp
-            tests/assert.cpp)
+            tests/assert.cpp
+            tests/parse.cpp)
     target_include_directories(tests
             PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/include)
