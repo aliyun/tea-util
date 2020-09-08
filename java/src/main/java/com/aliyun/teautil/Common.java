@@ -1,12 +1,11 @@
 package com.aliyun.teautil;
 
 import com.aliyun.tea.TeaModel;
-import com.aliyun.tea.ValidateException;
 import com.aliyun.tea.utils.StringUtils;
+import com.aliyun.teautil.models.TeaUtilException;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,8 +27,12 @@ public class Common {
      *
      * @return the return bytes
      */
-    public static byte[] toBytes(String str) throws UnsupportedEncodingException {
-        return str.getBytes("UTF-8");
+    public static byte[] toBytes(String str) {
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -37,8 +40,12 @@ public class Common {
      *
      * @return the return string
      */
-    public static String toString(byte[] bytes) throws UnsupportedEncodingException {
-        return new String(bytes, "UTF-8");
+    public static String toString(byte[] bytes) {
+        try {
+            return new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -59,7 +66,7 @@ public class Common {
         if (null != object && Map.class.isAssignableFrom(object.getClass())) {
             return (Map<String, Object>) object;
         }
-        throw new RuntimeException("The value is not a object");
+        throw new TeaUtilException("The value is not a object");
     }
 
     /**
@@ -71,7 +78,7 @@ public class Common {
         if (null != value && InputStream.class.isAssignableFrom(value.getClass())) {
             return (InputStream) value;
         }
-        throw new RuntimeException("The value is not a readable");
+        throw new TeaUtilException("The value is not a readable");
     }
 
     /**
@@ -79,11 +86,11 @@ public class Common {
      *
      * @return the bytes value
      */
-    public static byte[] assertAsBytes(Object object) throws Exception {
+    public static byte[] assertAsBytes(Object object) {
         if (object instanceof byte[]) {
             return (byte[]) object;
         }
-        throw new RuntimeException("The value is not a byteArray");
+        throw new TeaUtilException("The value is not a byteArray");
     }
 
     /**
@@ -91,11 +98,11 @@ public class Common {
      *
      * @return the number value
      */
-    public static Number assertAsNumber(Object object) throws Exception {
+    public static Number assertAsNumber(Object object) {
         if (object instanceof Number) {
             return (Number) object;
         }
-        throw new RuntimeException("The value is not a Number");
+        throw new TeaUtilException("The value is not a Number");
     }
 
     /**
@@ -103,11 +110,11 @@ public class Common {
      *
      * @return the string value
      */
-    public static String assertAsString(Object object) throws Exception {
+    public static String assertAsString(Object object) {
         if (object instanceof String) {
             return (String) object;
         }
-        throw new RuntimeException("The value is not a String");
+        throw new TeaUtilException("The value is not a String");
     }
 
     /**
@@ -115,11 +122,11 @@ public class Common {
      *
      * @return the boolean value
      */
-    public static Boolean assertAsBoolean(Object object) throws Exception {
+    public static Boolean assertAsBoolean(Object object) {
         try {
             return (Boolean) object;
         } catch (Exception e) {
-            throw new RuntimeException("The value is not a Boolean");
+            throw new TeaUtilException("The value is not a Boolean");
         }
     }
 
@@ -129,19 +136,22 @@ public class Common {
      * @param stream the readable stream
      * @return the bytes result
      */
-    public static byte[] readAsBytes(InputStream stream) throws IOException {
+    public static byte[] readAsBytes(InputStream stream) {
         if (null == stream) {
             return new byte[]{};
         } else {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             byte[] buff = new byte[1024];
-
-            while (true) {
-                int read = stream.read(buff);
-                if (read == -1) {
-                    return os.toByteArray();
+            try {
+                while (true) {
+                    int read = stream.read(buff);
+                    if (read == -1) {
+                        return os.toByteArray();
+                    }
+                    os.write(buff, 0, read);
                 }
-                os.write(buff, 0, read);
+            } catch (Exception e) {
+                throw new TeaUtilException(e.getMessage(), e);
             }
         }
     }
@@ -152,8 +162,12 @@ public class Common {
      * @param stream the readable stream
      * @return the string result
      */
-    public static String readAsString(InputStream stream) throws IOException {
-        return new String(readAsBytes(stream), "UTF-8");
+    public static String readAsString(InputStream stream) {
+        try {
+            return new String(readAsBytes(stream), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -162,12 +176,12 @@ public class Common {
      * @param stream the readable stream
      * @return the parsed result
      */
-    public static Object readAsJSON(InputStream stream) throws IOException {
+    public static Object readAsJSON(InputStream stream) {
         String body = readAsString(stream);
         try {
             return parseJSON(body);
         } catch (Exception exception) {
-            throw new RuntimeException("Error: convert to JSON, response is:\n" + body);
+            throw new TeaUtilException("Error: convert to JSON, response is:\n" + body);
         }
     }
 
@@ -225,24 +239,28 @@ public class Common {
      *
      * @return the form string
      */
-    public static String toFormString(Map<String, ?> map) throws UnsupportedEncodingException {
+    public static String toFormString(Map<String, ?> map) {
         if (null == map) {
             return "";
         }
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for (Map.Entry<String, ?> entry : map.entrySet()) {
-            if (StringUtils.isEmpty(entry.getValue())) {
-                continue;
+        try {
+            for (Map.Entry<String, ?> entry : map.entrySet()) {
+                if (StringUtils.isEmpty(entry.getValue())) {
+                    continue;
+                }
+                if (first) {
+                    first = false;
+                } else {
+                    result.append("&");
+                }
+                result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(String.valueOf(entry.getValue()), "UTF-8"));
             }
-            if (first) {
-                first = false;
-            } else {
-                result.append("&");
-            }
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(String.valueOf(entry.getValue()), "UTF-8"));
+        } catch (Exception e) {
+            throw new TeaUtilException(e.getMessage(), e);
         }
         return result.toString();
     }
@@ -339,7 +357,7 @@ public class Common {
      *
      * @return the string value
      */
-    public static String getUserAgent(String val) throws Exception {
+    public static String getUserAgent(String val) {
         if (StringUtils.isEmpty(val)) {
             return defaultUserAgent;
         }
@@ -351,7 +369,7 @@ public class Common {
      *
      * @return boolean
      */
-    public static boolean is2xx(Number code) throws Exception {
+    public static boolean is2xx(Number code) {
         if (null == code) {
             return false;
         }
@@ -363,7 +381,7 @@ public class Common {
      *
      * @return boolean
      */
-    public static boolean is3xx(Number code) throws Exception {
+    public static boolean is3xx(Number code) {
         if (null == code) {
             return false;
         }
@@ -375,7 +393,7 @@ public class Common {
      *
      * @return boolean
      */
-    public static boolean is4xx(Number code) throws Exception {
+    public static boolean is4xx(Number code) {
         if (null == code) {
             return false;
         }
@@ -387,7 +405,7 @@ public class Common {
      *
      * @return boolean
      */
-    public static boolean is5xx(Number code) throws Exception {
+    public static boolean is5xx(Number code) {
         if (null == code) {
             return false;
         }
@@ -399,11 +417,15 @@ public class Common {
      *
      * @return void
      */
-    public static void validateModel(TeaModel m) throws Exception {
+    public static void validateModel(TeaModel m) {
         if (null == m) {
-            throw new ValidateException("parameter is not allowed as null");
+            throw new TeaUtilException("parameter is not allowed as null");
         }
-        m.validate();
+        try {
+            m.validate();
+        } catch (Exception e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -411,15 +433,23 @@ public class Common {
      *
      * @return map[string]any
      */
-    public static java.util.Map<String, Object> toMap(TeaModel in) throws Exception {
-        return TeaModel.toMap(in);
+    public static java.util.Map<String, Object> toMap(TeaModel in) {
+        try {
+            return TeaModel.toMap(in);
+        } catch (Exception e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
     }
 
     /**
      * Suspends the current thread for the specified number of milliseconds.
      */
-    public static void sleep(int millisecond) throws InterruptedException {
-        Thread.sleep(millisecond);
+    public static void sleep(int millisecond) {
+        try {
+            Thread.sleep(millisecond);
+        } catch (InterruptedException e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
     }
 
     /**
