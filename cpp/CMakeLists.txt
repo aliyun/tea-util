@@ -70,7 +70,9 @@ if (ENABLE_UNIT_TESTS)
     add_executable(tests
             tests/main.cpp
             tests/assert.cpp
-            tests/parse.cpp)
+            tests/parse.cpp
+            tests/default.cpp
+            tests/util.cpp)
     target_include_directories(tests
             PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/include)

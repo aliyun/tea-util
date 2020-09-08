@@ -86,6 +86,23 @@ function run_python {
   upload_codecov_report python python
 }
 
+function run_cpp {
+  #env
+  export CPLUS_INCLUDE_PATH="/usr/local/include/:/usr/include/jsoncpp/:/usr/local/opt/openssl/include/:/usr/lib/"
+  # install
+  cd cpp || return 126
+  sudo add-apt-repository ppa:mhier/libboost-latest -y || return 126
+  sudo apt-get update || return 126
+  aptitude search boost || return 126
+  sudo apt-get install libboost-all-dev || return 126
+  sudo apt-get install lcov libcpprest-dev libcurl4-openssl-dev libssl-dev uuid-dev libjson-c-dev libjsoncpp-dev || return 126
+
+  sh ./scripts/run_ut.sh || return 126
+  cd ../
+  upload_codecov_report cpp cpp
+}
+
+
 function contains {
   local value=$2
   for i in $1
@@ -129,6 +146,10 @@ elif [ "$lang" == "swift" ]
 then
   echo "run swift"
   run_swift
+elif [ "$lang" == "cpp" ]
+then
+  echo "run cpp"
+  run_cpp
 fi
 
 exit $?

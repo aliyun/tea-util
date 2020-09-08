@@ -20,10 +20,12 @@ string Darabonba_Util::Client::getNonce() {
 }
 
 string Darabonba_Util::Client::getDateUTCString() {
-  char buf[80];
-  time_t time;
-  std::strftime(buf, sizeof buf, "%FT%TZ", gmtime(&time));
-  return buf;
+  auto now = std::chrono::system_clock::now();
+  auto itt = std::chrono::system_clock::to_time_t(now);
+
+  std::ostringstream ss;
+  ss << std::put_time(gmtime(&itt), "%a, %d %b %Y %H:%M:%S GMT");
+  return ss.str();
 }
 
 std::string os_name() {
