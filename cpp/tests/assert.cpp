@@ -6,30 +6,30 @@ using namespace Darabonba_Util;
 using namespace boost;
 
 TEST(assert, test_empty) {
-  string str;
+  string *str = nullptr;
   ASSERT_TRUE(Client::empty(str));
-  str = "foo";
+  str = new string("foo");
   ASSERT_FALSE(Client::empty(str));
 }
 
 TEST(assert, equalString) {
-  string left;
-  string right;
+  string *left = nullptr;
+  string *right = nullptr;
   ASSERT_TRUE(Client::equalString(left, right));
 
-  left = "foo";
+  left = new string("foo");
   ASSERT_FALSE(Client::equalString(left, right));
 
-  right = "bar";
+  right = new string("bar");
   ASSERT_FALSE(Client::equalString(left, right));
 }
 
 TEST(assert, equalNumber) {
-  int left = 0;
-  int right = 0;
+  int *left = nullptr;
+  int *right = nullptr;
   ASSERT_EQ(left, right);
 
-  right = 1;
+  right = new int(1);
   ASSERT_FALSE(Client::equalNumber(left, right));
 }
 
@@ -54,15 +54,17 @@ TEST(assert, stringifyMapValue) {
   expected["float"] = "0.100000";
   expected["bool"] = "true";
   expected["string"] = "test";
-  ASSERT_EQ(expected, Client::stringifyMapValue(m));
+  ASSERT_EQ(expected, Client::stringifyMapValue(&m));
 }
 
 TEST(assert, assertAsBoolean) {
   bool b = true;
-  ASSERT_TRUE(Client::assertAsBoolean(any(b)));
+  auto *a = new boost::any(b);
+  ASSERT_TRUE(Client::assertAsBoolean(a));
 
   try {
-    Client::assertAsBoolean(any("test"));
+    a = new boost::any(string("test"));
+    Client::assertAsBoolean(a);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -72,10 +74,12 @@ TEST(assert, assertAsBoolean) {
 
 TEST(assert, assertAsString) {
   string val = "test";
-  ASSERT_EQ(string("test"), Client::assertAsString(any(val)));
+  auto *a = new boost::any(val);
+  ASSERT_EQ(string("test"), Client::assertAsString(a));
 
   try {
-    Client::assertAsString(any(true));
+    a = new boost::any(true);
+    Client::assertAsString(a);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -86,10 +90,12 @@ TEST(assert, assertAsString) {
 TEST(assert, assertAsBytes) {
   vector<uint8_t> val;
   val.push_back(1);
-  ASSERT_EQ(val, Client::assertAsBytes(any(val)));
+  auto *a = new boost::any(val);
+  ASSERT_EQ(val, Client::assertAsBytes(a));
 
   try {
-    Client::assertAsBytes(any(true));
+    a = new boost::any(true);
+    Client::assertAsBytes(a);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -99,10 +105,12 @@ TEST(assert, assertAsBytes) {
 
 TEST(assert, assertAsNumber) {
   int val = 10;
-  ASSERT_EQ(val, Client::assertAsNumber(any(val)));
+  auto *a = new boost::any(val);
+  ASSERT_EQ(val, Client::assertAsNumber(a));
 
   try {
-    Client::assertAsNumber(any(true));
+    a = new boost::any(true);
+    Client::assertAsNumber(a);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -113,11 +121,13 @@ TEST(assert, assertAsNumber) {
 TEST(assert, assertAsMap) {
   map<string, any> val;
   val["foo"] = any(string("bar"));
-  map<string, any> res = Client::assertAsMap(any(val));
+  auto *a = new boost::any(val);
+  map<string, any> res = Client::assertAsMap(a);
   ASSERT_EQ(any_cast<string>(val["foo"]), any_cast<string>(res["foo"]));
 
   try {
-    Client::assertAsMap(any(true));
+    a = new boost::any(true);
+    Client::assertAsMap(a);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -127,11 +137,13 @@ TEST(assert, assertAsMap) {
 
 TEST(assert, assertAsReadable) {
   concurrency::streams::istream val;
-  concurrency::streams::istream res = Client::assertAsReadable(any(val));
+  auto *a = new boost::any(val);
+  concurrency::streams::istream res = Client::assertAsReadable(a);
   ASSERT_EQ(res, val);
 
   try {
-    Client::assertAsReadable(any(true));
+    a = new boost::any(true);
+    Client::assertAsReadable(a);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();

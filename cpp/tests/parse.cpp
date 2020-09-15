@@ -6,7 +6,7 @@ using namespace std;
 
 TEST(tests_parse, toBytes) {
   std::vector<uint8_t> bytes({116, 101, 115, 116});
-  ASSERT_EQ(bytes, Darabonba_Util::Client::toBytes("test"));
+  ASSERT_EQ(bytes, Darabonba_Util::Client::toBytes(string("test")));
 }
 
 TEST(tests_parse, toString) {
