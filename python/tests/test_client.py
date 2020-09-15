@@ -32,7 +32,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual("test", Client.to_string(b'test'))
 
     def test_parse_json(self):
-        json_str = "{\"arrayObj\":[[{\"itemName\":\"item\",\"itemInt\":1},{\"itemName\":\"item2\",\"itemInt\":2}],[{\"itemName\":\"item3\",\"itemInt\":3}]],\"arrayList\":[[[1,2],[3,4]],[[5,6],[7]],[]],\"listStr\":[1,2,3],\"items\":[{\"total_size\":18,\"partNumber\":1,\"tags\":[{\"aa\":\"11\"}]},{\"total_size\":20,\"partNumber\":2,\"tags\":[{\"aa\":\"22\"}]}],\"next_marker\":\"\",\"test\":{\"total_size\":19,\"partNumber\":1,\"tags\":[{\"aa\":\"11\"}]}}"
+        json_str = '{"arrayObj":[[{"itemName":"item","itemInt":1},{"itemName":"item2","itemInt":2}],[{"itemName":"item3","itemInt":3}]],"arrayList":[[[1,2],[3,4]],[[5,6],[7]],[]],"listStr":[1,2,3],"items":[{"total_size":18,"partNumber":1,"tags":[{"aa":"11"}]},{"total_size":20,"partNumber":2,"tags":[{"aa":"22"}]}],"next_marker":"","test":{"total_size":19,"partNumber":1,"tags":[{"aa":"11"}]}}'
         obj = Client.parse_json(json_str)
         self.assertIsNotNone(obj)
 
@@ -59,6 +59,10 @@ class TestClient(unittest.TestCase):
     def test_read_as_json(self):
         self.assertEqual({"key": "value"},
                          Client.read_as_json('{"key":"value"}'))
+        try:
+            Client.read_as_json("{1:'2'}")
+        except Exception as e:
+            self.assertEqual('''Failed to parse the value as json format, Value: "{1:'2'}".''', str(e))
 
     def test_get_nonce(self):
         self.assertIsNotNone(Client.get_nonce())
