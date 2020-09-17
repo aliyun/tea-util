@@ -3,16 +3,32 @@
 
 using namespace std;
 
-string Darabonba_Util::Client::defaultString(void *real, string default_) {
+string Darabonba_Util::Client::defaultString(string *real, string *default_) {
   if (real == nullptr) {
-    return default_;
+    if (nullptr == default_) {
+      return string("");
+    }
+    return *default_;
   }
-  return boost::lexical_cast<string>(real);
+  return *real;
 }
 
-int Darabonba_Util::Client::defaultNumber(void *real, int default_) {
+int Darabonba_Util::Client::defaultNumber(int *real, int *default_) {
   if (real == nullptr) {
-    return default_;
+    if (nullptr == default_) {
+      return 0;
+    }
+    return *default_;
   }
-  return boost::lexical_cast<int>(real);
+  return *real;
+}
+
+int Darabonba_Util::Client::defaultNumber(int *real, long *default_) {
+  if (real == nullptr) {
+    if (nullptr == default_) {
+      return 0;
+    }
+    return boost::lexical_cast<int>(*default_);
+  }
+  return *real;
 }
