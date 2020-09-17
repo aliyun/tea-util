@@ -1,10 +1,10 @@
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
 #include <boost/lexical_cast.hpp>
-#include <darabonba/util.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <cpprest/streams.h>
-#include <sstream>
+#include <darabonba/util.hpp>
 #include <json/json.h>
+#include <sstream>
 #include <string>
 
 string url_encode(const std::string &str) {
@@ -18,7 +18,7 @@ string url_encode(const std::string &str) {
       continue;
     }
     escaped << std::uppercase;
-    escaped << '%' << std::setw(2) << int((unsigned char) c);
+    escaped << '%' << std::setw(2) << int((unsigned char)c);
     escaped << nouppercase;
   }
 
@@ -41,40 +41,20 @@ std::string implode(const std::vector<std::string> &vec,
 }
 
 std::vector<uint8_t> Darabonba_Util::Client::toBytes(std::string *val) {
-  std::vector<uint8_t> vec;
-  if (nullptr == val) {
-    return vec;
-  }
-  return Darabonba_Util::Client::toBytes(*val);
-}
-
-vector<uint8_t> Darabonba_Util::Client::toBytes(string val) {
-  std::vector<uint8_t> vec(val.begin(), val.end());
+  std::string v = nullptr == val ? "" : *val;
+  std::vector<uint8_t> vec(v.begin(), v.end());
   return vec;
 }
 
 string Darabonba_Util::Client::toString(std::vector<uint8_t> *val) {
-  if (nullptr == val) {
-    return "";
-  }
-  return Darabonba_Util::Client::toString(*val);
-}
-
-string Darabonba_Util::Client::toString(std::vector<uint8_t> val) {
-  std::string str(val.begin(), val.end());
+  std::vector<uint8_t> v = nullptr == val ? std::vector<uint8_t>() : *val;
+  std::string str(v.begin(), v.end());
   return str;
 }
 
 boost::any Darabonba_Util::Client::parseJSON(std::string *val) {
-  std::map<string, boost::any> m;
-  if (nullptr == val) {
-    return m;
-  }
-  return Darabonba_Util::Client::parseJSON(*val);
-}
-
-boost::any Darabonba_Util::Client::parseJSON(std::string val) {
-  std::stringstream ss(val);
+  string v = nullptr == val ? "" : *val;
+  std::stringstream ss(v);
   using namespace boost::property_tree;
   ptree pt;
   read_json(ss, pt);
@@ -85,8 +65,7 @@ boost::any Darabonba_Util::Client::parseJSON(std::string val) {
   return boost::any(m);
 }
 
-template<typename T>
-bool can_cast(const boost::any &v) {
+template <typename T> bool can_cast(const boost::any &v) {
   return typeid(T) == v.type();
 }
 
@@ -96,7 +75,7 @@ void json_encode(boost::any val, std::stringstream &ss) {
     ss << '{';
     if (!m.empty()) {
       int n = 0;
-      for (const auto &it:m) {
+      for (const auto &it : m) {
         if (n != 0) {
           ss << ",";
         }
@@ -111,7 +90,7 @@ void json_encode(boost::any val, std::stringstream &ss) {
     ss << '[';
     if (!v.empty()) {
       int n = 0;
-      for (const auto &it:v) {
+      for (const auto &it : v) {
         if (n != 0) {
           ss << ",";
         }
@@ -150,19 +129,19 @@ void json_encode(boost::any val, std::stringstream &ss) {
 
 std::string Darabonba_Util::Client::toJSONString(boost::any *val) {
   if (nullptr == val) {
-    return "{}";
+    return string("{}");
   }
-  return Darabonba_Util::Client::toJSONString(*val);
-}
-
-std::string Darabonba_Util::Client::toJSONString(boost::any val) {
-  map<string, boost::any> a = boost::any_cast<map<string, boost::any>>(val);
+  map<string, boost::any> a = boost::any_cast<map<string, boost::any>>(*val);
   std::stringstream s;
   json_encode(a, s);
   return s.str();
 }
 
-std::vector<uint8_t> Darabonba_Util::Client::readAsBytes(concurrency::streams::istream *stream) {
+std::vector<uint8_t>
+Darabonba_Util::Client::readAsBytes(concurrency::streams::istream *stream) {
+  if (nullptr == stream) {
+    return std::vector<uint8_t>();
+  }
   size_t count = stream->streambuf().size();
   std::vector<uint8_t> buffer;
   buffer.resize(count);
@@ -171,23 +150,25 @@ std::vector<uint8_t> Darabonba_Util::Client::readAsBytes(concurrency::streams::i
   return buffer;
 }
 
-string Darabonba_Util::Client::readAsString(concurrency::streams::istream *stream) {
+string
+Darabonba_Util::Client::readAsString(concurrency::streams::istream *stream) {
+  if (nullptr == stream) {
+    return string("");
+  }
   std::vector<uint8_t> bytes = readAsBytes(stream);
   string str(toString(&bytes));
   return str;
 }
 
-boost::any Darabonba_Util::Client::readAsJSON(concurrency::streams::istream *stream) {
+boost::any
+Darabonba_Util::Client::readAsJSON(concurrency::streams::istream *stream) {
   string json = readAsString(stream);
   return Client::parseJSON(&json);
 }
 
 string Darabonba_Util::Client::toFormString(map<string, boost::any> *val) {
-  if (nullptr == val) {
-    return "";
-  }
-  if (val->empty()) {
-    return "";
+  if (nullptr == val || val->empty()) {
+    return string("");
   }
   vector<string> tmp;
   for (const auto &it : *val) {
@@ -201,10 +182,10 @@ string Darabonba_Util::Client::toFormString(map<string, boost::any> *val) {
 
 map<string, boost::any>
 Darabonba_Util::Client::anyifyMapValue(map<string, string> *m) {
-  map<string, boost::any> data;
   if (nullptr == m) {
-    return data;
+    return map<string, boost::any>();
   }
+  map<string, boost::any> data;
   if (m->empty()) {
     return data;
   }
@@ -216,12 +197,11 @@ Darabonba_Util::Client::anyifyMapValue(map<string, string> *m) {
 
 vector<map<string, boost::any>>
 Darabonba_Util::Client::toArray(boost::any *input) {
-  vector<map<string, boost::any>> v;
   if (nullptr == input) {
-    return v;
+    return vector<map<string, boost::any>>();
   }
   map<string, boost::any> m = boost::any_cast<map<string, boost::any>>(*input);
+  vector<map<string, boost::any>> v;
   v.push_back(m);
   return v;
 }
-

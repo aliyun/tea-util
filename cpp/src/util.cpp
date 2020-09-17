@@ -45,18 +45,21 @@ std::string os_name() {
 }
 
 string Darabonba_Util::Client::getUserAgent(string *userAgent) {
-  string u = nullptr == userAgent ? "" : *userAgent;
+  string ua = nullptr == userAgent ? "" : *userAgent;
   string _default_user_agent("AlibabaCloud OS/" + os_name() + " DaraDSL/1");
-  if (u.empty()) {
+  if (ua.empty()) {
     return _default_user_agent;
   }
-  u = _default_user_agent + u;
-  return u;
+  ua = _default_user_agent + ua;
+  return ua;
 }
 
 void Darabonba_Util::Client::validateModel(Model *m) { m->validate(); }
 
 map<string, boost::any> Darabonba_Util::Client::toMap(Model *in) {
+  if (nullptr == in) {
+    return map<string, boost::any>();
+  }
   return in->toMap();
 }
 

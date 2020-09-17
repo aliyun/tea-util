@@ -6,12 +6,12 @@ using namespace std;
 
 TEST(tests_parse, toBytes) {
   std::vector<uint8_t> bytes({116, 101, 115, 116});
-  ASSERT_EQ(bytes, Darabonba_Util::Client::toBytes(string("test")));
+  ASSERT_EQ(bytes, Darabonba_Util::Client::toBytes(new string("test")));
 }
 
 TEST(tests_parse, toString) {
   std::vector<uint8_t> bytes({116, 101, 115, 116});
-  ASSERT_EQ(string("test"), Darabonba_Util::Client::toString(bytes));
+  ASSERT_EQ(string("test"), Darabonba_Util::Client::toString(&bytes));
 }
 
 template<typename T>
@@ -50,7 +50,7 @@ TEST(tests_parse, toJSONString) {
                                                  }))
       }
   };
-  string res = Darabonba_Util::Client::toJSONString(boost::any(m));
+  string res = Darabonba_Util::Client::toJSONString(new boost::any(m));
   ASSERT_EQ(string(
                 "{\"bool\":true,\"foo\":\"bar\",\"long\":9223372036854775807,\"map\":{\"foo\":\"bar\"},\"string\":string,\"vector\":[\"foo\"]}"),
             res);
