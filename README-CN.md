@@ -15,6 +15,7 @@
 - [Swift](./swift/README-CN.md)
 - [Python](./python/README-CN.md)
 - [PHP](./php/README-CN.md)
+- [C++](./cpp/README.md)
 
 ## 问题
 

@@ -6,31 +6,31 @@ using namespace Darabonba_Util;
 using namespace boost;
 
 TEST(assert, test_empty) {
-  string *str = nullptr;
-  ASSERT_TRUE(Client::empty(str));
-  str = new string("foo");
-  ASSERT_FALSE(Client::empty(str));
+  string str;
+  ASSERT_TRUE(Client::empty(&str));
+  str = "foo";
+  ASSERT_FALSE(Client::empty(&str));
 }
 
 TEST(assert, equalString) {
-  string *left = nullptr;
-  string *right = nullptr;
-  ASSERT_TRUE(Client::equalString(left, right));
+  string left;
+  string right;
+  ASSERT_TRUE(Client::equalString(&left, &right));
 
-  left = new string("foo");
-  ASSERT_FALSE(Client::equalString(left, right));
+  left = "foo";
+  ASSERT_FALSE(Client::equalString(&left, &right));
 
-  right = new string("bar");
-  ASSERT_FALSE(Client::equalString(left, right));
+  right = "bar";
+  ASSERT_FALSE(Client::equalString(&left, &right));
 }
 
 TEST(assert, equalNumber) {
-  int *left = nullptr;
-  int *right = nullptr;
+  int left = 0;
+  int right = 0;
   ASSERT_EQ(left, right);
 
-  right = new int(1);
-  ASSERT_FALSE(Client::equalNumber(left, right));
+  right = 1;
+  ASSERT_FALSE(Client::equalNumber(&left, &right));
 }
 
 TEST(assert, isUnset) {
@@ -58,13 +58,12 @@ TEST(assert, stringifyMapValue) {
 }
 
 TEST(assert, assertAsBoolean) {
-  bool b = true;
-  auto *a = new boost::any(b);
-  ASSERT_TRUE(Client::assertAsBoolean(a));
+  auto *val = new boost::any(true);
+  ASSERT_TRUE(Client::assertAsBoolean(val));
 
   try {
-    a = new boost::any(string("test"));
-    Client::assertAsBoolean(a);
+    val = new boost::any(string("test"));
+    Client::assertAsBoolean(val);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -73,13 +72,12 @@ TEST(assert, assertAsBoolean) {
 }
 
 TEST(assert, assertAsString) {
-  string val = "test";
-  auto *a = new boost::any(val);
-  ASSERT_EQ(string("test"), Client::assertAsString(a));
+  auto *val = new boost::any(string("test"));
+  ASSERT_EQ(string("test"), Client::assertAsString(val));
 
   try {
-    a = new boost::any(true);
-    Client::assertAsString(a);
+    val = new boost::any(true);
+    Client::assertAsString(val);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -88,14 +86,14 @@ TEST(assert, assertAsString) {
 }
 
 TEST(assert, assertAsBytes) {
-  vector<uint8_t> val;
-  val.push_back(1);
-  auto *a = new boost::any(val);
-  ASSERT_EQ(val, Client::assertAsBytes(a));
+  vector<uint8_t> vec;
+  vec.push_back(1);
+  auto *val = new boost::any(vec);
+  ASSERT_EQ(vec, Client::assertAsBytes(val));
 
   try {
-    a = new boost::any(true);
-    Client::assertAsBytes(a);
+    val = new boost::any(true);
+    Client::assertAsBytes(val);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -104,13 +102,12 @@ TEST(assert, assertAsBytes) {
 }
 
 TEST(assert, assertAsNumber) {
-  int val = 10;
-  auto *a = new boost::any(val);
-  ASSERT_EQ(val, Client::assertAsNumber(a));
+  auto *val = new boost::any(10);
+  ASSERT_EQ(10, Client::assertAsNumber(val));
 
   try {
-    a = new boost::any(true);
-    Client::assertAsNumber(a);
+    val = new boost::any(true);
+    Client::assertAsNumber(val);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -119,15 +116,15 @@ TEST(assert, assertAsNumber) {
 }
 
 TEST(assert, assertAsMap) {
-  map<string, any> val;
-  val["foo"] = any(string("bar"));
-  auto *a = new boost::any(val);
-  map<string, any> res = Client::assertAsMap(a);
-  ASSERT_EQ(any_cast<string>(val["foo"]), any_cast<string>(res["foo"]));
+  map<string, any> m;
+  m["foo"] = any(string("bar"));
+  auto *val = new boost::any(m);
+  map<string, any> res = Client::assertAsMap(val);
+  ASSERT_EQ(any_cast<string>(m["foo"]), any_cast<string>(res["foo"]));
 
   try {
-    a = new boost::any(true);
-    Client::assertAsMap(a);
+    val = new boost::any(true);
+    Client::assertAsMap(val);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -136,14 +133,14 @@ TEST(assert, assertAsMap) {
 }
 
 TEST(assert, assertAsReadable) {
-  concurrency::streams::istream val;
-  auto *a = new boost::any(val);
-  concurrency::streams::istream res = Client::assertAsReadable(a);
-  ASSERT_EQ(res, val);
+  concurrency::streams::istream s;
+  auto *val = new boost::any(s);
+  concurrency::streams::istream res = Client::assertAsReadable(val);
+  ASSERT_EQ(res, s);
 
   try {
-    a = new boost::any(true);
-    Client::assertAsReadable(a);
+    val = new boost::any(true);
+    Client::assertAsReadable(val);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -152,25 +149,25 @@ TEST(assert, assertAsReadable) {
 }
 
 TEST(assert, is2xx) {
-  ASSERT_TRUE(Client::is2xx(200));
-  ASSERT_TRUE(Client::is2xx(201));
-  ASSERT_FALSE(Client::is2xx(300));
+  ASSERT_TRUE(Client::is2xx(new int(200)));
+  ASSERT_TRUE(Client::is2xx(new int(201)));
+  ASSERT_FALSE(Client::is2xx(new int(300)));
 }
 
 TEST(assert, is3xx) {
-  ASSERT_TRUE(Client::is3xx(300));
-  ASSERT_TRUE(Client::is3xx(301));
-  ASSERT_FALSE(Client::is3xx(400));
+  ASSERT_TRUE(Client::is3xx(new int(300)));
+  ASSERT_TRUE(Client::is3xx(new int(301)));
+  ASSERT_FALSE(Client::is3xx(new int(400)));
 }
 
 TEST(assert, is4xx) {
-  ASSERT_TRUE(Client::is4xx(400));
-  ASSERT_TRUE(Client::is4xx(401));
-  ASSERT_FALSE(Client::is4xx(500));
+  ASSERT_TRUE(Client::is4xx(new int(400)));
+  ASSERT_TRUE(Client::is4xx(new int(401)));
+  ASSERT_FALSE(Client::is4xx(new int(500)));
 }
 
 TEST(assert, is5xx) {
-  ASSERT_TRUE(Client::is5xx(500));
-  ASSERT_TRUE(Client::is5xx(501));
-  ASSERT_FALSE(Client::is5xx(200));
+  ASSERT_TRUE(Client::is5xx(new int(500)));
+  ASSERT_TRUE(Client::is5xx(new int(501)));
+  ASSERT_FALSE(Client::is5xx(new int(600)));
 }
