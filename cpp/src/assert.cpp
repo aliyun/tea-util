@@ -134,7 +134,7 @@ bool Darabonba_Util::Client::is5xx(int *code) {
 }
 
 concurrency::streams::istream
-Darabonba_Util::Client::assertAsReadable(any *value) {
+Darabonba_Util::Client::assertAsReadable(boost::any *value) {
   if (nullptr == value) {
     BOOST_THROW_EXCEPTION(enable_error_info(runtime_error("value is nullptr")));
   }

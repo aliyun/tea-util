@@ -64,7 +64,10 @@ jobs:
     - language: python
       python: 3.8
       env: TEA_UTIL_ENV="python"
-    
+    - language: cpp
+      dist: bionic
+      compiler: gcc
+      env: TEA_UTIL_ENV="cpp"
 
 script:
   - bash ut.sh ${TEA_UTIL_ENV}

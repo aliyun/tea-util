@@ -1,23 +1,19 @@
 #!/bin/bash
 
-# shellcheck disable=SC2046
-basepath=$(cd $(dirname "$0")/../ || exit; pwd)
+basepath=$(cd `dirname $0`/../; pwd)
 
-cd "$basepath"/ || exit
+cd $basepath/
 
 main() {
     mkdir -p cmake_build/
-    cd cmake_build/ || exit
-    rm -rf ./tests
+    cd cmake_build/
     cmake .. -DENABLE_UNIT_TESTS=ON || {
         error_exit "Failed to cmake."
     }
-
     cmake --build . || {
         error_exit "Failed to make."
     }
-
-    ./tests || {
+    ./tests_darabonba_util || {
         error_exit "Failed to test."
     }
 }
