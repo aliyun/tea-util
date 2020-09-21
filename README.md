@@ -16,6 +16,7 @@ English | [简体中文](README-CN.md)
 - [Swift](./swift/README.md)
 - [Python](./python/README.md)
 - [PHP](./php/README.md)
+- [C++](./cpp/README.md)
 
 ## Issues
 
