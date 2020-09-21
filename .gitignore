@@ -23,5 +23,4 @@ java/.classpath
 cc/*.o
 *.sum
 python/**/__pycache__/
-codecov.sh
 cache/
