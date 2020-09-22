@@ -69,8 +69,9 @@ if (ENABLE_UNIT_TESTS)
             tests/parse.cpp)
 endif()
 add_subdirectory(external)
-find_package(Boost REQUIRED COMPONENTS thread chrono)
-target_link_libraries(${PROJECT_NAME} PRIVATE jsoncpp darabonba_core ${Boost_LIBRARIES})
+find_package(Boost REQUIRED COMPONENTS random system thread filesystem chrono atomic date_time regex)
+find_library(CPPREST_LIB cpprest)
+target_link_libraries(${PROJECT_NAME} PRIVATE darabonba_core crypto jsoncpp ${Boost_LIBRARIES} ${CPPREST_LIB})
 
 if (ENABLE_UNIT_TESTS)
     target_include_directories(tests_darabonba_util

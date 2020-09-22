@@ -21,7 +21,7 @@ bool eq_boost_any(T val1, boost::any val2) {
 
 TEST(tests_parse, parseJSON) {
   string json =
-      R"({"bool":true,"foo":"bar","long":9223372036854775807,"map":{"foo":"bar"},"string":string,"vector":["foo"]})";
+      R"({"bool":true,"foo":"bar","long":9223372036854775807,"map":{"foo":"bar"},"string":"string","vector":["foo","bar"]})";
   map<string, boost::any> m = {
       {"foo", boost::any("bar")},
       {"string", boost::any(string("string"))},
@@ -30,9 +30,12 @@ TEST(tests_parse, parseJSON) {
       {"vector", boost::any(vector<boost::any>({{boost::any("foo")}}))},
       {"map", boost::any(map<string, boost::any>({{"foo", boost::any("bar")}}))}
   };
-  ASSERT_TRUE(eq_boost_any<const char *>("bar", m["foo"]));
-  ASSERT_TRUE(eq_boost_any<string>(string("string"), m["string"]));
-  ASSERT_TRUE(eq_boost_any<long>(LONG_MAX, m["long"]));
+  boost::any target = Darabonba_Util::Client::parseJSON(&json);
+  map<string, boost::any> data = boost::any_cast<map<string, boost::any>>(target);
+  vector<boost::any> vec = boost::any_cast<vector<boost::any>>(data["vector"]);
+
+  ASSERT_EQ(string("foo"), boost::any_cast<string>(vec[0]));
+  ASSERT_EQ(string("bar"), boost::any_cast<string>(vec[1]));
 }
 
 TEST(tests_parse, toJSONString) {
