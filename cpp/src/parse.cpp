@@ -52,17 +52,29 @@ string Darabonba_Util::Client::toString(std::vector<uint8_t> *val) {
   return str;
 }
 
+boost::any parse_json(boost::property_tree::ptree pt) {
+  if (pt.empty()) {
+    return boost::any(pt.data());
+  }
+  vector<boost::any> vec;
+  map<string, boost::any> m;
+  for (const auto &it : pt) {
+    if (!it.first.empty()) {
+      m[it.first] = parse_json(it.second);
+    } else {
+      vec.push_back(parse_json(it.second));
+    }
+  }
+  return vec.empty() ? boost::any(m) : boost::any(vec);
+}
+
 boost::any Darabonba_Util::Client::parseJSON(std::string *val) {
   string v = nullptr == val ? "" : *val;
   std::stringstream ss(v);
   using namespace boost::property_tree;
   ptree pt;
   read_json(ss, pt);
-  std::map<string, boost::any> m;
-  for (auto it : pt) {
-    m[it.first] = boost::any(it.second);
-  }
-  return boost::any(m);
+  return parse_json(pt);
 }
 
 template <typename T> bool can_cast(const boost::any &v) {
