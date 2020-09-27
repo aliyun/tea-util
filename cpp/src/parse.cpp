@@ -27,8 +27,7 @@ string url_encode(const string &str) {
   return escaped.str();
 }
 
-string implode(const vector<string> &vec,
-               const string &glue) {
+string implode(const vector<string> &vec, const string &glue) {
   string res;
   int n = 0;
   for (const auto &str : vec) {
@@ -42,13 +41,14 @@ string implode(const vector<string> &vec,
   return res;
 }
 
-vector<uint8_t> Darabonba_Util::Client::toBytes(const shared_ptr<string>& val) {
+vector<uint8_t> Darabonba_Util::Client::toBytes(const shared_ptr<string> &val) {
   string v = !val ? "" : *val;
   vector<uint8_t> vec(v.begin(), v.end());
   return vec;
 }
 
-string Darabonba_Util::Client::toString(const shared_ptr<vector<uint8_t>>& val) {
+string
+Darabonba_Util::Client::toString(const shared_ptr<vector<uint8_t>> &val) {
   vector<uint8_t> v = !val ? vector<uint8_t>() : *val;
   string str(v.begin(), v.end());
   return str;
@@ -70,7 +70,7 @@ boost::any parse_json(boost::property_tree::ptree pt) {
   return vec.empty() ? boost::any(m) : boost::any(vec);
 }
 
-boost::any Darabonba_Util::Client::parseJSON(const shared_ptr<string>& val) {
+boost::any Darabonba_Util::Client::parseJSON(const shared_ptr<string> &val) {
   string v = !val ? "" : *val;
   stringstream ss(v);
   using namespace boost::property_tree;
@@ -141,7 +141,7 @@ void json_encode(boost::any val, stringstream &ss) {
   }
 }
 
-string Darabonba_Util::Client::toJSONString(const shared_ptr<boost::any>& val) {
+string Darabonba_Util::Client::toJSONString(const shared_ptr<boost::any> &val) {
   if (!val) {
     return string("{}");
   }
@@ -151,8 +151,8 @@ string Darabonba_Util::Client::toJSONString(const shared_ptr<boost::any>& val) {
   return s.str();
 }
 
-vector<uint8_t>
-Darabonba_Util::Client::readAsBytes(const shared_ptr<concurrency::streams::istream>& stream) {
+vector<uint8_t> Darabonba_Util::Client::readAsBytes(
+    const shared_ptr<concurrency::streams::istream> &stream) {
   if (!stream) {
     return vector<uint8_t>();
   }
@@ -164,8 +164,8 @@ Darabonba_Util::Client::readAsBytes(const shared_ptr<concurrency::streams::istre
   return buffer;
 }
 
-string
-Darabonba_Util::Client::readAsString(const shared_ptr<concurrency::streams::istream>& stream) {
+string Darabonba_Util::Client::readAsString(
+    const shared_ptr<concurrency::streams::istream> &stream) {
   if (!stream) {
     return string("");
   }
@@ -174,13 +174,14 @@ Darabonba_Util::Client::readAsString(const shared_ptr<concurrency::streams::istr
   return str;
 }
 
-boost::any
-Darabonba_Util::Client::readAsJSON(const shared_ptr<concurrency::streams::istream>& stream) {
+boost::any Darabonba_Util::Client::readAsJSON(
+    const shared_ptr<concurrency::streams::istream> &stream) {
   string json = readAsString(stream);
   return Client::parseJSON(make_shared<string>(json));
 }
 
-string Darabonba_Util::Client::toFormString(shared_ptr<map<string, boost::any>> val) {
+string
+Darabonba_Util::Client::toFormString(shared_ptr<map<string, boost::any>> val) {
   if (!val || val->empty()) {
     return string("");
   }
@@ -194,8 +195,8 @@ string Darabonba_Util::Client::toFormString(shared_ptr<map<string, boost::any>> 
   return implode(tmp, "&");
 }
 
-map<string, boost::any>
-Darabonba_Util::Client::anyifyMapValue(const shared_ptr<map<string, string>>& m) {
+map<string, boost::any> Darabonba_Util::Client::anyifyMapValue(
+    const shared_ptr<map<string, string>> &m) {
   if (!m) {
     return map<string, boost::any>();
   }
@@ -210,7 +211,7 @@ Darabonba_Util::Client::anyifyMapValue(const shared_ptr<map<string, string>>& m)
 }
 
 vector<map<string, boost::any>>
-Darabonba_Util::Client::toArray(const shared_ptr<boost::any>& input) {
+Darabonba_Util::Client::toArray(const shared_ptr<boost::any> &input) {
   if (!input) {
     return vector<map<string, boost::any>>();
   }

@@ -3,8 +3,9 @@
 
 using namespace std;
 
-string Darabonba_Util::Client::defaultString(const shared_ptr<string>& real,
-                                             const shared_ptr<string>& default_) {
+string
+Darabonba_Util::Client::defaultString(const shared_ptr<string> &real,
+                                      const shared_ptr<string> &default_) {
   if (!real) {
     if (!default_) {
       return string("");
@@ -14,8 +15,8 @@ string Darabonba_Util::Client::defaultString(const shared_ptr<string>& real,
   return *real;
 }
 
-int Darabonba_Util::Client::defaultNumber(const shared_ptr<int>& real,
-                                          const shared_ptr<int>& default_) {
+int Darabonba_Util::Client::defaultNumber(const shared_ptr<int> &real,
+                                          const shared_ptr<int> &default_) {
   if (!real) {
     if (!default_) {
       return 0;

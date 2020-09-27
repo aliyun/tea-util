@@ -41,7 +41,7 @@ public:
     _init();
   };
 
-  void validate() {};
+  void validate(){};
   void fromMap(map<string, boost::any> m) {}
 
   map<string, boost::any> toMap() {
@@ -106,47 +106,55 @@ public:
   shared_ptr<string> socks5Proxy{};
   shared_ptr<string> socks5NetWork{};
 
-  ~RuntimeOptions() {};
+  ~RuntimeOptions(){};
 };
 class Client {
 public:
-  static vector<uint8_t> toBytes(const shared_ptr<string>& val);
-  static string toString(const shared_ptr<vector<uint8_t>>& val);
-  static boost::any parseJSON(const shared_ptr<string>& val);
-  static vector<uint8_t> readAsBytes(const shared_ptr<concurrency::streams::istream>& stream);
-  static string readAsString(const shared_ptr<concurrency::streams::istream>& stream);
-  static boost::any readAsJSON(const shared_ptr<concurrency::streams::istream>& stream);
+  static vector<uint8_t> toBytes(const shared_ptr<string> &val);
+  static string toString(const shared_ptr<vector<uint8_t>> &val);
+  static boost::any parseJSON(const shared_ptr<string> &val);
+  static vector<uint8_t>
+  readAsBytes(const shared_ptr<concurrency::streams::istream> &stream);
+  static string
+  readAsString(const shared_ptr<concurrency::streams::istream> &stream);
+  static boost::any
+  readAsJSON(const shared_ptr<concurrency::streams::istream> &stream);
   static string getNonce();
   static string getDateUTCString();
-  static string defaultString(const shared_ptr<string>& real,
-                              const shared_ptr<string>& default_);
-  static int defaultNumber(const shared_ptr<int>& real,
-                           const shared_ptr<int>& default_);
+  static string defaultString(const shared_ptr<string> &real,
+                              const shared_ptr<string> &default_);
+  static int defaultNumber(const shared_ptr<int> &real,
+                           const shared_ptr<int> &default_);
   static string toFormString(shared_ptr<map<string, boost::any>> val);
-  static string toJSONString(const shared_ptr<boost::any>& val);
-  static bool empty(const shared_ptr<string>& val);
-  static bool equalString(const shared_ptr<string>& val1,
-                          const shared_ptr<string>& val2);
-  static bool equalNumber(const shared_ptr<int>& val1,
-                          const shared_ptr<int>& val2);
-  static bool isUnset(const shared_ptr<void>& value);
-  static map<string, string> stringifyMapValue(const shared_ptr<map<string, boost::any>>& m);
-  static map<string, boost::any> anyifyMapValue(const shared_ptr<map<string, string>>& m);
-  static bool assertAsBoolean(const shared_ptr<boost::any>& value);
-  static string assertAsString(const shared_ptr<boost::any>& value);
-  static vector<uint8_t> assertAsBytes(const shared_ptr<boost::any>& value);
-  static int assertAsNumber(const shared_ptr<boost::any>& value);
-  static map<string, boost::any> assertAsMap(const shared_ptr<boost::any>& value);
-  static string getUserAgent(const shared_ptr<string>& userAgent);
-  static bool is2xx(const shared_ptr<int>& code);
-  static bool is3xx(const shared_ptr<int>& code);
-  static bool is4xx(const shared_ptr<int>& code);
-  static bool is5xx(const shared_ptr<int>& code);
-  static void validateModel(const shared_ptr<Darabonba::Model>& m);
-  static map<string, boost::any> toMap(const shared_ptr<Darabonba::Model>& in);
-  static void sleep(const shared_ptr<int>& millisecond);
-  static vector<map<string, boost::any>> toArray(const shared_ptr<boost::any>& input);
-  static concurrency::streams::istream assertAsReadable(const shared_ptr<boost::any>& value);
+  static string toJSONString(const shared_ptr<boost::any> &val);
+  static bool empty(const shared_ptr<string> &val);
+  static bool equalString(const shared_ptr<string> &val1,
+                          const shared_ptr<string> &val2);
+  static bool equalNumber(const shared_ptr<int> &val1,
+                          const shared_ptr<int> &val2);
+  static bool isUnset(const shared_ptr<void> &value);
+  static map<string, string>
+  stringifyMapValue(const shared_ptr<map<string, boost::any>> &m);
+  static map<string, boost::any>
+  anyifyMapValue(const shared_ptr<map<string, string>> &m);
+  static bool assertAsBoolean(const shared_ptr<boost::any> &value);
+  static string assertAsString(const shared_ptr<boost::any> &value);
+  static vector<uint8_t> assertAsBytes(const shared_ptr<boost::any> &value);
+  static int assertAsNumber(const shared_ptr<boost::any> &value);
+  static map<string, boost::any>
+  assertAsMap(const shared_ptr<boost::any> &value);
+  static string getUserAgent(const shared_ptr<string> &userAgent);
+  static bool is2xx(const shared_ptr<int> &code);
+  static bool is3xx(const shared_ptr<int> &code);
+  static bool is4xx(const shared_ptr<int> &code);
+  static bool is5xx(const shared_ptr<int> &code);
+  static void validateModel(const shared_ptr<Darabonba::Model> &m);
+  static map<string, boost::any> toMap(const shared_ptr<Darabonba::Model> &in);
+  static void sleep(const shared_ptr<int> &millisecond);
+  static vector<map<string, boost::any>>
+  toArray(const shared_ptr<boost::any> &input);
+  static concurrency::streams::istream
+  assertAsReadable(const shared_ptr<boost::any> &value);
 
   Client(){};
   ~Client(){};

@@ -81,7 +81,7 @@ if (ENABLE_UNIT_TESTS)
             PRIVATE
             ${PROJECT_NAME}
             gtest_main
-            gmock_main)
+            gmock_main ${Boost_LIBRARIES} ${CPPREST_LIB})
     add_test(NAME google_test
             COMMAND $<TARGET_FILE:tests_darabonba_util>)
 endif ()
