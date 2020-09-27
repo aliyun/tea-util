@@ -5,13 +5,13 @@
 using namespace std;
 
 TEST(tests_parse, toBytes) {
-  std::vector<uint8_t> bytes({116, 101, 115, 116});
-  ASSERT_EQ(bytes, Darabonba_Util::Client::toBytes(new string("test")));
+  vector<uint8_t> bytes({116, 101, 115, 116});
+  ASSERT_EQ(bytes, Darabonba_Util::Client::toBytes(make_shared<string>("test")));
 }
 
 TEST(tests_parse, toString) {
-  std::vector<uint8_t> bytes({116, 101, 115, 116});
-  ASSERT_EQ(string("test"), Darabonba_Util::Client::toString(&bytes));
+  vector<uint8_t> bytes({116, 101, 115, 116});
+  ASSERT_EQ(string("test"), Darabonba_Util::Client::toString(make_shared<vector<uint8_t>>(bytes)));
 }
 
 template<typename T>
@@ -30,7 +30,7 @@ TEST(tests_parse, parseJSON) {
       {"vector", boost::any(vector<boost::any>({{boost::any("foo")}}))},
       {"map", boost::any(map<string, boost::any>({{"foo", boost::any("bar")}}))}
   };
-  boost::any target = Darabonba_Util::Client::parseJSON(&json);
+  boost::any target = Darabonba_Util::Client::parseJSON(make_shared<string>(json));
   map<string, boost::any> data = boost::any_cast<map<string, boost::any>>(target);
   vector<boost::any> vec = boost::any_cast<vector<boost::any>>(data["vector"]);
 
@@ -53,7 +53,7 @@ TEST(tests_parse, toJSONString) {
                                                  }))
       }
   };
-  string res = Darabonba_Util::Client::toJSONString(new boost::any(m));
+  string res = Darabonba_Util::Client::toJSONString(make_shared<boost::any>(m));
   ASSERT_EQ(string(
                 "{\"bool\":true,\"foo\":\"bar\",\"long\":9223372036854775807,\"map\":{\"foo\":\"bar\"},\"string\":string,\"vector\":[\"foo\"]}"),
             res);
