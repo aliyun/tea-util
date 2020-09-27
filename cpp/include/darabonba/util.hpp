@@ -36,125 +36,117 @@ protected:
 
 public:
   RuntimeOptions() { _init(); };
-  explicit RuntimeOptions(const std::map<string, boost::any> &config)
-      : Model(config) {
+  explicit RuntimeOptions(const map<string, boost::any> &config)
+      : Darabonba::Model(config) {
     _init();
   };
 
+  void validate() {};
+  void fromMap(map<string, boost::any> m) {}
+
   map<string, boost::any> toMap() {
     map<string, boost::any> res;
-    if (nullptr != autoretry) {
+    if (autoretry) {
       res["autoretry"] = boost::any(*autoretry);
     }
-    if (nullptr != ignoreSSL) {
+    if (ignoreSSL) {
       res["ignoreSSL"] = boost::any(*ignoreSSL);
     }
-    if (nullptr != maxAttempts) {
+    if (maxAttempts) {
       res["max_attempts"] = boost::any(*maxAttempts);
     }
-    if (nullptr != backoffPolicy) {
+    if (backoffPolicy) {
       res["backoff_policy"] = boost::any(*backoffPolicy);
     }
-    if (nullptr != backoffPeriod) {
+    if (backoffPeriod) {
       res["backoff_period"] = boost::any(*backoffPeriod);
     }
-    if (nullptr != readTimeout) {
+    if (readTimeout) {
       res["readTimeout"] = boost::any(*readTimeout);
     }
-    if (nullptr != connectTimeout) {
+    if (connectTimeout) {
       res["connectTimeout"] = boost::any(*connectTimeout);
     }
-    if (nullptr != httpProxy) {
+    if (httpProxy) {
       res["httpProxy"] = boost::any(*httpProxy);
     }
-    if (nullptr != httpsProxy) {
+    if (httpsProxy) {
       res["httpsProxy"] = boost::any(*httpsProxy);
     }
-    if (nullptr != noProxy) {
+    if (noProxy) {
       res["noProxy"] = boost::any(*noProxy);
     }
-    if (nullptr != maxIdleConns) {
+    if (maxIdleConns) {
       res["maxIdleConns"] = boost::any(*maxIdleConns);
     }
-    if (nullptr != localAddr) {
+    if (localAddr) {
       res["localAddr"] = boost::any(*localAddr);
     }
-    if (nullptr != socks5Proxy) {
+    if (socks5Proxy) {
       res["socks5Proxy"] = boost::any(*socks5Proxy);
     }
-    if (nullptr != socks5NetWork) {
+    if (socks5NetWork) {
       res["socks5NetWork"] = boost::any(*socks5NetWork);
     }
     return res;
   }
 
-  bool *autoretry{};
-  bool *ignoreSSL{};
-  int *maxAttempts{};
-  string *backoffPolicy{};
-  int *backoffPeriod{};
-  int *readTimeout{};
-  int *connectTimeout{};
-  string *httpProxy{};
-  string *httpsProxy{};
-  string *noProxy{};
-  int *maxIdleConns{};
-  string *localAddr{};
-  string *socks5Proxy{};
-  string *socks5NetWork{};
+  shared_ptr<bool> autoretry{};
+  shared_ptr<bool> ignoreSSL{};
+  shared_ptr<int> maxAttempts{};
+  shared_ptr<string> backoffPolicy{};
+  shared_ptr<int> backoffPeriod{};
+  shared_ptr<int> readTimeout{};
+  shared_ptr<int> connectTimeout{};
+  shared_ptr<string> httpProxy{};
+  shared_ptr<string> httpsProxy{};
+  shared_ptr<string> noProxy{};
+  shared_ptr<int> maxIdleConns{};
+  shared_ptr<string> localAddr{};
+  shared_ptr<string> socks5Proxy{};
+  shared_ptr<string> socks5NetWork{};
 
-  ~RuntimeOptions() {
-    delete autoretry;
-    delete ignoreSSL;
-    delete maxAttempts;
-    delete backoffPolicy;
-    delete backoffPeriod;
-    delete readTimeout;
-    delete connectTimeout;
-    delete httpProxy;
-    delete httpsProxy;
-    delete noProxy;
-    delete maxIdleConns;
-    delete localAddr;
-    delete socks5Proxy;
-    delete socks5NetWork;
-  };
+  ~RuntimeOptions() {};
 };
 class Client {
 public:
-  static vector<uint8_t> toBytes(string *val);
-  static string toString(vector<uint8_t> *val);
-  static boost::any parseJSON(string *val);
-  static vector<uint8_t> readAsBytes(concurrency::streams::istream *stream);
-  static string readAsString(concurrency::streams::istream *stream);
-  static boost::any readAsJSON(concurrency::streams::istream *stream);
+  static vector<uint8_t> toBytes(const shared_ptr<string>& val);
+  static string toString(const shared_ptr<vector<uint8_t>>& val);
+  static boost::any parseJSON(const shared_ptr<string>& val);
+  static vector<uint8_t> readAsBytes(const shared_ptr<concurrency::streams::istream>& stream);
+  static string readAsString(const shared_ptr<concurrency::streams::istream>& stream);
+  static boost::any readAsJSON(const shared_ptr<concurrency::streams::istream>& stream);
   static string getNonce();
   static string getDateUTCString();
-  static string defaultString(string *real, string *default_);
-  static int defaultNumber(int *real, int *default_);
-  static string toFormString(map<string, boost::any> *val);
-  static string toJSONString(boost::any *val);
-  static bool empty(string *val);
-  static bool equalString(string *val1, string *val2);
-  static bool equalNumber(int *val1, int *val2);
-  static bool isUnset(void *value);
-  static map<string, string> stringifyMapValue(map<string, boost::any> *m);
-  static map<string, boost::any> anyifyMapValue(map<string, string> *m);
-  static bool assertAsBoolean(boost::any *value);
-  static string assertAsString(boost::any *value);
-  static vector<uint8_t> assertAsBytes(boost::any *value);
-  static int assertAsNumber(boost::any *value);
-  static map<string, boost::any> assertAsMap(boost::any *value);
-  static string getUserAgent(string *userAgent);
-  static bool is2xx(int *code);
-  static bool is3xx(int *code);
-  static bool is4xx(int *code);
-  static bool is5xx(int *code);
-  static void validateModel(Darabonba::Model *m);
-  static map<string, boost::any> toMap(Darabonba::Model *in);
-  static void sleep(int *millisecond);
-  static vector<map<string, boost::any>> toArray(boost::any *input);
-  static concurrency::streams::istream assertAsReadable(boost::any *value);
+  static string defaultString(const shared_ptr<string>& real,
+                              const shared_ptr<string>& default_);
+  static int defaultNumber(const shared_ptr<int>& real,
+                           const shared_ptr<int>& default_);
+  static string toFormString(shared_ptr<map<string, boost::any>> val);
+  static string toJSONString(const shared_ptr<boost::any>& val);
+  static bool empty(const shared_ptr<string>& val);
+  static bool equalString(const shared_ptr<string>& val1,
+                          const shared_ptr<string>& val2);
+  static bool equalNumber(const shared_ptr<int>& val1,
+                          const shared_ptr<int>& val2);
+  static bool isUnset(const shared_ptr<void>& value);
+  static map<string, string> stringifyMapValue(const shared_ptr<map<string, boost::any>>& m);
+  static map<string, boost::any> anyifyMapValue(const shared_ptr<map<string, string>>& m);
+  static bool assertAsBoolean(const shared_ptr<boost::any>& value);
+  static string assertAsString(const shared_ptr<boost::any>& value);
+  static vector<uint8_t> assertAsBytes(const shared_ptr<boost::any>& value);
+  static int assertAsNumber(const shared_ptr<boost::any>& value);
+  static map<string, boost::any> assertAsMap(const shared_ptr<boost::any>& value);
+  static string getUserAgent(const shared_ptr<string>& userAgent);
+  static bool is2xx(const shared_ptr<int>& code);
+  static bool is3xx(const shared_ptr<int>& code);
+  static bool is4xx(const shared_ptr<int>& code);
+  static bool is5xx(const shared_ptr<int>& code);
+  static void validateModel(const shared_ptr<Darabonba::Model>& m);
+  static map<string, boost::any> toMap(const shared_ptr<Darabonba::Model>& in);
+  static void sleep(const shared_ptr<int>& millisecond);
+  static vector<map<string, boost::any>> toArray(const shared_ptr<boost::any>& input);
+  static concurrency::streams::istream assertAsReadable(const shared_ptr<boost::any>& value);
 
   Client(){};
   ~Client(){};
