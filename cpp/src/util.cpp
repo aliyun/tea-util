@@ -42,7 +42,8 @@ std::string os_name() {
 #endif
 }
 
-string Darabonba_Util::Client::getUserAgent(const shared_ptr<string>& userAgent) {
+string
+Darabonba_Util::Client::getUserAgent(const shared_ptr<string> &userAgent) {
   string ua = !userAgent ? "" : *userAgent;
   string _default_user_agent("AlibabaCloud OS/" + os_name() + " DaraDSL/1");
   if (ua.empty()) {
@@ -52,16 +53,20 @@ string Darabonba_Util::Client::getUserAgent(const shared_ptr<string>& userAgent)
   return ua;
 }
 
-void Darabonba_Util::Client::validateModel(const shared_ptr<Darabonba::Model>& m) { m->validate(); }
+void Darabonba_Util::Client::validateModel(
+    const shared_ptr<Darabonba::Model> &m) {
+  m->validate();
+}
 
-map<string, boost::any> Darabonba_Util::Client::toMap(const shared_ptr<Darabonba::Model>& in) {
+map<string, boost::any>
+Darabonba_Util::Client::toMap(const shared_ptr<Darabonba::Model> &in) {
   if (!in) {
     return map<string, boost::any>();
   }
   return in->toMap();
 }
 
-void Darabonba_Util::Client::sleep(const shared_ptr<int>& millisecond) {
+void Darabonba_Util::Client::sleep(const shared_ptr<int> &millisecond) {
   int m = !millisecond ? 0 : *millisecond;
   boost::this_thread::sleep_for(boost::chrono::milliseconds(m));
 }
