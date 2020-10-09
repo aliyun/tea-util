@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include <darabonba/util.hpp>
 #include <boost/any.hpp>
+#include <cpprest/http_client.h>
+#include <cpprest/streams.h>
 
 using namespace std;
 
@@ -57,4 +59,47 @@ TEST(tests_parse, toJSONString) {
   ASSERT_EQ(string(
                 "{\"bool\":true,\"foo\":\"bar\",\"long\":9223372036854775807,\"map\":{\"foo\":\"bar\"},\"string\":string,\"vector\":[\"foo\"]}"),
             res);
+}
+
+TEST(tests_parse, readAsBytes){
+  string str("string");
+  concurrency::streams::stringstreambuf string_buf(str);
+
+  vector<uint8_t> res = Darabonba_Util::Client::readAsBytes(
+      make_shared<Darabonba::Stream>(make_shared<concurrency::streams::istream>(string_buf))
+  );
+  vector<uint8_t> exp(str.begin(), str.end());
+  ASSERT_EQ(exp, res);
+}
+
+TEST(tests_parse, readAsString){
+  string str("string");
+  concurrency::streams::stringstreambuf string_buf(str);
+
+  string res = Darabonba_Util::Client::readAsString(
+      make_shared<Darabonba::Stream>(make_shared<concurrency::streams::istream>(string_buf))
+  );
+  ASSERT_EQ(str, res);
+}
+
+
+TEST(tests_parse, readAsJSON){
+  string json(R"({"test": "string"})");
+  concurrency::streams::stringstreambuf string_buf(json);
+
+  map<string, boost::any> res = boost::any_cast<map<string, boost::any>>(
+      Darabonba_Util::Client::readAsJSON(
+          make_shared<Darabonba::Stream>(make_shared<concurrency::streams::istream>(string_buf))
+  ));
+  ASSERT_EQ(string("string"), boost::any_cast<string>(res["test"]));
+
+  string json_array(R"(["test", "string"])");
+  vector<boost::any> array = boost::any_cast<vector<boost::any>>(
+      Darabonba_Util::Client::readAsJSON(
+          make_shared<Darabonba::Stream>(make_shared<stringstream>(json_array))
+          )
+      );
+
+  ASSERT_EQ(string("test"), boost::any_cast<string>(array[0]));
+  ASSERT_EQ(string("string"), boost::any_cast<string>(array[1]));
 }

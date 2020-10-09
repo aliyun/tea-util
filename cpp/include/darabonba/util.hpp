@@ -114,11 +114,11 @@ public:
   static string toString(const shared_ptr<vector<uint8_t>> &val);
   static boost::any parseJSON(const shared_ptr<string> &val);
   static vector<uint8_t>
-  readAsBytes(const shared_ptr<concurrency::streams::istream> &stream);
+  readAsBytes(const shared_ptr<Darabonba::Stream> &stream);
   static string
-  readAsString(const shared_ptr<concurrency::streams::istream> &stream);
+  readAsString(const shared_ptr<Darabonba::Stream> &stream);
   static boost::any
-  readAsJSON(const shared_ptr<concurrency::streams::istream> &stream);
+  readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
   static string getNonce();
   static string getDateUTCString();
   static string defaultString(const shared_ptr<string> &real,
@@ -153,7 +153,7 @@ public:
   static void sleep(const shared_ptr<int> &millisecond);
   static vector<map<string, boost::any>>
   toArray(const shared_ptr<boost::any> &input);
-  static concurrency::streams::istream
+  static Darabonba::Stream
   assertAsReadable(const shared_ptr<boost::any> &value);
 
   Client(){};

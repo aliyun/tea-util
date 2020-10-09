@@ -1,9 +1,11 @@
 #include "gtest/gtest.h"
 #include <darabonba/util.hpp>
 #include <boost/lexical_cast.hpp>
+#include <fstream>
 
 using namespace Darabonba_Util;
 using namespace std;
+
 
 TEST(assert, test_empty) {
   string str;
@@ -135,10 +137,10 @@ TEST(assert, assertAsMap) {
 }
 
 TEST(assert, assertAsReadable) {
-  concurrency::streams::istream s;
+  Darabonba::Stream s(make_shared<stringstream>("test stream"));
   shared_ptr<boost::any> val(new boost::any(s));
-  concurrency::streams::istream res = Client::assertAsReadable(val);
-  ASSERT_EQ(res, s);
+  Darabonba::Stream res = Client::assertAsReadable(val);
+  ASSERT_EQ(string("test stream"), res.read());
 
   try {
     *val = boost::any(true);
@@ -146,7 +148,7 @@ TEST(assert, assertAsReadable) {
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
-    ASSERT_EQ("value is not a concurrency::streams::istream", err);
+    ASSERT_EQ("value is not a readable", err);
   }
 }
 

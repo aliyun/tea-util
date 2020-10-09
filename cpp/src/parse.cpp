@@ -1,8 +1,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <cpprest/streams.h>
 #include <darabonba/util.hpp>
+#include <cpprest/streams.h>
+#include <cpprest/http_client.h>
 #include <json/json.h>
 #include <sstream>
 #include <string>
@@ -152,30 +153,25 @@ string Darabonba_Util::Client::toJSONString(const shared_ptr<boost::any> &val) {
 }
 
 vector<uint8_t> Darabonba_Util::Client::readAsBytes(
-    const shared_ptr<concurrency::streams::istream> &stream) {
+    const shared_ptr<Darabonba::Stream> &stream) {
   if (!stream) {
     return vector<uint8_t>();
   }
-  size_t count = stream->streambuf().size();
-  vector<uint8_t> buffer;
-  buffer.resize(count);
-  stream->seek(0);
-  stream->streambuf().getn(buffer.data(), count).get();
+  string str = readAsString(stream);
+  vector<uint8_t> buffer(str.begin(), str.end());
   return buffer;
 }
 
 string Darabonba_Util::Client::readAsString(
-    const shared_ptr<concurrency::streams::istream> &stream) {
+    const shared_ptr<Darabonba::Stream> &stream) {
   if (!stream) {
     return string("");
   }
-  vector<uint8_t> bytes = readAsBytes(stream);
-  string str(toString(make_shared<vector<uint8_t>>(bytes)));
-  return str;
+  return stream->read();;
 }
 
 boost::any Darabonba_Util::Client::readAsJSON(
-    const shared_ptr<concurrency::streams::istream> &stream) {
+    const shared_ptr<Darabonba::Stream> &stream) {
   string json = readAsString(stream);
   return Client::parseJSON(make_shared<string>(json));
 }
