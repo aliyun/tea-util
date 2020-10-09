@@ -148,17 +148,17 @@ bool Darabonba_Util::Client::is5xx(const shared_ptr<int> &code) {
   return code && *code >= 500 && *code < 600;
 }
 
-concurrency::streams::istream
+Darabonba::Stream
 Darabonba_Util::Client::assertAsReadable(const shared_ptr<boost::any> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(concurrency::streams::istream) != value->type()) {
+  if (typeid(Darabonba::Stream) != value->type()) {
     BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a concurrency::streams::istream")));
+        runtime_error("value is not a readable")));
   }
-  concurrency::streams::istream f =
-      boost::any_cast<concurrency::streams::istream>(*value);
+  Darabonba::Stream f =
+      boost::any_cast<Darabonba::Stream>(*value);
   return f;
 }
