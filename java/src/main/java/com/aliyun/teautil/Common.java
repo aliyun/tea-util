@@ -6,6 +6,7 @@ import com.aliyun.teautil.models.TeaUtilException;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -137,12 +138,12 @@ public class Common {
      * @return the bytes result
      */
     public static byte[] readAsBytes(InputStream stream) {
-        if (null == stream) {
-            return new byte[]{};
-        } else {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            byte[] buff = new byte[1024];
-            try {
+        try {
+            if (null == stream) {
+                return new byte[]{};
+            } else {
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                byte[] buff = new byte[1024];
                 while (true) {
                     int read = stream.read(buff);
                     if (read == -1) {
@@ -150,8 +151,16 @@ public class Common {
                     }
                     os.write(buff, 0, read);
                 }
-            } catch (Exception e) {
-                throw new TeaUtilException(e.getMessage(), e);
+            }
+        } catch (Exception e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        } finally {
+            if (null != stream) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    throw new TeaUtilException(e.getMessage(), e);
+                }
             }
         }
     }
