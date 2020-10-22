@@ -1,9 +1,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <darabonba/util.hpp>
-#include <cpprest/streams.h>
 #include <cpprest/http_client.h>
+#include <cpprest/streams.h>
+#include <darabonba/util.hpp>
 #include <json/json.h>
 #include <sstream>
 #include <string>
@@ -167,7 +167,8 @@ string Darabonba_Util::Client::readAsString(
   if (!stream) {
     return string("");
   }
-  return stream->read();;
+  return stream->read();
+  ;
 }
 
 boost::any Darabonba_Util::Client::readAsJSON(
@@ -183,10 +184,11 @@ Darabonba_Util::Client::toFormString(shared_ptr<map<string, boost::any>> val) {
   }
   vector<string> tmp;
   for (const auto &it : *val) {
-    string v = boost::any_cast<string>(val);
+    string v = boost::any_cast<string>(it.second);
     v = url_encode(v);
     string str;
     str.append(it.first).append("=").append(v);
+    tmp.push_back(str);
   }
   return implode(tmp, "&");
 }

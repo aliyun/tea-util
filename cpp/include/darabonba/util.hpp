@@ -115,10 +115,8 @@ public:
   static boost::any parseJSON(const shared_ptr<string> &val);
   static vector<uint8_t>
   readAsBytes(const shared_ptr<Darabonba::Stream> &stream);
-  static string
-  readAsString(const shared_ptr<Darabonba::Stream> &stream);
-  static boost::any
-  readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
+  static string readAsString(const shared_ptr<Darabonba::Stream> &stream);
+  static boost::any readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
   static string getNonce();
   static string getDateUTCString();
   static string defaultString(const shared_ptr<string> &real,
