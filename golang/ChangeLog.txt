@@ -1,3 +1,6 @@
+2020-10-22 Version: v1.3.5
+- Close body after reading it.
+
 2020-08-27 Version: v1.3.4
 - Support AssertAsReadable and improve AssertAsMap.
 
