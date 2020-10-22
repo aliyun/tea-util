@@ -1,11 +1,10 @@
 #include "gtest/gtest.h"
-#include <darabonba/util.hpp>
 #include <boost/lexical_cast.hpp>
+#include <darabonba/util.hpp>
 #include <fstream>
 
 using namespace Darabonba_Util;
 using namespace std;
-
 
 TEST(assert, test_empty) {
   string str;
@@ -43,13 +42,13 @@ TEST(assert, isUnset) {
 
 TEST(assert, stringifyMapValue) {
   shared_ptr<map<string, boost::any>> m(new map<string, boost::any>({
-       {"int", boost::any(1)},
-       {"long", boost::any(LONG_MAX)},
-       {"double", boost::any(0.1)},
-       {"float", boost::any(0.1)},
-       {"bool", boost::any(true)},
-       {"string", boost::any(string("test"))},
-   }));
+      {"int", boost::any(1)},
+      {"long", boost::any(LONG_MAX)},
+      {"double", boost::any(0.1)},
+      {"float", boost::any(0.1)},
+      {"bool", boost::any(true)},
+      {"string", boost::any(string("test"))},
+  }));
 
   map<string, string> expected;
   expected["int"] = "1";
@@ -120,9 +119,8 @@ TEST(assert, assertAsNumber) {
 }
 
 TEST(assert, assertAsMap) {
-  shared_ptr<boost::any> val(new boost::any(map<string, boost::any>({
-     {"foo", string("bar")}
-  })));
+  shared_ptr<boost::any> val(
+      new boost::any(map<string, boost::any>({{"foo", string("bar")}})));
   map<string, boost::any> res = Client::assertAsMap(val);
   ASSERT_EQ(string("bar"), boost::any_cast<string>(res["foo"]));
 
@@ -176,10 +174,7 @@ TEST(assert, is5xx) {
   ASSERT_FALSE(Client::is5xx(make_shared<int>(600)));
 }
 
-TEST(runtime, runtime_test)
-{
-  map<string, boost::any> runtime_opt = {
-      {"autoretry", "autoretry"}
-  };
+TEST(runtime, runtime_test) {
+  map<string, boost::any> runtime_opt = {{"autoretry", "autoretry"}};
   RuntimeOptions runtime(runtime_opt);
 }

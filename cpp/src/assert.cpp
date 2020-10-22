@@ -155,10 +155,9 @@ Darabonba_Util::Client::assertAsReadable(const shared_ptr<boost::any> &value) {
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
   if (typeid(Darabonba::Stream) != value->type()) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a readable")));
+    BOOST_THROW_EXCEPTION(
+        boost::enable_error_info(runtime_error("value is not a readable")));
   }
-  Darabonba::Stream f =
-      boost::any_cast<Darabonba::Stream>(*value);
+  Darabonba::Stream f = boost::any_cast<Darabonba::Stream>(*value);
   return f;
 }
