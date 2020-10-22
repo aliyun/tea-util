@@ -7,6 +7,7 @@
 #include <json/json.h>
 #include <sstream>
 #include <string>
+#include <regex>
 
 using namespace std;
 
@@ -57,6 +58,18 @@ Darabonba_Util::Client::toString(const shared_ptr<vector<uint8_t>> &val) {
 
 boost::any parse_json(boost::property_tree::ptree pt) {
   if (pt.empty()) {
+    if (pt.data() == "true" || pt.data() == "false") {
+      return boost::any(pt.get_value<bool>());
+    } else if (regex_search(pt.data(), regex("^-?\\d+$"))) {
+      long ln = atol(pt.data().c_str());
+      if (ln > 2147483647 || ln < -2147483648) {
+        return boost::any(ln);
+      } else {
+        return boost::any(atoi(pt.data().c_str()));
+      }
+    } else if (regex_search(pt.data(), regex(R"(^-?\d+\.{1}\d+$)"))) {
+      return boost::any(atof(pt.data().c_str()));
+    }
     return boost::any(pt.data());
   }
   vector<boost::any> vec;
