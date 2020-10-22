@@ -118,6 +118,10 @@ func ReadAsString(body io.Reader) (*string, error) {
 	if err != nil {
 		return tea.String(""), err
 	}
+	r, ok := body.(io.ReadCloser)
+	if ok {
+		r.Close()
+	}
 	return tea.String(string(byt)), nil
 }
 
@@ -150,6 +154,10 @@ func ReadAsBytes(body io.Reader) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	r, ok := body.(io.ReadCloser)
+	if ok {
+		r.Close()
+	}
 	return byt, nil
 }
 
@@ -179,6 +187,10 @@ func ReadAsJSON(body io.Reader) (result interface{}, err error) {
 	}
 	if string(byt) == "" {
 		return
+	}
+	r, ok := body.(io.ReadCloser)
+	if ok {
+		r.Close()
 	}
 	err = json.Unmarshal(byt, &result)
 	return
