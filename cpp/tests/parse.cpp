@@ -82,13 +82,16 @@ TEST(tests_parse, readAsString) {
 }
 
 TEST(tests_parse, readAsJSON) {
-  string json(R"({"test": "string"})");
+  string json(R"({"test": "string", "int": 100, "long": -9999999999, "double": 1.0212199})");
   concurrency::streams::stringstreambuf string_buf(json);
 
   map<string, boost::any> res = boost::any_cast<map<string, boost::any>>(
       Darabonba_Util::Client::readAsJSON(make_shared<Darabonba::Stream>(
           make_shared<concurrency::streams::istream>(string_buf))));
   ASSERT_EQ(string("string"), boost::any_cast<string>(res["test"]));
+  ASSERT_EQ(100, boost::any_cast<int>(res["int"]));
+  ASSERT_EQ(-9999999999, boost::any_cast<long>(res["long"]));
+  ASSERT_EQ(double(1.0212199), boost::any_cast<double>(res["double"]));
 
   string json_array(R"(["test", "string"])");
   vector<boost::any> array = boost::any_cast<vector<boost::any>>(
@@ -97,6 +100,7 @@ TEST(tests_parse, readAsJSON) {
 
   ASSERT_EQ(string("test"), boost::any_cast<string>(array[0]));
   ASSERT_EQ(string("string"), boost::any_cast<string>(array[1]));
+
 }
 
 TEST(test_parse, toFormString) {
