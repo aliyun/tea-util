@@ -47,7 +47,10 @@ class Client:
         Parse it by JSON format
         @return the parsed result
         """
-        return json.loads(val)
+        try:
+            return json.loads(val)
+        except ValueError:
+            raise RuntimeError('Failed to parse the value as json format, Value: "%s".' % val)
 
     @staticmethod
     def read_as_bytes(body):

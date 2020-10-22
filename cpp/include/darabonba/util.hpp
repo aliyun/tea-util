@@ -1,260 +1,161 @@
+// This file is auto-generated, don't edit it. Thanks.
+
 #ifndef DARABONBA_UTIL_H_
 #define DARABONBA_UTIL_H_
 
 #include <boost/any.hpp>
+#include <cpprest/streams.h>
 #include <darabonba/core.hpp>
 #include <iostream>
 #include <map>
 #include <vector>
-#include <cpprest/streams.h>
 
-using namespace Darabonba;
 using namespace std;
 
 namespace Darabonba_Util {
-class RuntimeOptions : public Model {
-public:
-  explicit RuntimeOptions(const std::map<string, boost::any> &config)
-      : Model(config) {};
-  RuntimeOptions();
-  ~RuntimeOptions();
+class RuntimeOptions : public Darabonba::Model {
+protected:
+  void _init() {
+    _name = map<string, string>({
+        {"autoretry", "autoretry"},
+        {"ignoreSSL", "ignoreSSL"},
+        {"maxAttempts", "max_attempts"},
+        {"backoffPolicy", "backoff_policy"},
+        {"backoffPeriod", "backoff_period"},
+        {"readTimeout", "readTimeout"},
+        {"connectTimeout", "connectTimeout"},
+        {"httpProxy", "httpProxy"},
+        {"httpsProxy", "httpsProxy"},
+        {"noProxy", "noProxy"},
+        {"maxIdleConns", "maxIdleConns"},
+        {"localAddr", "localAddr"},
+        {"socks5Proxy", "socks5Proxy"},
+        {"socks5NetWork", "socks5NetWork"},
+    });
+  }
 
-  bool getAutoretry() {
-    string name = "autoretry";
-    bool prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<bool>(val);
+public:
+  RuntimeOptions() { _init(); };
+  explicit RuntimeOptions(const map<string, boost::any> &config)
+      : Darabonba::Model(config) {
+    _init();
+  };
+
+  void validate(){};
+  void fromMap(map<string, boost::any> m) {}
+
+  map<string, boost::any> toMap() {
+    map<string, boost::any> res;
+    if (autoretry) {
+      res["autoretry"] = boost::any(*autoretry);
     }
-    return prop_val;
-  }
-  void setAutoretry(bool val) {
-    string name = "autoretry";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  bool getIgnoreSSL() {
-    string name = "ignoreSSL";
-    bool prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<bool>(val);
+    if (ignoreSSL) {
+      res["ignoreSSL"] = boost::any(*ignoreSSL);
     }
-    return prop_val;
-  }
-  void setIgnoreSSL(bool val) {
-    string name = "ignoreSSL";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  int getMaxAttempts() {
-    string name = "maxAttempts";
-    int prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<int>(val);
+    if (maxAttempts) {
+      res["max_attempts"] = boost::any(*maxAttempts);
     }
-    return prop_val;
-  }
-  void setMaxAttempts(int val) {
-    string name = "maxAttempts";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getBackoffPolicy() {
-    string name = "backoffPolicy";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (backoffPolicy) {
+      res["backoff_policy"] = boost::any(*backoffPolicy);
     }
-    return prop_val;
-  }
-  void setBackoffPolicy(string val) {
-    string name = "backoffPolicy";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  int getBackoffPeriod() {
-    string name = "backoffPeriod";
-    int prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<int>(val);
+    if (backoffPeriod) {
+      res["backoff_period"] = boost::any(*backoffPeriod);
     }
-    return prop_val;
-  }
-  void setBackoffPeriod(int val) {
-    string name = "backoffPeriod";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  int getReadTimeout() {
-    string name = "readTimeout";
-    int prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<int>(val);
+    if (readTimeout) {
+      res["readTimeout"] = boost::any(*readTimeout);
     }
-    return prop_val;
-  }
-  void setReadTimeout(int val) {
-    string name = "readTimeout";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  int getConnectTimeout() {
-    string name = "connectTimeout";
-    int prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<int>(val);
+    if (connectTimeout) {
+      res["connectTimeout"] = boost::any(*connectTimeout);
     }
-    return prop_val;
-  }
-  void setConnectTimeout(int val) {
-    string name = "connectTimeout";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getHttpProxy() {
-    string name = "httpProxy";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (httpProxy) {
+      res["httpProxy"] = boost::any(*httpProxy);
     }
-    return prop_val;
-  }
-  void setHttpProxy(string val) {
-    string name = "httpProxy";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getHttpsProxy() {
-    string name = "httpsProxy";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (httpsProxy) {
+      res["httpsProxy"] = boost::any(*httpsProxy);
     }
-    return prop_val;
-  }
-  void setHttpsProxy(string val) {
-    string name = "httpsProxy";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getNoProxy() {
-    string name = "noProxy";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (noProxy) {
+      res["noProxy"] = boost::any(*noProxy);
     }
-    return prop_val;
-  }
-  void setNoProxy(string val) {
-    string name = "noProxy";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  int getMaxIdleConns() {
-    string name = "maxIdleConns";
-    int prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<int>(val);
+    if (maxIdleConns) {
+      res["maxIdleConns"] = boost::any(*maxIdleConns);
     }
-    return prop_val;
-  }
-  void setMaxIdleConns(int val) {
-    string name = "maxIdleConns";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getLocalAddr() {
-    string name = "localAddr";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (localAddr) {
+      res["localAddr"] = boost::any(*localAddr);
     }
-    return prop_val;
-  }
-  void setLocalAddr(string val) {
-    string name = "localAddr";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getSocks5Proxy() {
-    string name = "socks5Proxy";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (socks5Proxy) {
+      res["socks5Proxy"] = boost::any(*socks5Proxy);
     }
-    return prop_val;
-  }
-  void setSocks5Proxy(string val) {
-    string name = "socks5Proxy";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
-  string getSocks5NetWork() {
-    string name = "socks5NetWork";
-    string prop_val;
-    if (_properties.find(name) != _properties.end()) {
-      boost::any val = _properties.at(name);
-      prop_val = boost::any_cast<string>(val);
+    if (socks5NetWork) {
+      res["socks5NetWork"] = boost::any(*socks5NetWork);
     }
-    return prop_val;
+    return res;
   }
-  void setSocks5NetWork(string val) {
-    string name = "socks5NetWork";
-    boost::any prop_val(val);
-    _properties.insert(pair<string, boost::any>(name, prop_val));
-  }
+
+  shared_ptr<bool> autoretry{};
+  shared_ptr<bool> ignoreSSL{};
+  shared_ptr<int> maxAttempts{};
+  shared_ptr<string> backoffPolicy{};
+  shared_ptr<int> backoffPeriod{};
+  shared_ptr<int> readTimeout{};
+  shared_ptr<int> connectTimeout{};
+  shared_ptr<string> httpProxy{};
+  shared_ptr<string> httpsProxy{};
+  shared_ptr<string> noProxy{};
+  shared_ptr<int> maxIdleConns{};
+  shared_ptr<string> localAddr{};
+  shared_ptr<string> socks5Proxy{};
+  shared_ptr<string> socks5NetWork{};
+
+  ~RuntimeOptions(){};
 };
 class Client {
 public:
-  Client();
-  ~Client();
-
-  static std::vector<uint8_t> toBytes(const string &val);
-  static string toString(std::vector<uint8_t> val);
-  static boost::any parseJSON(const string &val);
-  static std::vector<uint8_t> readAsBytes(const concurrency::streams::istream &stream);
-  static string readAsString(const concurrency::streams::istream &stream);
-  static boost::any readAsJSON(const concurrency::streams::istream &stream);
+  static vector<uint8_t> toBytes(const shared_ptr<string> &val);
+  static string toString(const shared_ptr<vector<uint8_t>> &val);
+  static boost::any parseJSON(const shared_ptr<string> &val);
+  static vector<uint8_t>
+  readAsBytes(const shared_ptr<Darabonba::Stream> &stream);
+  static string readAsString(const shared_ptr<Darabonba::Stream> &stream);
+  static boost::any readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
   static string getNonce();
   static string getDateUTCString();
-  static string defaultString(void *real, string default_ = "");
-  static int defaultNumber(void *real, int default_);
-  static string toFormString(map<string, boost::any> val);
-  static string toJSONString(boost::any val);
-  static bool empty(const string& val);
-  static bool equalString(const string &val1, const string &val2);
-  static bool equalNumber(int val1, int val2);
-  static bool isUnset(void *value);
+  static string defaultString(const shared_ptr<string> &real,
+                              const shared_ptr<string> &default_);
+  static int defaultNumber(const shared_ptr<int> &real,
+                           const shared_ptr<int> &default_);
+  static string toFormString(shared_ptr<map<string, boost::any>> val);
+  static string toJSONString(const shared_ptr<boost::any> &val);
+  static bool empty(const shared_ptr<string> &val);
+  static bool equalString(const shared_ptr<string> &val1,
+                          const shared_ptr<string> &val2);
+  static bool equalNumber(const shared_ptr<int> &val1,
+                          const shared_ptr<int> &val2);
+  static bool isUnset(const shared_ptr<void> &value);
   static map<string, string>
-  stringifyMapValue(const map<string, boost::any> &m);
-  static map<string, boost::any> anyifyMapValue(const map<string, string> &m);
-  static bool assertAsBoolean(const boost::any &value);
-  static string assertAsString(const boost::any &value);
-  static std::vector<uint8_t> assertAsBytes(const boost::any &value);
-  static int assertAsNumber(const boost::any &value);
-  static map<string, boost::any> assertAsMap(boost::any value);
-  static string getUserAgent(string userAgent = "");
-  static bool is2xx(int code);
-  static bool is3xx(int code);
-  static bool is4xx(int code);
-  static bool is5xx(int code);
-  static void validateModel(Model m);
-  static map<string, boost::any> toMap(Model in);
-  static void sleep(int millisecond);
-  static vector<map<string, boost::any>> toArray(boost::any input);
-  static concurrency::streams::istream assertAsReadable(boost::any value);
+  stringifyMapValue(const shared_ptr<map<string, boost::any>> &m);
+  static map<string, boost::any>
+  anyifyMapValue(const shared_ptr<map<string, string>> &m);
+  static bool assertAsBoolean(const shared_ptr<boost::any> &value);
+  static string assertAsString(const shared_ptr<boost::any> &value);
+  static vector<uint8_t> assertAsBytes(const shared_ptr<boost::any> &value);
+  static int assertAsNumber(const shared_ptr<boost::any> &value);
+  static map<string, boost::any>
+  assertAsMap(const shared_ptr<boost::any> &value);
+  static string getUserAgent(const shared_ptr<string> &userAgent);
+  static bool is2xx(const shared_ptr<int> &code);
+  static bool is3xx(const shared_ptr<int> &code);
+  static bool is4xx(const shared_ptr<int> &code);
+  static bool is5xx(const shared_ptr<int> &code);
+  static void validateModel(const shared_ptr<Darabonba::Model> &m);
+  static map<string, boost::any> toMap(const shared_ptr<Darabonba::Model> &in);
+  static void sleep(const shared_ptr<int> &millisecond);
+  static vector<map<string, boost::any>>
+  toArray(const shared_ptr<boost::any> &input);
+  static Darabonba::Stream
+  assertAsReadable(const shared_ptr<boost::any> &value);
+
+  Client(){};
+  ~Client(){};
 };
 } // namespace Darabonba_Util
 
