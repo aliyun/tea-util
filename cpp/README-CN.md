@@ -1,10 +1,15 @@
 [English](/README.md) | 简体中文
 
 
-# Darabonba SDK Core for C++
+# Darabonba Util SDK Core for C++
 
 ![](https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg)
 
+## 依赖
+
+- [Boost](https://www.boost.org/users/download/) >= 1.58
+- [CPPRestSDK](https://github.com/microsoft/cpprestsdk/releases) >= 2.10
+- [OpenSSL](https://www.openssl.org/source/) >= 1.0
 
 ## 安装
 
@@ -24,8 +29,9 @@ sh scripts/install.sh
   git clone https://github.com/alibabacloud-sdk-cpp/dara-util.git
   ```
 2. 使用 Visual Studio 进行编译:
-  * 在根目录下创建 `cmake_build` 目录
-  * 打开 cmake-gui , 然后进行以下操作
+  * 安装 [CMake](https://cmake.org/download/) 和 [Visual Studio](https://visualstudio.microsoft.com/zh-hans/)
+  * 在项目根目录下创建 `cmake_build` 文件夹
+  * 打开 [CMake](https://cmake.org/download/) 软件, 然后进行以下操作
     * 选择 `Browse Source` 为 `源代码目录(darabonba_util)`
     * 选择 `Browse build` 为 `构建目录(cmake_build)`
     * 点击 `configure`
@@ -39,7 +45,7 @@ sh scripts/install.sh
 
 ## 问题
 
-[提交 Issue](https://github.com/aliyun/tea-cpp/issues/new/choose)，不符合指南的问题可能会立即关闭。
+[提交 Issue](https://github.com/alibabacloud-sdk-cpp/dara-util/issues/new/choose)，不符合指南的问题可能会立即关闭。
 
 ## 相关
 
@@ -55,6 +61,6 @@ sh scripts/install.sh
 Copyright (c) 2009-present, Alibaba Cloud All rights reserved.
 
 [open-api]: https://api.aliyun.com
-[latest-release]: https://github.com/aliyun/tea-cpp/releases
+[latest-release]: https://github.com/alibabacloud-sdk-cpp/dara-util/releases
 [console]: https://home.console.aliyun.com
 [aliyun]: https://www.aliyun.com
