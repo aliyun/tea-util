@@ -1,10 +1,15 @@
-English | [简体中文](/README-zh-CN.md)
+English | [简体中文](/README-CN.md)
 
 
 # Darabonba Util SDK for C++
 
 ![](https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg)
 
+## Require
+
+- [Boost](https://www.boost.org/users/download/) >= 1.58
+- [CPPRestSDK](https://github.com/microsoft/cpprestsdk/releases) >= 2.10
+- [OpenSSL](https://www.openssl.org/source/) >= 1.0
 
 ## Installation
 
@@ -24,8 +29,9 @@ sh scripts/install.sh
   git clone https://github.com/alibabacloud-sdk-cpp/dara-util.git
   ```
 2. Build Visual Studio solution
-  * Change directory to source code and make directory `cmake_build`
-  * Open CMake UI and
+  * Install [CMake](https://cmake.org/download/) && [Visual Studio](https://visualstudio.microsoft.com/zh-hans/)
+  * Change directory to source code and make the `cmake_build` folder in the project root directory.
+  * Open [CMake](https://cmake.org/download/) software and
     * `Browse Source` to open source code directory.
     * `Browse build`  to open the created `cmake_build` directory
     * click `configure`
