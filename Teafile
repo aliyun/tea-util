@@ -1,10 +1,10 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/alibabacloud-go/tea-utils/service:v1.3.5",
+		"go": "github.com/alibabacloud-go/tea-utils/service:v1.3.6",
 		"ts": "@alicloud/tea-util:^1.4.0",
 		"csharp": "AlibabaCloud.TeaUtil:0.1.9",
 		"java": "com.aliyun:tea-util:0.2.8",

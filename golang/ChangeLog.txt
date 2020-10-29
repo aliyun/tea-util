@@ -1,3 +1,6 @@
+2020-10-29 Version: v1.3.6
+- Fix unmarshal error.
+
 2020-10-22 Version: v1.3.5
 - Close body after reading it.
 
