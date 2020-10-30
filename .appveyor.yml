@@ -1,0 +1,41 @@
+build: off
+
+image:
+  - Ubuntu
+
+clone_folder: /github.com/aliyun/tea-util
+
+environment:
+  matrix:
+
+  - job_name: go_task1
+    job_group: go_task
+    go: 1.12.x
+
+  - job_name: go_task2
+    job_group: go_task
+    go: 1.13.x 
+
+  - job_name: go_task3
+    job_group: go_task
+    go: 1.14.x
+
+  - job_name: go_task4
+    job_group: go_task
+    go: 1.15.x  
+
+for:
+
+  -
+    matrix:
+      only:
+        - job_group: go_task
+
+    build_script:
+    - cd golang/
+    - export GO111MODULE=on
+    - go mod tidy
+    - go test -race -coverprofile=coverage.txt -covermode=atomic ./service/...
+
+after_test:
+  - bash <(curl -s https://codecov.io/bash)
