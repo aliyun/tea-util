@@ -110,49 +110,82 @@ public:
 };
 class Client {
 public:
-  static vector<uint8_t> toBytes(const shared_ptr<string> &val);
-  static string toString(const shared_ptr<vector<uint8_t>> &val);
-  static boost::any parseJSON(const shared_ptr<string> &val);
-  static vector<uint8_t>
-  readAsBytes(const shared_ptr<Darabonba::Stream> &stream);
-  static string readAsString(const shared_ptr<Darabonba::Stream> &stream);
-  static boost::any readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
+  /************************** helper **************************/
   static string getNonce();
+
   static string getDateUTCString();
+
+  static string getUserAgent(const shared_ptr<string> &userAgent);
+
+  static void sleep(const shared_ptr<int> &millisecond);
+
+  static void validateModel(const shared_ptr<Darabonba::Model> &m);
+
+  /************************** default **************************/
   static string defaultString(const shared_ptr<string> &real,
                               const shared_ptr<string> &default_);
+
   static int defaultNumber(const shared_ptr<int> &real,
                            const shared_ptr<int> &default_);
-  static string toFormString(shared_ptr<map<string, boost::any>> val);
-  static string toJSONString(const shared_ptr<boost::any> &val);
-  static bool empty(const shared_ptr<string> &val);
-  static bool equalString(const shared_ptr<string> &val1,
-                          const shared_ptr<string> &val2);
-  static bool equalNumber(const shared_ptr<int> &val1,
-                          const shared_ptr<int> &val2);
-  static bool isUnset(const shared_ptr<void> &value);
+
+  /************************** parse **************************/
   static map<string, string>
   stringifyMapValue(const shared_ptr<map<string, boost::any>> &m);
+
   static map<string, boost::any>
   anyifyMapValue(const shared_ptr<map<string, string>> &m);
-  static bool assertAsBoolean(const shared_ptr<boost::any> &value);
-  static string assertAsString(const shared_ptr<boost::any> &value);
-  static vector<uint8_t> assertAsBytes(const shared_ptr<boost::any> &value);
-  static int assertAsNumber(const shared_ptr<boost::any> &value);
-  static map<string, boost::any>
-  assertAsMap(const shared_ptr<boost::any> &value);
-  static string getUserAgent(const shared_ptr<string> &userAgent);
-  static bool is2xx(const shared_ptr<int> &code);
-  static bool is3xx(const shared_ptr<int> &code);
-  static bool is4xx(const shared_ptr<int> &code);
-  static bool is5xx(const shared_ptr<int> &code);
-  static void validateModel(const shared_ptr<Darabonba::Model> &m);
+
   static map<string, boost::any> toMap(const shared_ptr<Darabonba::Model> &in);
-  static void sleep(const shared_ptr<int> &millisecond);
-  static vector<map<string, boost::any>>
-  toArray(const shared_ptr<boost::any> &input);
-  static Darabonba::Stream
-  assertAsReadable(const shared_ptr<boost::any> &value);
+
+  static vector<uint8_t> toBytes(const shared_ptr<string> &val);
+
+  static string toString(const shared_ptr<vector<uint8_t>> &val);
+
+  static vector<map<string, boost::any>> toArray(const shared_ptr<void> &input);
+
+  static string toFormString(shared_ptr<map<string, boost::any>> val);
+
+  static string toJSONString(const shared_ptr<void> &val);
+
+  static boost::any parseJSON(const shared_ptr<string> &val);
+
+  static vector<uint8_t>
+  readAsBytes(const shared_ptr<Darabonba::Stream> &stream);
+
+  static string readAsString(const shared_ptr<Darabonba::Stream> &stream);
+
+  static boost::any readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
+
+  /************************** assert **************************/
+  static bool isUnset(const shared_ptr<void> &value);
+
+  static bool assertAsBoolean(const shared_ptr<void> &value);
+
+  static bool empty(const shared_ptr<string> &val);
+
+  static bool equalString(const shared_ptr<string> &val1,
+                          const shared_ptr<string> &val2);
+
+  static bool equalNumber(const shared_ptr<int> &val1,
+                          const shared_ptr<int> &val2);
+
+  static string assertAsString(const shared_ptr<void> &value);
+
+  static vector<uint8_t> assertAsBytes(const shared_ptr<void> &value);
+
+  static int assertAsNumber(const shared_ptr<void> &value);
+
+  static map<string, boost::any> assertAsMap(const shared_ptr<void> &value);
+
+  static Darabonba::Stream assertAsReadable(const shared_ptr<void> &value);
+
+  static bool is2xx(const shared_ptr<int> &code);
+
+  static bool is3xx(const shared_ptr<int> &code);
+
+  static bool is4xx(const shared_ptr<int> &code);
+
+  static bool is5xx(const shared_ptr<int> &code);
 
   Client(){};
   ~Client(){};
