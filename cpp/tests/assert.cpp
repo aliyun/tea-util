@@ -36,8 +36,11 @@ TEST(assert, equalNumber) {
 }
 
 TEST(assert, isUnset) {
-  shared_ptr<string> str;
+  shared_ptr<string> str = nullptr;
   ASSERT_TRUE(Client::isUnset(str));
+
+  str = make_shared<string>("test");
+  ASSERT_FALSE(Client::isUnset(str));
 }
 
 TEST(assert, stringifyMapValue) {
@@ -61,12 +64,12 @@ TEST(assert, stringifyMapValue) {
 }
 
 TEST(assert, assertAsBoolean) {
-  shared_ptr<boost::any> val(new boost::any(true));
+  shared_ptr<bool> val = make_shared<bool>(true);
   ASSERT_TRUE(Client::assertAsBoolean(val));
 
   try {
-    *val = boost::any(string("test"));
-    Client::assertAsBoolean(val);
+    shared_ptr<string> fake = make_shared<string>("test");
+    Client::assertAsBoolean(fake);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -75,12 +78,12 @@ TEST(assert, assertAsBoolean) {
 }
 
 TEST(assert, assertAsString) {
-  shared_ptr<boost::any> val(new boost::any(string("test")));
+  shared_ptr<string> val = make_shared<string>("test");
   ASSERT_EQ(string("test"), Client::assertAsString(val));
 
   try {
-    *val = boost::any(true);
-    Client::assertAsString(val);
+    shared_ptr<bool> fake = make_shared<bool>(true);
+    Client::assertAsString(fake);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -89,14 +92,14 @@ TEST(assert, assertAsString) {
 }
 
 TEST(assert, assertAsBytes) {
-  vector<uint8_t> vec;
-  vec.push_back(1);
-  shared_ptr<boost::any> val(new boost::any(vec));
+  shared_ptr<vector<uint8_t>> val = make_shared<vector<uint8_t>>();
+  val->push_back(1);
+  vector<uint8_t> vec = *val;
   ASSERT_EQ(vec, Client::assertAsBytes(val));
 
   try {
-    *val = boost::any(true);
-    Client::assertAsBytes(val);
+    shared_ptr<bool> fake = make_shared<bool>(true);
+    Client::assertAsBytes(fake);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -105,12 +108,12 @@ TEST(assert, assertAsBytes) {
 }
 
 TEST(assert, assertAsNumber) {
-  shared_ptr<boost::any> val(new boost::any(10));
+  shared_ptr<int> val = make_shared<int>(10);
   ASSERT_EQ(10, Client::assertAsNumber(val));
 
   try {
-    *val = boost::any(true);
-    Client::assertAsNumber(val);
+    shared_ptr<bool> fake = make_shared<bool>(true);
+    Client::assertAsNumber(fake);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -119,14 +122,16 @@ TEST(assert, assertAsNumber) {
 }
 
 TEST(assert, assertAsMap) {
-  shared_ptr<boost::any> val(
-      new boost::any(map<string, boost::any>({{"foo", string("bar")}})));
+  shared_ptr<map<string, boost::any>> val =
+      make_shared<map<string, boost::any>>(
+          map<string, boost::any>({{"foo", string("bar")}}));
+
   map<string, boost::any> res = Client::assertAsMap(val);
   ASSERT_EQ(string("bar"), boost::any_cast<string>(res["foo"]));
 
   try {
-    *val = boost::any(true);
-    Client::assertAsMap(val);
+    shared_ptr<bool> fake = make_shared<bool>(true);
+    Client::assertAsMap(fake);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
@@ -135,14 +140,14 @@ TEST(assert, assertAsMap) {
 }
 
 TEST(assert, assertAsReadable) {
-  Darabonba::Stream s(make_shared<stringstream>("test stream"));
-  shared_ptr<boost::any> val(new boost::any(s));
+  shared_ptr<Darabonba::Stream> val =
+      make_shared<Darabonba::Stream>(make_shared<stringstream>("test stream"));
   Darabonba::Stream res = Client::assertAsReadable(val);
   ASSERT_EQ(string("test stream"), res.read());
 
   try {
-    *val = boost::any(true);
-    Client::assertAsReadable(val);
+    shared_ptr<bool> fake = make_shared<bool>(true);
+    Client::assertAsReadable(fake);
     ASSERT_TRUE(false);
   } catch (boost::exception &e) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
