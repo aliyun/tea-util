@@ -82,7 +82,8 @@ TEST(tests_parse, readAsString) {
 }
 
 TEST(tests_parse, readAsJSON) {
-  string json(R"({"test": "string", "int": 100, "long": -9999999999, "double": 1.0212199})");
+  string json(
+      R"({"test": "string", "int": 100, "long": -9999999999, "double": 1.0212199})");
   concurrency::streams::stringstreambuf string_buf(json);
 
   map<string, boost::any> res = boost::any_cast<map<string, boost::any>>(
@@ -100,7 +101,6 @@ TEST(tests_parse, readAsJSON) {
 
   ASSERT_EQ(string("test"), boost::any_cast<string>(array[0]));
   ASSERT_EQ(string("string"), boost::any_cast<string>(array[1]));
-
 }
 
 TEST(test_parse, toFormString) {

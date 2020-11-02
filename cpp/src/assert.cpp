@@ -67,69 +67,71 @@ map<string, string> Darabonba_Util::Client::stringifyMapValue(
   return data;
 }
 
-bool Darabonba_Util::Client::assertAsBoolean(
-    const shared_ptr<boost::any> &value) {
+bool Darabonba_Util::Client::assertAsBoolean(const shared_ptr<void> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(bool) != value->type()) {
+  shared_ptr<boost::any> val = static_pointer_cast<boost::any>(value);
+  if (typeid(bool) != val->type()) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a bool")));
   }
-  return boost::any_cast<bool>(*value);
+  return boost::any_cast<bool>(*val);
 }
 
-string
-Darabonba_Util::Client::assertAsString(const shared_ptr<boost::any> &value) {
+string Darabonba_Util::Client::assertAsString(const shared_ptr<void> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(string) != value->type()) {
+  shared_ptr<boost::any> val = static_pointer_cast<boost::any>(value);
+  if (typeid(string) != val->type()) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a string")));
   }
-  return boost::any_cast<string>(*value);
+  return boost::any_cast<string>(*val);
 }
 
 vector<uint8_t>
-Darabonba_Util::Client::assertAsBytes(const shared_ptr<boost::any> &value) {
+Darabonba_Util::Client::assertAsBytes(const shared_ptr<void> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(vector<uint8_t>) != value->type()) {
+  shared_ptr<boost::any> val = static_pointer_cast<boost::any>(value);
+  if (typeid(vector<uint8_t>) != val->type()) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a bytes")));
   }
-  return boost::any_cast<vector<uint8_t>>(*value);
+  return boost::any_cast<vector<uint8_t>>(*val);
 }
 
-int Darabonba_Util::Client::assertAsNumber(
-    const shared_ptr<boost::any> &value) {
+int Darabonba_Util::Client::assertAsNumber(const shared_ptr<void> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(int) != value->type()) {
+  shared_ptr<boost::any> val = static_pointer_cast<boost::any>(value);
+  if (typeid(int) != val->type()) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a int number")));
   }
-  return boost::any_cast<int>(*value);
+  return boost::any_cast<int>(*val);
 }
 
 map<string, boost::any>
-Darabonba_Util::Client::assertAsMap(const shared_ptr<boost::any> &value) {
+Darabonba_Util::Client::assertAsMap(const shared_ptr<void> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(map<string, boost::any>) != value->type()) {
+  shared_ptr<boost::any> val = static_pointer_cast<boost::any>(value);
+  if (typeid(map<string, boost::any>) != val->type()) {
     BOOST_THROW_EXCEPTION(boost::enable_error_info(
         runtime_error("value is not a map<string, any>")));
   }
-  return boost::any_cast<map<string, boost::any>>(*value);
+  return boost::any_cast<map<string, boost::any>>(*val);
 }
 
 bool Darabonba_Util::Client::is2xx(const shared_ptr<int> &code) {
@@ -149,15 +151,16 @@ bool Darabonba_Util::Client::is5xx(const shared_ptr<int> &code) {
 }
 
 Darabonba::Stream
-Darabonba_Util::Client::assertAsReadable(const shared_ptr<boost::any> &value) {
+Darabonba_Util::Client::assertAsReadable(const shared_ptr<void> &value) {
   if (!value) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is nullptr")));
   }
-  if (typeid(Darabonba::Stream) != value->type()) {
+  shared_ptr<boost::any> val = static_pointer_cast<boost::any>(value);
+  if (typeid(Darabonba::Stream) != val->type()) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a readable")));
   }
-  Darabonba::Stream f = boost::any_cast<Darabonba::Stream>(*value);
+  Darabonba::Stream f = boost::any_cast<Darabonba::Stream>(*val);
   return f;
 }
