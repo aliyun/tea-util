@@ -5,9 +5,9 @@
 #include <cpprest/streams.h>
 #include <darabonba/util.hpp>
 #include <json/json.h>
+#include <regex>
 #include <sstream>
 #include <string>
-#include <regex>
 
 using namespace std;
 
@@ -155,11 +155,13 @@ void json_encode(boost::any val, stringstream &ss) {
   }
 }
 
-string Darabonba_Util::Client::toJSONString(const shared_ptr<boost::any> &val) {
+string Darabonba_Util::Client::toJSONString(const shared_ptr<void> &val) {
   if (!val) {
     return string("{}");
   }
-  map<string, boost::any> a = boost::any_cast<map<string, boost::any>>(*val);
+  string b = typeid(val).name();
+  shared_ptr<boost::any> v = static_pointer_cast<boost::any>(val);
+  map<string, boost::any> a = boost::any_cast<map<string, boost::any>>(*v);
   stringstream s;
   json_encode(a, s);
   return s.str();
@@ -222,11 +224,12 @@ map<string, boost::any> Darabonba_Util::Client::anyifyMapValue(
 }
 
 vector<map<string, boost::any>>
-Darabonba_Util::Client::toArray(const shared_ptr<boost::any> &input) {
+Darabonba_Util::Client::toArray(const shared_ptr<void> &input) {
   if (!input) {
     return vector<map<string, boost::any>>();
   }
-  map<string, boost::any> m = boost::any_cast<map<string, boost::any>>(*input);
+  shared_ptr<boost::any> a = static_pointer_cast<boost::any>(input);
+  map<string, boost::any> m = boost::any_cast<map<string, boost::any>>(*a);
   vector<map<string, boost::any>> v;
   v.push_back(m);
   return v;
