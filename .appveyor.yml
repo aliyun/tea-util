@@ -22,7 +22,15 @@ environment:
 
   - job_name: go_task4
     job_group: go_task
-    go: 1.15.x  
+    go: 1.15.x 
+
+  - job_name: java_task1
+    job_group: java_task
+    jdk: openjdk8
+
+  - job_name: nodejs_task1
+    job_group: nodejs_task
+    node: 12
 
 for:
 
@@ -36,6 +44,25 @@ for:
     - export GO111MODULE=on
     - go mod tidy
     - go test -race -coverprofile=coverage.txt -covermode=atomic ./service/...
+
+  -
+    matrix:
+      only:
+        - job_group: java_task
+
+    build_script:
+    - cd java/
+    - mvn test -B
+
+  -
+    matrix:
+      only:
+        - job_group: nodejs_task
+
+    build_script:
+    - cd ts/
+    - npm install
+    - npm run test-cov
 
 after_test:
   - bash <(curl -s https://codecov.io/bash)
