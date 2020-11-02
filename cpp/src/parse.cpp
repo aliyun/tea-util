@@ -155,13 +155,13 @@ void json_encode(boost::any val, stringstream &ss) {
   }
 }
 
-string Darabonba_Util::Client::toJSONString(const shared_ptr<void> &val) {
-  if (!val) {
+string Darabonba_Util::Client::toJSONString(const boost::any &value) {
+  if (typeid(shared_ptr<map<string, boost::any>>) != value.type()) {
     return string("{}");
   }
-  string b = typeid(val).name();
-  shared_ptr<boost::any> v = static_pointer_cast<boost::any>(val);
-  map<string, boost::any> a = boost::any_cast<map<string, boost::any>>(*v);
+  shared_ptr<map<string, boost::any>> val =
+      boost::any_cast<shared_ptr<map<string, boost::any>>>(value);
+  map<string, boost::any> a = *val;
   stringstream s;
   json_encode(a, s);
   return s.str();
@@ -224,13 +224,45 @@ map<string, boost::any> Darabonba_Util::Client::anyifyMapValue(
 }
 
 vector<map<string, boost::any>>
-Darabonba_Util::Client::toArray(const shared_ptr<void> &input) {
-  if (!input) {
+Darabonba_Util::Client::toArray(const boost::any &input) {
+  if (typeid(shared_ptr<map<string, boost::any>>) != input.type()) {
     return vector<map<string, boost::any>>();
   }
-  shared_ptr<boost::any> a = static_pointer_cast<boost::any>(input);
-  map<string, boost::any> m = boost::any_cast<map<string, boost::any>>(*a);
+  shared_ptr<map<string, boost::any>> val =
+      boost::any_cast<shared_ptr<map<string, boost::any>>>(input);
+  map<string, boost::any> m = *val;
   vector<map<string, boost::any>> v;
   v.push_back(m);
   return v;
+}
+
+map<string, string> Darabonba_Util::Client::stringifyMapValue(
+    const shared_ptr<map<string, boost::any>> &m) {
+  if (nullptr == m) {
+    return map<string, string>();
+  }
+
+  map<string, string> data;
+  if (m->empty()) {
+    return data;
+  }
+
+  for (const auto &it : *m) {
+    if (typeid(int) == it.second.type()) {
+      data[it.first] = to_string(boost::any_cast<int>(it.second));
+    } else if (typeid(long) == it.second.type()) {
+      data[it.first] = to_string(boost::any_cast<long>(it.second));
+    } else if (typeid(double) == it.second.type()) {
+      data[it.first] = to_string(boost::any_cast<double>(it.second));
+    } else if (typeid(float) == it.second.type()) {
+      data[it.first] = to_string(boost::any_cast<float>(it.second));
+    } else if (typeid(bool) == it.second.type()) {
+      string v = boost::any_cast<bool>(it.second) ? "true" : "false";
+      data[it.first] = v;
+    } else if (typeid(string) == it.second.type()) {
+      string v = boost::any_cast<string>(it.second);
+      data[it.first] = v;
+    }
+  }
+  return data;
 }

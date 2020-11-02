@@ -43,6 +43,26 @@ TEST(tests_parse, parseJSON) {
   ASSERT_EQ(string("bar"), boost::any_cast<string>(vec[1]));
 }
 
+TEST(tests_parse, toArray) {
+  map<string, boost::any> m = {
+      {"foo", boost::any("bar")},
+      {"string", boost::any(string("string"))},
+      {"long", boost::any(LONG_MAX)},
+      {"bool", boost::any(true)},
+      {"vector", boost::any(vector<boost::any>({{boost::any("foo")}}))},
+      {"map",
+       boost::any(map<string, boost::any>({{"foo", boost::any("bar")}}))}};
+  vector<map<string, boost::any>> res =
+      Darabonba_Util::Client::toArray(make_shared<map<string, boost::any>>(m));
+  map<string, boost::any> data = res[0];
+  ASSERT_EQ(boost::any_cast<string>(m["string"]),
+            boost::any_cast<string>(data["string"]));
+  ASSERT_EQ(boost::any_cast<long>(m["long"]),
+            boost::any_cast<long>(data["long"]));
+  ASSERT_EQ(boost::any_cast<bool>(m["bool"]),
+            boost::any_cast<bool>(data["bool"]));
+}
+
 TEST(tests_parse, toJSONString) {
   map<string, boost::any> m = {
       {"foo", boost::any("bar")},
@@ -52,7 +72,8 @@ TEST(tests_parse, toJSONString) {
       {"vector", boost::any(vector<boost::any>({{boost::any("foo")}}))},
       {"map",
        boost::any(map<string, boost::any>({{"foo", boost::any("bar")}}))}};
-  string res = Darabonba_Util::Client::toJSONString(make_shared<boost::any>(m));
+  string res = Darabonba_Util::Client::toJSONString(
+      make_shared<map<string, boost::any>>(m));
   ASSERT_EQ(
       string(
           "{\"bool\":true,\"foo\":\"bar\",\"long\":9223372036854775807,\"map\":"
