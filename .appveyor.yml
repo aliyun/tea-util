@@ -5,6 +5,8 @@ image:
 
 clone_folder: /github.com/aliyun/tea-util
 
+stack: python 3
+
 environment:
   matrix:
 
@@ -31,6 +33,12 @@ environment:
   - job_name: nodejs_task1
     job_group: nodejs_task
     node: 12
+
+  - job_name: net_task1
+    job_group: net_task
+
+  - job_name: python_task1
+    job_group: python_task
 
 for:
 
@@ -63,6 +71,36 @@ for:
     - cd ts/
     - npm install
     - npm run test-cov
+
+  -
+    matrix:
+      only:
+        - job_group: python_task
+
+    build_script:
+    - export PYTHONPATH=$PYTHONPATH:`pwd`/python
+    - echo $PYTHONPATH 
+    # install
+    - cd python
+    - pip install coverage
+    - pip install alibabacloud-tea
+    - pip install pytest
+    - coverage run --source="./alibabacloud_tea_util" -m pytest tests/test_*
+
+  -
+    matrix:
+      only:
+        - job_group: net_task
+
+    build_script:
+    - wget https://download.visualstudio.microsoft.com/download/pr/42f39f2f-3f24-4340-8c57-0a3133620c21/0a353696275b00cbddc9f60069867cfc/dotnet-sdk-2.2.110-linux-x64.tar.gz
+    - mkdir -p ~/dotnet/ && tar zxf dotnet-sdk-2.2.110-linux-x64.tar.gz -C ~/dotnet/
+    - sudo ln -sf ~/dotnet/dotnet /usr/bin/dotnet
+    - dotnet --info
+    - cd csharp/tests/
+    - dotnet tool install --global altcover.visualizer
+    - dotnet restore
+    - dotnet build
 
 after_test:
   - bash <(curl -s https://codecov.io/bash)
