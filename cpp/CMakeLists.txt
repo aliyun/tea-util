@@ -3,25 +3,12 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(darabonba_util VERSION "0.1.0")
 
-# <<< General set up >>>
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< General set up >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 message("C++ compiler flags: ${CMAKE_CXX_FLAGS}")
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
-option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
-message(STATUS "Enable testing: ${ENABLE_UNIT_TESTS}")
-
-OPTION(ENABLE_COVERAGE "Use gcov" OFF)
-message(STATUS "Enable coverage: ${ENABLE_COVERAGE}")
-if (ENABLE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(CMAKE_BUILD_TYPE "Coverage")
-    include(CodeCoverage)
-    setup_target_for_coverage(${PROJECT_NAME}_coverage ${PROJECT_NAME}_test coverage)
-endif ()
 
 if (CMAKE_CXX_COMPILER_LOADED)
     message(STATUS "The C++ compiler ID is: ${CMAKE_CXX_COMPILER_ID}")
@@ -33,11 +20,10 @@ if (NOT CMAKE_BUILD_TYPE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Target set up >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #
 add_library(${PROJECT_NAME} SHARED "")
-
 set(headers
         include/darabonba/util.hpp)
-
 target_sources(${PROJECT_NAME}
         PRIVATE
         src/util.cpp
@@ -45,33 +31,43 @@ target_sources(${PROJECT_NAME}
         src/default.cpp
         src/parse.cpp
         ${headers})
-
 target_include_directories(${PROJECT_NAME}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
 set_target_properties(${PROJECT_NAME}
         PROPERTIES
         POSITION_INDEPENDENT_CODE 1
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        OUTPUT_NAME ${PROJECT_NAME}
+        OUTPUT_NAME "${PROJECT_NAME}"
         DEBUG_POSTFIX "_d"
         PUBLIC_HEADER "${headers}"
         MACOSX_RPATH ON
         WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 if (ENABLE_UNIT_TESTS)
+    OPTION(ENABLE_COVERAGE "Use gcov" OFF)
+    message(STATUS "Enable coverage: ${ENABLE_COVERAGE}")
+    if (ENABLE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        set(CMAKE_BUILD_TYPE "Coverage")
+        set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+        include(CodeCoverage)
+        setup_target_for_coverage(${PROJECT_NAME}_coverage ${PROJECT_NAME}_test coverage)
+    endif ()
     include(CTest)
     enable_testing()
     add_executable(tests_darabonba_util
             tests/main.cpp
             tests/assert.cpp
-            tests/parse.cpp)
-endif()
+            tests/parse.cpp
+            tests/util.cpp
+            )
+endif ()
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< External set up >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #
 add_subdirectory(external)
 find_package(Boost REQUIRED COMPONENTS random system thread filesystem chrono atomic date_time regex)
 find_library(CPPREST_LIB cpprest)
-target_link_libraries(${PROJECT_NAME} PRIVATE darabonba_core crypto jsoncpp ${Boost_LIBRARIES} ${CPPREST_LIB})
+target_link_libraries(${PROJECT_NAME} PRIVATE crypto darabonba_core ${Boost_LIBRARIES} ${CPPREST_LIB})
 
 if (ENABLE_UNIT_TESTS)
     target_include_directories(tests_darabonba_util
@@ -81,16 +77,13 @@ if (ENABLE_UNIT_TESTS)
             PRIVATE
             ${PROJECT_NAME}
             gtest_main
-            gmock_main
-            crypto
-            jsoncpp
-            ${Boost_LIBRARIES}
-            ${CPPREST_LIB})
+            gmock_main crypto darabonba_core ${Boost_LIBRARIES} ${CPPREST_LIB})
     add_test(NAME google_test
             COMMAND $<TARGET_FILE:tests_darabonba_util>)
 endif ()
 
-message(STATUS "Project will be installed to ${CMAKE_INSTALL_PREFIX}")
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Install set up >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #
+message(STATUS "${PROJECT_NAME} : Project will be installed to ${CMAKE_INSTALL_PREFIX}")
 
 include(GNUInstallDirs)
 
@@ -150,7 +143,7 @@ install(
           COMPONENT dev
 )
 
-# install cmake config
+# Install cmake config
 install(
         EXPORT
           darabonba_utilTargets
