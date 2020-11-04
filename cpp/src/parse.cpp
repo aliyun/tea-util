@@ -105,9 +105,9 @@ void json_encode(boost::any val, stringstream &ss) {
       int n = 0;
       for (const auto &it : m) {
         if (n != 0) {
-          ss << ",";
+          ss << ", ";
         }
-        ss << '"' << it.first << '"' << ':';
+        ss << '"' << it.first << '"' << ": ";
         json_encode(it.second, ss);
         n++;
       }
@@ -120,7 +120,7 @@ void json_encode(boost::any val, stringstream &ss) {
       int n = 0;
       for (const auto &it : v) {
         if (n != 0) {
-          ss << ",";
+          ss << ", ";
         }
         json_encode(it, ss);
         n++;
@@ -141,7 +141,7 @@ void json_encode(boost::any val, stringstream &ss) {
     ss << to_string(f);
   } else if (can_cast<string>(val)) {
     auto s = boost::any_cast<string>(val);
-    ss << s;
+    ss << '"' << s << '"';
   } else if (can_cast<bool>(val)) {
     auto b = boost::any_cast<bool>(val);
     string c = b ? "true" : "false";

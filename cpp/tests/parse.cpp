@@ -76,8 +76,8 @@ TEST(tests_parse, toJSONString) {
       make_shared<map<string, boost::any>>(m));
   ASSERT_EQ(
       string(
-          "{\"bool\":true,\"foo\":\"bar\",\"long\":9223372036854775807,\"map\":"
-          "{\"foo\":\"bar\"},\"string\":string,\"vector\":[\"foo\"]}"),
+          "{\"bool\": true, \"foo\": \"bar\", \"long\": 9223372036854775807, \"map\": "
+          "{\"foo\": \"bar\"}, \"string\": \"string\", \"vector\": [\"foo\"]}"),
       res);
 }
 
