@@ -5,11 +5,46 @@ English | [简体中文](/README-CN.md)
 
 ![](https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg)
 
-## Require
+The Darabonba Util SDK is based on the `[Darabonba DSL](https://github.com/aliyun/darabonba)` solution, which is a domain specific language for OpenAPI applications. It can be used to generate multilingual SDKs, code samples, test cases, interface choreography, etc. for any style of API.
 
-- [Boost](https://www.boost.org/users/download/) >= 1.58
-- [CPPRestSDK](https://github.com/microsoft/cpprestsdk/releases) >= 2.10
-- [OpenSSL](https://www.openssl.org/source/) >= 1.0
+## Required Dependency Libraries
+
+- [Boost](https://www.boost.org/users/download/)
+- [CPPRestSDK](https://github.com/microsoft/cpprestsdk/releases)
+- [OpenSSL](https://www.openssl.org/source/)
+
+To use this SDK to access the API, you must first install the required dependency libraries.
+
+- Install with Homebrew
+
+```bash
+brew install boost cpprestsdk openssl
+```
+
+- Install with yum
+
+```bash
+yum install boost-devel openssl-devel
+
+# The cpprestsdk does not support installation with yum.
+```
+
+- Install with api-get
+
+```bash
+# install boost
+sudo add-apt-repository ppa:mhier/libboost-latest -y
+sudo apt-get update
+sudo apt-get install libboost-all-dev
+
+sudo apt-get install libcpprest-dev libcurl4-openssl-dev libssl-dev
+```
+
+- Install with vcpkg
+
+```bash
+vcpkg install boost cpprestsdk openssl-windows
+```
 
 ## Installation
 
@@ -23,7 +58,7 @@ sh scripts/install.sh
 
 ### Windows
 
-1. Run the following command to clone code from Github via git-bash:
+1. Run the following command to clone code from Github via [git-bash](https://git-scm.com/downloads):
 
   ```bash
   git clone https://github.com/alibabacloud-sdk-cpp/dara-util.git

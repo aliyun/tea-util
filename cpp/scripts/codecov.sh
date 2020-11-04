@@ -22,7 +22,7 @@ lcov -z
 lcov --directory . --capture --output-file coverage.info
 
 echo '--------- run test ---------------- '
-ctest --verbose --coverage || return 126
+ctest --verbose --coverage
 
 echo '--------- generate post info ---------------- '
 lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info

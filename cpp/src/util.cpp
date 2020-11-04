@@ -19,8 +19,8 @@ string Darabonba_Util::Client::getNonce() {
 
 string Darabonba_Util::Client::getDateUTCString() {
   char buf[80];
-  time_t time;
-  std::strftime(buf, sizeof buf, "%FT%TZ", gmtime(&time));
+  time_t t = time(nullptr);
+  std::strftime(buf, sizeof buf, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&t));
   return buf;
 }
 
