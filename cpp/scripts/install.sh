@@ -2,7 +2,7 @@
 
 basepath=$(cd `dirname $0`/../; pwd)
 
-cd $basepath/
+cd "$basepath/" || exit
 
 main() {
     mkdir -p cmake_build/
