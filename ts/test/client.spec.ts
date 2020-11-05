@@ -115,6 +115,17 @@ describe('Tea Util', function () {
         assert.deepStrictEqual(Client.stringifyMapValue({}), {});
         assert.deepStrictEqual(Client.stringifyMapValue({ 'number': 100 }), { 'number': '100' });
         assert.deepStrictEqual(Client.stringifyMapValue({ 'bool': true }), { 'bool': 'true' });
+        assert.deepStrictEqual(Client.stringifyMapValue({
+            'bool': true,
+            'string': 'str',
+            'number': '0',
+            'null': null,
+            'undefined': undefined
+        }), {
+                'bool': 'true',
+                'string': 'str',
+                'number': '0'
+        });
         assert.deepStrictEqual(Client.stringifyMapValue(null), null);
     });
 
