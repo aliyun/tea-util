@@ -171,6 +171,9 @@ export default class Client {
 
     const result: {[key: string]: string} = {};
     for (const [key, value] of Object.entries(m)) {
+      if (typeof value === 'undefined' || value === null) {
+        continue;
+      }
       result[key] = String(value);
     }
     return result;
