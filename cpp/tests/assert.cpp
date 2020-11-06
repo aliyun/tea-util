@@ -6,14 +6,14 @@
 using namespace Darabonba_Util;
 using namespace std;
 
-TEST(assert, test_empty) {
+TEST(tests_assert, test_empty) {
   string str;
   ASSERT_TRUE(Client::empty(make_shared<string>(str)));
   str = "foo";
   ASSERT_FALSE(Client::empty(make_shared<string>(str)));
 }
 
-TEST(assert, equalString) {
+TEST(tests_assert, equalString) {
   shared_ptr<string> left;
   shared_ptr<string> right;
 
@@ -26,7 +26,7 @@ TEST(assert, equalString) {
   ASSERT_FALSE(Client::equalString(left, right));
 }
 
-TEST(assert, equalNumber) {
+TEST(tests_assert, equalNumber) {
   shared_ptr<int> left(new int(0));
   shared_ptr<int> right(new int(0));
   ASSERT_EQ(*left, *right);
@@ -35,15 +35,20 @@ TEST(assert, equalNumber) {
   ASSERT_FALSE(Client::equalNumber(left, right));
 }
 
-TEST(assert, isUnset) {
+TEST(tests_assert, isUnset) {
+  ASSERT_TRUE(Client::isUnset(nullptr));
+
   shared_ptr<string> str = nullptr;
   ASSERT_TRUE(Client::isUnset(str));
 
   str = make_shared<string>("test");
   ASSERT_FALSE(Client::isUnset(str));
+
+  shared_ptr<int> val;
+  ASSERT_TRUE(Client::isUnset(val));
 }
 
-TEST(assert, stringifyMapValue) {
+TEST(tests_assert, stringifyMapValue) {
   shared_ptr<map<string, boost::any>> m(new map<string, boost::any>({
       {"int", boost::any(1)},
       {"long", boost::any(LONG_MAX)},
@@ -63,7 +68,7 @@ TEST(assert, stringifyMapValue) {
   ASSERT_EQ(expected, Client::stringifyMapValue(m));
 }
 
-TEST(assert, assertAsBoolean) {
+TEST(tests_assert, assertAsBoolean) {
   shared_ptr<bool> val = make_shared<bool>(true);
   ASSERT_TRUE(Client::assertAsBoolean(val));
 
@@ -77,7 +82,7 @@ TEST(assert, assertAsBoolean) {
   }
 }
 
-TEST(assert, assertAsString) {
+TEST(tests_assert, assertAsString) {
   shared_ptr<string> val = make_shared<string>("test");
   ASSERT_EQ(string("test"), Client::assertAsString(val));
 
@@ -91,7 +96,7 @@ TEST(assert, assertAsString) {
   }
 }
 
-TEST(assert, assertAsBytes) {
+TEST(tests_assert, assertAsBytes) {
   shared_ptr<vector<uint8_t>> val = make_shared<vector<uint8_t>>();
   val->push_back(1);
   vector<uint8_t> vec = *val;
@@ -107,7 +112,7 @@ TEST(assert, assertAsBytes) {
   }
 }
 
-TEST(assert, assertAsNumber) {
+TEST(tests_assert, assertAsNumber) {
   shared_ptr<int> val = make_shared<int>(10);
   ASSERT_EQ(10, Client::assertAsNumber(val));
 
@@ -121,7 +126,7 @@ TEST(assert, assertAsNumber) {
   }
 }
 
-TEST(assert, assertAsMap) {
+TEST(tests_assert, assertAsMap) {
   shared_ptr<map<string, boost::any>> val =
       make_shared<map<string, boost::any>>(
           map<string, boost::any>({{"foo", string("bar")}}));
@@ -139,7 +144,7 @@ TEST(assert, assertAsMap) {
   }
 }
 
-TEST(assert, assertAsReadable) {
+TEST(tests_assert, assertAsReadable) {
   shared_ptr<Darabonba::Stream> val =
       make_shared<Darabonba::Stream>(make_shared<stringstream>("test stream"));
   Darabonba::Stream res = Client::assertAsReadable(val);
@@ -155,31 +160,31 @@ TEST(assert, assertAsReadable) {
   }
 }
 
-TEST(assert, is2xx) {
+TEST(tests_assert, is2xx) {
   ASSERT_TRUE(Client::is2xx(make_shared<int>(200)));
   ASSERT_TRUE(Client::is2xx(make_shared<int>(201)));
   ASSERT_FALSE(Client::is2xx(make_shared<int>(300)));
 }
 
-TEST(assert, is3xx) {
+TEST(tests_assert, is3xx) {
   ASSERT_TRUE(Client::is3xx(make_shared<int>(300)));
   ASSERT_TRUE(Client::is3xx(make_shared<int>(301)));
   ASSERT_FALSE(Client::is3xx(make_shared<int>(400)));
 }
 
-TEST(assert, is4xx) {
+TEST(tests_assert, is4xx) {
   ASSERT_TRUE(Client::is4xx(make_shared<int>(400)));
   ASSERT_TRUE(Client::is4xx(make_shared<int>(401)));
   ASSERT_FALSE(Client::is4xx(make_shared<int>(500)));
 }
 
-TEST(assert, is5xx) {
+TEST(tests_assert, is5xx) {
   ASSERT_TRUE(Client::is5xx(make_shared<int>(500)));
   ASSERT_TRUE(Client::is5xx(make_shared<int>(501)));
   ASSERT_FALSE(Client::is5xx(make_shared<int>(600)));
 }
 
-TEST(runtime, runtime_test) {
+TEST(tests_runtime, basic) {
   map<string, boost::any> runtime_opt = {{"autoretry", "autoretry"}};
   RuntimeOptions runtime(runtime_opt);
 }

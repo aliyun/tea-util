@@ -157,7 +157,9 @@ public:
   static boost::any readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
 
   /************************** assert **************************/
-  static bool isUnset(const shared_ptr<void> &value);
+  static bool isUnset(shared_ptr<void> value);
+
+  static bool isUnset(void *value);
 
   static bool empty(const shared_ptr<string> &val);
 
