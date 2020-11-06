@@ -1,3 +1,4 @@
+#include "util.h"
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/home/support/detail/hold_any.hpp>
 #include <boost/throw_exception.hpp>
@@ -37,62 +38,59 @@ bool Darabonba_Util::Client::isUnset(shared_ptr<void> value) { return !value; }
 bool Darabonba_Util::Client::isUnset(void *value) { return value == nullptr; }
 
 bool Darabonba_Util::Client::assertAsBoolean(const boost::any &value) {
-  if (typeid(shared_ptr<bool>) != value.type()) {
+  shared_ptr<bool> val = cast_any<bool>(value);
+  if (val == nullptr) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a bool")));
   }
-  shared_ptr<bool> val = boost::any_cast<shared_ptr<bool>>(value);
   return *val;
 }
 
 string Darabonba_Util::Client::assertAsString(const boost::any &value) {
-  if (typeid(shared_ptr<string>) != value.type()) {
+  shared_ptr<string> val = cast_any<string>(value);
+  if (val == nullptr) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a string")));
   }
-  shared_ptr<string> val = boost::any_cast<shared_ptr<string>>(value);
-  ;
   return *val;
 }
 
 vector<uint8_t> Darabonba_Util::Client::assertAsBytes(const boost::any &value) {
-  if (typeid(shared_ptr<vector<uint8_t>>) != value.type()) {
+  shared_ptr<vector<uint8_t>> val = cast_any<vector<uint8_t>>(value);
+  if (val == nullptr) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a bytes")));
   }
-  shared_ptr<vector<uint8_t>> val =
-      boost::any_cast<shared_ptr<vector<uint8_t>>>(value);
   return *val;
 }
 
 int Darabonba_Util::Client::assertAsNumber(const boost::any &value) {
-  if (typeid(shared_ptr<int>) != value.type()) {
+  shared_ptr<int> val = cast_any<int>(value);
+  if (val == nullptr) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a int number")));
   }
-  shared_ptr<int> val = boost::any_cast<shared_ptr<int>>(value);
   return *val;
 }
 
 map<string, boost::any>
 Darabonba_Util::Client::assertAsMap(const boost::any &value) {
-  if (typeid(shared_ptr<map<string, boost::any>>) != value.type()) {
+  shared_ptr<map<string, boost::any>> val =
+      cast_any<map<string, boost::any>>(value);
+  if (val == nullptr) {
     BOOST_THROW_EXCEPTION(boost::enable_error_info(
         runtime_error("value is not a map<string, any>")));
   }
-  shared_ptr<map<string, boost::any>> val =
-      boost::any_cast<shared_ptr<map<string, boost::any>>>(value);
   return *val;
 }
 
 Darabonba::Stream
 Darabonba_Util::Client::assertAsReadable(const boost::any &value) {
-  if (typeid(shared_ptr<Darabonba::Stream>) != value.type()) {
+  shared_ptr<Darabonba::Stream> val = cast_any<Darabonba::Stream>(value);
+  if (val == nullptr) {
     BOOST_THROW_EXCEPTION(
         boost::enable_error_info(runtime_error("value is not a readable")));
   }
-  shared_ptr<Darabonba::Stream> val =
-      boost::any_cast<shared_ptr<Darabonba::Stream>>(value);
   return *val;
 }
 
