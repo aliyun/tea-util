@@ -15,10 +15,10 @@ TEST(tests_parse, toBytes) {
 TEST(tests_parse, toString) {
   vector<uint8_t> bytes({116, 101, 115, 116});
   ASSERT_EQ(string("test"), Darabonba_Util::Client::toString(
-                                make_shared<vector<uint8_t>>(bytes)));
+      make_shared<vector<uint8_t>>(bytes)));
 }
 
-template <typename T> bool eq_boost_any(T val1, boost::any val2) {
+template<typename T> bool eq_boost_any(T val1, boost::any val2) {
   return val1 == boost::any_cast<T>(val2);
 }
 
@@ -63,6 +63,16 @@ TEST(tests_parse, toArray) {
             boost::any_cast<bool>(data["bool"]));
 }
 
+void testAny(const boost::any &value, const std::string &expected) {
+  string res = Darabonba_Util::Client::toJSONString(value);
+  ASSERT_EQ(expected, res);
+}
+
+void testVoid(shared_ptr<void> value, std::string &expected) {
+  string res = Darabonba_Util::Client::toJSONString(value);
+  ASSERT_EQ(expected, res);
+}
+
 TEST(tests_parse, toJSONString) {
   map<string, boost::any> m = {
       {"foo", boost::any("bar")},
@@ -74,11 +84,12 @@ TEST(tests_parse, toJSONString) {
        boost::any(map<string, boost::any>({{"foo", boost::any("bar")}}))}};
   string res = Darabonba_Util::Client::toJSONString(
       make_shared<map<string, boost::any>>(m));
-  ASSERT_EQ(
-      string(
-          "{\"bool\": true, \"foo\": \"bar\", \"long\": 9223372036854775807, \"map\": "
-          "{\"foo\": \"bar\"}, \"string\": \"string\", \"vector\": [\"foo\"]}"),
-      res);
+  string expected = "{\"bool\": true, \"foo\": \"bar\", \"long\": 9223372036854775807, \"map\": "
+                    "{\"foo\": \"bar\"}, \"string\": \"string\", \"vector\": [\"foo\"]}";
+  ASSERT_EQ(expected, res);
+
+  testAny(make_shared<map<string, boost::any>>(m), expected);
+  testVoid(make_shared<map<string, boost::any>>(m), expected);
 }
 
 TEST(tests_parse, readAsBytes) {

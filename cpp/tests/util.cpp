@@ -4,6 +4,6 @@
 using namespace std;
 using namespace Darabonba_Util;
 
-TEST(assert, test_getDateUTCString) {
+TEST(tests_util, test_getDateUTCString) {
   ASSERT_EQ(29, Client::getDateUTCString().size());
 }

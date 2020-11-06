@@ -49,10 +49,10 @@ jobs:
     - language: node_js
       node_js: 12
       env: TEA_UTIL_ENV="ts"
-    - language: swift
-      os: osx
-      osx_image: xcode11.3
-      env: TEA_UTIL_ENV="swift"
+    # - language: swift
+    #   os: osx
+    #   osx_image: xcode11.3
+    #   env: TEA_UTIL_ENV="swift"
     - language: python
       python: 3.4
       env: TEA_UTIL_ENV="python"

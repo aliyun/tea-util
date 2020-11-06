@@ -1,3 +1,4 @@
+#include "util.h"
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -156,14 +157,13 @@ void json_encode(boost::any val, stringstream &ss) {
 }
 
 string Darabonba_Util::Client::toJSONString(const boost::any &value) {
-  if (typeid(shared_ptr<map<string, boost::any>>) != value.type()) {
-    return string("{}");
+  shared_ptr<map<string, boost::any>> m =
+      cast_any<map<string, boost::any>>(value);
+  if (m == nullptr) {
+    return "{}";
   }
-  shared_ptr<map<string, boost::any>> val =
-      boost::any_cast<shared_ptr<map<string, boost::any>>>(value);
-  map<string, boost::any> a = *val;
   stringstream s;
-  json_encode(a, s);
+  json_encode(*m, s);
   return s.str();
 }
 
@@ -225,11 +225,11 @@ map<string, boost::any> Darabonba_Util::Client::anyifyMapValue(
 
 vector<map<string, boost::any>>
 Darabonba_Util::Client::toArray(const boost::any &input) {
-  if (typeid(shared_ptr<map<string, boost::any>>) != input.type()) {
+  shared_ptr<map<string, boost::any>> val =
+      cast_any<map<string, boost::any>>(input);
+  if (val == nullptr) {
     return vector<map<string, boost::any>>();
   }
-  shared_ptr<map<string, boost::any>> val =
-      boost::any_cast<shared_ptr<map<string, boost::any>>>(input);
   map<string, boost::any> m = *val;
   vector<map<string, boost::any>> v;
   v.push_back(m);
