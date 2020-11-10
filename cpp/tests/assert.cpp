@@ -35,17 +35,34 @@ TEST(tests_assert, equalNumber) {
   ASSERT_FALSE(Client::equalNumber(left, right));
 }
 
-TEST(tests_assert, isUnset) {
-  ASSERT_TRUE(Client::isUnset(nullptr));
+class TestModel: public Darabonba::Model
+{
+  map<string, boost::any> toMap() override {
+    return map<string, boost::any>();
+  };
+  void fromMap(map<string, boost::any> m) override {};
+  void validate() override {};
+};
 
+TEST(tests_assert, isUnset) {
   shared_ptr<string> str = nullptr;
-  ASSERT_TRUE(Client::isUnset(str));
+  ASSERT_TRUE(Client::isUnset<string>(str));
 
   str = make_shared<string>("test");
-  ASSERT_FALSE(Client::isUnset(str));
+  ASSERT_FALSE(Client::isUnset<string>(str));
 
   shared_ptr<int> val;
-  ASSERT_TRUE(Client::isUnset(val));
+  ASSERT_TRUE(Client::isUnset<int>(val));
+
+  boost::any model = make_shared<TestModel>();
+  shared_ptr<TestModel> tm;
+  boost::any model1 = tm;
+  ASSERT_FALSE(Darabonba_Util::Client::isUnset<TestModel>(model));
+  ASSERT_TRUE(Darabonba_Util::Client::isUnset<TestModel>(model1));
+
+  map<string, boost::any> mp;
+  boost::any any = make_shared<boost::any>(mp["key"]);
+  ASSERT_TRUE(Darabonba_Util::Client::isUnset<boost::any>(any));
 }
 
 TEST(tests_assert, stringifyMapValue) {
