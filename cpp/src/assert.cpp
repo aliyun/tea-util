@@ -33,10 +33,6 @@ bool Darabonba_Util::Client::equalNumber(const shared_ptr<int> &val1,
   return val1 == val2;
 }
 
-bool Darabonba_Util::Client::isUnset(shared_ptr<void> value) { return !value; }
-
-bool Darabonba_Util::Client::isUnset(void *value) { return value == nullptr; }
-
 bool Darabonba_Util::Client::assertAsBoolean(const boost::any &value) {
   shared_ptr<bool> val = cast_any<bool>(value);
   if (val == nullptr) {

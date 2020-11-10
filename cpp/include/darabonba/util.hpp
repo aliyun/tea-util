@@ -157,9 +157,18 @@ public:
   static boost::any readAsJSON(const shared_ptr<Darabonba::Stream> &stream);
 
   /************************** assert **************************/
-  static bool isUnset(shared_ptr<void> value);
+  template<class Tp> static bool isUnset(const boost::any &value) {
+    if (typeid(shared_ptr<boost::any>) == value.type()) {
+      shared_ptr<boost::any> val_ptr = boost::any_cast<shared_ptr<boost::any>>(value);
+      return !val_ptr || val_ptr->empty();
+    }
 
-  static bool isUnset(void *value);
+    if (typeid(shared_ptr<Tp>) == value.type()) {
+      return !boost::any_cast<shared_ptr<Tp>>(value);
+    }
+
+    return value.empty();
+  };
 
   static bool empty(const shared_ptr<string> &val);
 
