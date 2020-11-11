@@ -157,13 +157,23 @@ void json_encode(boost::any val, stringstream &ss) {
 }
 
 string Darabonba_Util::Client::toJSONString(const boost::any &value) {
-  shared_ptr<map<string, boost::any>> m =
-      cast_any<map<string, boost::any>>(value);
-  if (m == nullptr) {
-    return "{}";
+  boost::any json_object;
+  if (typeid(shared_ptr<vector<boost::any>>) == value.type()) {
+    shared_ptr<vector<boost::any>> vec_ptr = cast_any<vector<boost::any>>(value);
+    if (vec_ptr) {
+      json_object = *vec_ptr;
+    }
+  } else if (typeid(shared_ptr<map<string, boost::any>>) == value.type() ||
+  typeid(shared_ptr<void>) == value.type()) {
+    shared_ptr<map<string, boost::any>> map_ptr = cast_any<map<string, boost::any>>(value);
+    if (map_ptr) {
+      json_object = *map_ptr;
+    }
+  } else {
+    throw runtime_error("Failed to parse the value as json format.");
   }
   stringstream s;
-  json_encode(*m, s);
+  json_encode(json_object, s);
   return s.str();
 }
 
