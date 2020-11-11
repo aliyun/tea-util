@@ -90,6 +90,10 @@ TEST(tests_parse, toJSONString) {
 
   testAny(make_shared<map<string, boost::any>>(m), expected);
   testVoid(make_shared<map<string, boost::any>>(m), expected);
+
+  vector<boost::any> test_array = {"test", 1, 2.012123, true, map<string, boost::any>({{"key", "value"}})};
+  ASSERT_EQ("[\"test\", 1, 2.012123, true, {\"key\": \"value\"}]", Darabonba_Util::Client::toJSONString(
+      make_shared<vector<boost::any>>(test_array)));
 }
 
 TEST(tests_parse, readAsBytes) {
