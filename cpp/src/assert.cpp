@@ -33,61 +33,82 @@ bool Darabonba_Util::Client::equalNumber(const shared_ptr<int> &val1,
   return val1 == val2;
 }
 
-bool Darabonba_Util::Client::assertAsBoolean(const boost::any &value) {
-  shared_ptr<bool> val = cast_any<bool>(value);
-  if (val == nullptr) {
-    BOOST_THROW_EXCEPTION(
-        boost::enable_error_info(runtime_error("value is not a bool")));
+template<class T> T assertAsValue(const boost::any &value) {
+  if (typeid(shared_ptr<T>) == value.type()) {
+    shared_ptr<T> ptr = cast_any<T>(value);
+    if (ptr) {
+      return *ptr;
+    }
+  } else if (typeid(shared_ptr<boost::any>) == value.type()) {
+    shared_ptr<boost::any> any_ptr = cast_any<boost::any>(value);
+    if (any_ptr && !any_ptr->empty()) {
+      if (typeid(shared_ptr<T>) == any_ptr->type()) {
+        shared_ptr<T> ptr = cast_any<T>(*any_ptr);
+        if (ptr) {
+          return *ptr;
+        }
+      } else if (typeid(T) == any_ptr->type()) {
+        return boost::any_cast<T>(*any_ptr);
+      }
+    }
   }
-  return *val;
+  throw exception();
+}
+
+bool Darabonba_Util::Client::assertAsBoolean(const boost::any &value) {
+  try {
+    return assertAsValue<bool>(value);
+  } catch (exception&) {
+    BOOST_THROW_EXCEPTION(boost::enable_error_info(
+        runtime_error("value is not a bool")));
+  }
 }
 
 string Darabonba_Util::Client::assertAsString(const boost::any &value) {
-  shared_ptr<string> val = cast_any<string>(value);
-  if (val == nullptr) {
-    BOOST_THROW_EXCEPTION(
-        boost::enable_error_info(runtime_error("value is not a string")));
+  try {
+    return assertAsValue<string>(value);
+  } catch (exception&) {
+    BOOST_THROW_EXCEPTION(boost::enable_error_info(
+        runtime_error("value is not a string")));
   }
-  return *val;
 }
 
 vector<uint8_t> Darabonba_Util::Client::assertAsBytes(const boost::any &value) {
-  shared_ptr<vector<uint8_t>> val = cast_any<vector<uint8_t>>(value);
-  if (val == nullptr) {
-    BOOST_THROW_EXCEPTION(
-        boost::enable_error_info(runtime_error("value is not a bytes")));
+  try {
+    return assertAsValue<vector<uint8_t>>(value);
+  } catch (exception&) {
+    BOOST_THROW_EXCEPTION(boost::enable_error_info(
+        runtime_error("value is not a bytes")));
   }
-  return *val;
 }
 
 int Darabonba_Util::Client::assertAsNumber(const boost::any &value) {
-  shared_ptr<int> val = cast_any<int>(value);
-  if (val == nullptr) {
-    BOOST_THROW_EXCEPTION(
-        boost::enable_error_info(runtime_error("value is not a int number")));
+  try {
+    return assertAsValue<int>(value);
+  } catch (exception&) {
+    BOOST_THROW_EXCEPTION(boost::enable_error_info(
+        runtime_error("value is not a int number")));
   }
-  return *val;
 }
 
 map<string, boost::any>
 Darabonba_Util::Client::assertAsMap(const boost::any &value) {
-  shared_ptr<map<string, boost::any>> val =
-      cast_any<map<string, boost::any>>(value);
-  if (val == nullptr) {
+  try {
+    return assertAsValue<map<string, boost::any>>(value);
+  } catch (exception&) {
     BOOST_THROW_EXCEPTION(boost::enable_error_info(
         runtime_error("value is not a map<string, any>")));
   }
-  return *val;
 }
 
 Darabonba::Stream
 Darabonba_Util::Client::assertAsReadable(const boost::any &value) {
-  shared_ptr<Darabonba::Stream> val = cast_any<Darabonba::Stream>(value);
-  if (val == nullptr) {
-    BOOST_THROW_EXCEPTION(
-        boost::enable_error_info(runtime_error("value is not a readable")));
+  try {
+    return assertAsValue<Darabonba::Stream>(value);
+  } catch (exception&) {
+    BOOST_THROW_EXCEPTION(boost::enable_error_info(
+        runtime_error("value is not a readable")));
   }
-  return *val;
 }
 
 bool Darabonba_Util::Client::is2xx(const shared_ptr<int> &code) {

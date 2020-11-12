@@ -233,19 +233,6 @@ map<string, boost::any> Darabonba_Util::Client::anyifyMapValue(
   return data;
 }
 
-vector<map<string, boost::any>>
-Darabonba_Util::Client::toArray(const boost::any &input) {
-  shared_ptr<map<string, boost::any>> val =
-      cast_any<map<string, boost::any>>(input);
-  if (val == nullptr) {
-    return vector<map<string, boost::any>>();
-  }
-  map<string, boost::any> m = *val;
-  vector<map<string, boost::any>> v;
-  v.push_back(m);
-  return v;
-}
-
 map<string, string> Darabonba_Util::Client::stringifyMapValue(
     const shared_ptr<map<string, boost::any>> &m) {
   if (nullptr == m) {
