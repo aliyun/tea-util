@@ -43,24 +43,65 @@ TEST(tests_parse, parseJSON) {
   ASSERT_EQ(string("bar"), boost::any_cast<string>(vec[1]));
 }
 
+class TestToArrayModel : public Darabonba::Model {
+public:
+  TestToArrayModel() = default;
+  explicit TestToArrayModel(const std::map<string, boost::any> &config) : Darabonba::Model(config) {
+    fromMap(config);
+  };
+
+  void validate() override {}
+
+  map<string, boost::any> toMap() override {
+    map<string, boost::any> res;
+    if (key) {
+      res["key"] = boost::any(*key);
+    }
+    if (value) {
+      res["value"] = boost::any(*value);
+    }
+    return res;
+  }
+
+  void fromMap(map<string, boost::any> m) override {
+    if (m.find("key") != m.end()) {
+      key = make_shared<string>(boost::any_cast<string>(m["key"]));
+    }
+    if (m.find("value") != m.end()) {
+      value = make_shared<string>(boost::any_cast<string>(m["value"]));
+    }
+  }
+
+  shared_ptr<string> key{};
+  shared_ptr<string> value{};
+
+  ~TestToArrayModel() = default;
+};
+
 TEST(tests_parse, toArray) {
-  map<string, boost::any> m = {
-      {"foo", boost::any("bar")},
-      {"string", boost::any(string("string"))},
-      {"long", boost::any(LONG_MAX)},
-      {"bool", boost::any(true)},
-      {"vector", boost::any(vector<boost::any>({{boost::any("foo")}}))},
-      {"map",
-       boost::any(map<string, boost::any>({{"foo", boost::any("bar")}}))}};
+  TestToArrayModel t1;
+  t1.key = make_shared<string>("k1");
+  t1.value = make_shared<string>("v1");
+  TestToArrayModel t2;
+  t2.key = make_shared<string>("k2");
+  t2.value = make_shared<string>("v2");
+  vector<TestToArrayModel> vec;
+  vec.push_back(t1);
+  vec.push_back(t2);
+
   vector<map<string, boost::any>> res =
-      Darabonba_Util::Client::toArray(make_shared<map<string, boost::any>>(m));
-  map<string, boost::any> data = res[0];
-  ASSERT_EQ(boost::any_cast<string>(m["string"]),
-            boost::any_cast<string>(data["string"]));
-  ASSERT_EQ(boost::any_cast<long>(m["long"]),
-            boost::any_cast<long>(data["long"]));
-  ASSERT_EQ(boost::any_cast<bool>(m["bool"]),
-            boost::any_cast<bool>(data["bool"]));
+      Darabonba_Util::Client::toArray<vector<TestToArrayModel>>(
+          make_shared<vector<TestToArrayModel>>(vec));
+  map<string, boost::any> m1 = res[0];
+  map<string, boost::any> m2 = res[1];
+  ASSERT_EQ("k1",
+            boost::any_cast<string>(m1["key"]));
+  ASSERT_EQ("v1",
+            boost::any_cast<string>(m1["value"]));
+  ASSERT_EQ("k2",
+            boost::any_cast<string>(m2["key"]));
+  ASSERT_EQ("v2",
+            boost::any_cast<string>(m2["value"]));
 }
 
 void testAny(const boost::any &value, const std::string &expected) {

@@ -141,7 +141,15 @@ public:
 
   static string toString(const shared_ptr<vector<uint8_t>> &val);
 
-  static vector<map<string, boost::any>> toArray(const boost::any &input);
+  template<class TP> static vector<map<string, boost::any>> toArray(const shared_ptr<void> &input) {
+    shared_ptr<TP> vec_ptr = static_pointer_cast<TP>(input);
+    vector<map<string, boost::any>> result;
+    for (auto &model : *vec_ptr) {
+      map<string, boost::any> m = model.toMap();
+      result.push_back(m);
+    }
+    return result;
+  };
 
   static string toFormString(shared_ptr<map<string, boost::any>> val);
 

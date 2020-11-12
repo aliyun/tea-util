@@ -97,6 +97,13 @@ TEST(tests_assert, assertAsBoolean) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
     ASSERT_EQ("value is not a bool", err);
   }
+
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(true);
+
+  shared_ptr<bool> bool_ptr = make_shared<bool>(false);
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(bool_ptr);
+  ASSERT_TRUE(Client::assertAsBoolean(any_ptr));
+  ASSERT_FALSE(Client::assertAsBoolean(any_ptr1));
 }
 
 TEST(tests_assert, assertAsString) {
@@ -111,6 +118,13 @@ TEST(tests_assert, assertAsString) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
     ASSERT_EQ("value is not a string", err);
   }
+
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(string("test"));
+
+  shared_ptr<string> str_ptr = make_shared<string>("test1");
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(str_ptr);
+  ASSERT_EQ("test", Client::assertAsString(any_ptr));
+  ASSERT_EQ("test1", Client::assertAsString(any_ptr1));
 }
 
 TEST(tests_assert, assertAsBytes) {
@@ -127,6 +141,15 @@ TEST(tests_assert, assertAsBytes) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
     ASSERT_EQ("value is not a bytes", err);
   }
+
+  vector<uint8_t> bytes;
+  bytes.push_back(1);
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(bytes);
+
+  shared_ptr<vector<uint8_t>> bytes_ptr = make_shared<vector<uint8_t>>(vector<uint8_t>({1, 2}));
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(bytes_ptr);
+  ASSERT_EQ(bytes, Client::assertAsBytes(any_ptr));
+  ASSERT_EQ(vector<uint8_t>({1, 2}), Client::assertAsBytes(any_ptr1));
 }
 
 TEST(tests_assert, assertAsNumber) {
@@ -141,6 +164,13 @@ TEST(tests_assert, assertAsNumber) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
     ASSERT_EQ("value is not a int number", err);
   }
+
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(10);
+
+  shared_ptr<int> int_ptr = make_shared<int>(20);
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(int_ptr);
+  ASSERT_EQ(10, Client::assertAsNumber(any_ptr));
+  ASSERT_EQ(20, Client::assertAsNumber(any_ptr1));
 }
 
 TEST(tests_assert, assertAsMap) {
@@ -159,6 +189,16 @@ TEST(tests_assert, assertAsMap) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
     ASSERT_EQ("value is not a map<string, any>", err);
   }
+
+  map<string, boost::any> m({{"key", string("value")}});
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(m);
+
+  shared_ptr<map<string, boost::any>> map_ptr =
+      make_shared<map<string, boost::any>>(
+          map<string, boost::any>({{"foo", string("bar")}}));
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(map_ptr);
+  ASSERT_EQ("value", boost::any_cast<string>(Client::assertAsMap(any_ptr)["key"]));
+  ASSERT_EQ("bar", boost::any_cast<string>(Client::assertAsMap(any_ptr1)["foo"]));
 }
 
 TEST(tests_assert, assertAsReadable) {
@@ -175,6 +215,15 @@ TEST(tests_assert, assertAsReadable) {
     string err = boost::current_exception_cast<std::runtime_error>()->what();
     ASSERT_EQ("value is not a readable", err);
   }
+
+  Darabonba::Stream stream(make_shared<stringstream>("stream"));
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(stream);
+
+  shared_ptr<Darabonba::Stream> stream_ptr =
+      make_shared<Darabonba::Stream>(make_shared<stringstream>("test stream"));
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(stream_ptr);
+  ASSERT_EQ("stream", Client::assertAsReadable(any_ptr).read());
+  ASSERT_EQ("test stream", Client::assertAsReadable(any_ptr1).read());
 }
 
 TEST(tests_assert, is2xx) {
