@@ -4,6 +4,7 @@ import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.utils.StringUtils;
 import com.aliyun.teautil.models.TeaUtilException;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
