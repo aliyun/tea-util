@@ -55,7 +55,9 @@ public class Common {
      * @return the parsed result
      */
     public static Object parseJSON(String json) {
-        return new Gson().fromJson(json, Map.class);
+            Gson gson = new Gson();
+            JsonElement jsonElement = (JsonElement)gson.fromJson(json, JsonElement.class);
+             return jsonElement.isJsonArray() ? gson.fromJson(json, List.class) : (new Gson()).fromJson(json, Map.class);
     }
 
     /**
