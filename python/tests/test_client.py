@@ -71,13 +71,13 @@ class TestClient(unittest.TestCase):
         self.assertIn('GMT', Client.get_date_utcstring())
 
     def test_default_string(self):
-        self.assertEqual("default", Client.default_string("", "default"))
+        self.assertEqual("", Client.default_string("", "default"))
         self.assertEqual("default", Client.default_string(None, "default"))
         self.assertEqual("str", Client.default_string("str", "default"))
 
     def test_default_number(self):
         self.assertEqual(100, Client.default_number(None, 100))
-        self.assertEqual(100, Client.default_number(0, 100))
+        self.assertEqual(0, Client.default_number(0, 100))
         self.assertEqual(1, Client.default_number(1, 100))
 
     def test_to_form_string(self):
@@ -111,7 +111,7 @@ class TestClient(unittest.TestCase):
         self.assertFalse(Client.is_unset("11"))
 
     def test_stringify_map_value(self):
-        self.assertIsNone(Client.stringify_map_value(None))
+        self.assertEqual({}, Client.stringify_map_value(None))
         self.assertEqual({}, Client.stringify_map_value({}))
         dic = {
             'test': 100,
@@ -131,7 +131,7 @@ class TestClient(unittest.TestCase):
             self.assertEqual('test is not a dict', str(e))
 
     def test_get_user_agent(self):
-        self.assertIsNotNone(Client.get_user_agent())
+        self.assertIsNotNone(Client.get_user_agent(''))
         self.assertIn("test", Client.get_user_agent("test"))
 
     def test_is_xx(self):
@@ -175,7 +175,7 @@ class TestClient(unittest.TestCase):
         try:
             Client.assert_as_string(num)
         except ValueError as e:
-            self.assertEqual('1 is not a string', str(e))
+            self.assertEqual('1 is not a str', str(e))
 
     def test_assert_as_number(self):
         s = 'test'
@@ -185,7 +185,7 @@ class TestClient(unittest.TestCase):
         try:
             Client.assert_as_number(s)
         except ValueError as e:
-            self.assertEqual('test is not a integer', str(e))
+            self.assertEqual('test is not a number', str(e))
 
     def test_assert_as_boolean(self):
         s = 'test'
@@ -195,7 +195,7 @@ class TestClient(unittest.TestCase):
         try:
             Client.assert_as_boolean(s)
         except ValueError as e:
-            self.assertEqual('test is not a boolean', str(e))
+            self.assertEqual('test is not a bool', str(e))
 
     def test_validate_model(self):
         model = {'t': 'ok'}
@@ -234,7 +234,7 @@ class TestClient(unittest.TestCase):
         res = Client.to_array(lis)
         self.assertEqual('a', res[0]['test_a'])
         res = Client.to_array(None)
-        self.assertIsNone(res)
+        self.assertEqual([], res)
         lis = ['tm', 'tm']
         res = Client.to_array(lis)
         self.assertEqual(lis, res)
