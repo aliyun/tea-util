@@ -6,20 +6,8 @@ class TestClient(unittest.TestCase):
     def test_init(self):
         option = RuntimeOptions()
         option.validate()
-        self.assertEqual(False, option.autoretry)
-        self.assertEqual(False, option.ignore_ssl)
-        self.assertEqual(0, option.max_attempts)
-        self.assertEqual('', option.backoff_policy)
-        self.assertEqual(0, option.backoff_period)
-        self.assertEqual(0, option.read_timeout)
-        self.assertEqual(0, option.connect_timeout)
-        self.assertEqual('', option.http_proxy)
-        self.assertEqual('', option.https_proxy)
-        self.assertEqual('', option.no_proxy)
-        self.assertEqual(0, option.max_idle_conns)
-        self.assertEqual('', option.local_addr)
-        self.assertEqual('', option.socks_5proxy)
-        self.assertEqual('', option.socks_5net_work)
+        self.assertEqual(None, option.autoretry)
+
         option = RuntimeOptions(
             autoretry=True,
             ignore_ssl=True,
