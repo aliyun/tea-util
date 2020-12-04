@@ -54,12 +54,6 @@ jobs:
     #   osx_image: xcode11.3
     #   env: TEA_UTIL_ENV="swift"
     - language: python
-      python: 3.4
-      env: TEA_UTIL_ENV="python"
-    - language: python
-      python: 3.5
-      env: TEA_UTIL_ENV="python"
-    - language: python
       python: 3.6
       env: TEA_UTIL_ENV="python"
     - language: python
@@ -67,6 +61,9 @@ jobs:
       env: TEA_UTIL_ENV="python"
     - language: python
       python: 3.8
+      env: TEA_UTIL_ENV="python"
+    - language: python
+      python: 3.9
       env: TEA_UTIL_ENV="python"
 
 script:

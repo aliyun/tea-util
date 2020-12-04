@@ -28,7 +28,7 @@ class Client:
 
     @staticmethod
     def __get_default_agent():
-        return f'Alibaba Cloud ({platform.platform()})  python/{platform.python_version()} TeaDSL/1'
+        return f'AlibabaCloud ({platform.platform()}) python/{platform.python_version()} TeaDSL/1'
 
     @staticmethod
     def to_bytes(
@@ -410,3 +410,40 @@ class Client:
         if not isinstance(value, READABLE):
             raise ValueError('The value is not a readable')
         return value
+
+
+class AioClient(Client):
+    @staticmethod
+    async def read_as_bytes(stream) -> bytes:
+        """
+        Read data from a readable stream, and compose it to a bytes
+        @param stream: the readable stream
+        @return: the bytes result
+        """
+        if isinstance(stream, bytes):
+            return stream
+        elif isinstance(stream, str):
+            return bytes(stream, encoding='utf-8')
+        else:
+            return await stream.read()
+
+    @staticmethod
+    async def read_as_string(stream) -> str:
+        """
+        Read data from a readable stream, and compose it to a string
+        @param stream: the readable stream
+        @return: the string result
+        """
+        buff = await AioClient.read_as_bytes(stream)
+        return AioClient.to_string(buff)
+
+    @staticmethod
+    async def read_as_json(stream) -> Any:
+        """
+        Read data from a readable stream, and parse it by JSON format
+        @param stream: the readable stream
+        @return: the parsed result
+        """
+        return AioClient.parse_json(
+            await AioClient.read_as_string(stream)
+        )
