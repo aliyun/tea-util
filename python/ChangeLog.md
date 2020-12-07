@@ -1,5 +1,11 @@
-### 2020-08-26 Version 0.2.0
+### 2020-12-07 Version 0.3.0
+* Drop support for python3.4.
+* Drop support for python3.5.
+* Added support for python3.9.
+* Support type annotations.
+* Support async io client.
 
+### 2020-08-26 Version 0.2.0
 * Support to_array.
 * Support sleep.
 
