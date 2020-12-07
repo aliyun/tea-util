@@ -75,12 +75,16 @@ public class CommonTest {
         InputStream is = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(is);
         Assert.assertEquals("test", map.get("test"));
-
+       
+        InputStream listInputStream = new ByteArrayInputStream("[{\"test\":\"test\"}]".getBytes("UTF-8"));
+        List<Object> list = (List<Object>) Common.readAsJSON(listInputStream);
+        Assert.assertEquals("{test=test}", list.get(0).toString());
+        
         try {
             is = new ByteArrayInputStream("<xml>test</xml>".getBytes("UTF-8"));
             Common.readAsJSON(is);
             Assert.fail();
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             Assert.assertEquals("Error: convert to JSON, response is:\n<xml>test</xml>", e.getMessage());
         }
     }
@@ -306,7 +310,7 @@ public class CommonTest {
     }
 
     @Test
-    public void assertAsReadableTest() throws Exception{
+    public void assertAsReadableTest() throws Exception {
         try {
             Common.assertAsReadable(new ArrayList<>());
             Assert.fail();
