@@ -1,6 +1,7 @@
 import unittest
 import time
 import os
+import asyncio
 
 from Tea.model import TeaModel
 from alibabacloud_tea_util.client import Client
@@ -248,3 +249,33 @@ class TestClient(unittest.TestCase):
             Client.assert_as_readable('readable')
         except ValueError as e:
             self.assertEqual('The value is not a readable', str(e))
+
+    def test_read_as_bytes_async(self):
+        loop = asyncio.get_event_loop()
+        task1 = asyncio.ensure_future(Client.read_as_bytes_async(b'test'))
+        loop.run_until_complete(task1)
+
+        task2 = asyncio.ensure_future(Client.read_as_bytes_async('testStr'))
+        loop.run_until_complete(task2)
+        self.assertEqual(b'test', task1.result())
+        self.assertEqual(b'testStr', task2.result())
+
+    def test_read_as_string_async(self):
+        loop = asyncio.get_event_loop()
+        task1 = asyncio.ensure_future(Client.read_as_string_async(b'test'))
+        task2 = asyncio.ensure_future(Client.read_as_string_async('testStr'))
+        tasks = [task1, task2]
+        loop.run_until_complete(asyncio.wait(tasks))
+        self.assertEqual('test', task1.result())
+        self.assertEqual('testStr', task2.result())
+
+    def test_read_as_json_async(self):
+        loop = asyncio.get_event_loop()
+        task1 = asyncio.ensure_future(Client.read_as_json_async(b'{"key": "value"}'))
+        task2 = asyncio.ensure_future(Client.read_as_json_async("{1:'2'}"))
+        loop.run_until_complete(task1)
+        self.assertEqual({"key": "value"}, task1.result())
+        try:
+            loop.run_until_complete(task2)
+        except Exception as e:
+            self.assertEqual('''Failed to parse the value as json format, Value: "{1:'2'}".''', str(e))
