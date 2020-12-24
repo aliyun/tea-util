@@ -1,0 +1,28 @@
+name: Python2 Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+defaults:
+  run:
+    shell: bash
+    working-directory: python2
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python2
+        uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+      - name: Install dependencies
+        run: pip install alibabacloud-tea-py2 coverage pytest
+      - name: Test with unittest
+        run: |
+          coverage run --source="./alibabacloud_tea_util" -m pytest tests/
+      - name: CodeCov
+        run: bash <(curl -s https://codecov.io/bash) -cF python2

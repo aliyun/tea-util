@@ -21,6 +21,7 @@ function run_php {
   cd php/ || return 126
   composer --version
   composer install -vvv
+  composer require phpunit/phpunit --dev
   composer test || return 126
   cd ../
   upload_codecov_report php php
