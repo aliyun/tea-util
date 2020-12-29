@@ -401,9 +401,10 @@ func Is5xx(code *int) *bool {
 	return tea.Bool(tmp >= 500 && tmp < 600)
 }
 
-func Sleep(millisecond *int) {
+func Sleep(millisecond *int) error {
 	ms := tea.IntValue(millisecond)
 	time.Sleep(time.Duration(ms) * time.Millisecond)
+	return nil
 }
 
 func ToArray(in interface{}) []map[string]interface{} {

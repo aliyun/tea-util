@@ -1,3 +1,6 @@
+2020-12-29 Version: v1.3.8
+- Fix Sleep.
+
 2020-12-29 Version: v1.3.7
 - Support go 1.11.
 
