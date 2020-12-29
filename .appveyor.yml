@@ -10,6 +10,10 @@ stack: python 3
 environment:
   matrix:
 
+  - job_name: go_task0
+    job_group: go_task
+    go: 1.11.x
+
   - job_name: go_task1
     job_group: go_task
     go: 1.12.x
