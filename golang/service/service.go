@@ -249,9 +249,9 @@ func AssertAsMap(a interface{}) map[string]interface{} {
 	}
 
 	res := make(map[string]interface{})
-	tmp := r.MapRange()
-	for tmp.Next() {
-		res[tmp.Key().String()] = tmp.Value().Interface()
+	tmp := r.MapKeys()
+	for _, key := range tmp {
+		res[key.String()] = r.MapIndex(key).Interface()
 	}
 
 	return res

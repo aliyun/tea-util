@@ -27,6 +27,11 @@ jobs:
       jdk: openjdk8
       env: TEA_UTIL_ENV="java"
     - language: go
+      go: 1.11.x
+      env: TEA_UTIL_ENV="go"
+      install: 
+        - export GO111MODULE=on  
+    - language: go
       go: 1.12.x
       env: TEA_UTIL_ENV="go"
       install: 
