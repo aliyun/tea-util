@@ -1,3 +1,6 @@
+### 2021-01-04 Version 0.3.2
+* Support json encoding of Tea model.
+
 ### 2020-12-09 Version 0.3.1
 * Change overwrite to a method with `_async` suffix.
 
