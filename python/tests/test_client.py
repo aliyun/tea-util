@@ -62,6 +62,7 @@ class TestClient(unittest.TestCase):
                          Client.read_as_json('{"key":"value"}'))
         try:
             Client.read_as_json("{1:'2'}")
+            assert False
         except Exception as e:
             self.assertEqual('''Failed to parse the value as json format, Value: "{1:'2'}".''', str(e))
 
@@ -92,6 +93,19 @@ class TestClient(unittest.TestCase):
     def test_to_json_string(self):
         self.assertEqual('{"key": "value"}',
                          Client.to_jsonstring({"key": "value"}))
+        model = self.TestModel()
+        any_dict = {
+            'bytes': b'100',
+            'str': '100',
+            'int': 100,
+            'model': model,
+            'float': 100.1,
+            'bool': True
+        }
+        self.assertEqual(
+            '{"bytes": "100", "str": "100", "int": 100, "model": {"test_a": "a", "test_b": "b"}, "float": 100.1, "bool": true}',
+            Client.to_jsonstring(any_dict)
+        )
 
     def test_empty(self):
         self.assertTrue(Client.empty(None))
@@ -128,6 +142,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dic, res)
         try:
             Client.assert_as_map(s)
+            assert False
         except ValueError as e:
             self.assertEqual('test is not a dict', str(e))
 
@@ -165,6 +180,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(b, res)
         try:
             Client.assert_as_bytes(s)
+            assert False
         except ValueError as e:
             self.assertEqual('test is not a bytes', str(e))
 
@@ -175,6 +191,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(s, res)
         try:
             Client.assert_as_string(num)
+            assert False
         except ValueError as e:
             self.assertEqual('1 is not a str', str(e))
 
@@ -185,6 +202,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(num, res)
         try:
             Client.assert_as_number(s)
+            assert False
         except ValueError as e:
             self.assertEqual('test is not a number', str(e))
 
@@ -195,6 +213,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(boolean, res)
         try:
             Client.assert_as_boolean(s)
+            assert False
         except ValueError as e:
             self.assertEqual('test is not a bool', str(e))
 
@@ -204,6 +223,7 @@ class TestClient(unittest.TestCase):
         model = self.TestModel()
         try:
             Client.validate_model(model)
+            assert False
         except ValueError as e:
             self.assertEqual('test validate', str(e))
 
@@ -247,6 +267,7 @@ class TestClient(unittest.TestCase):
 
         try:
             Client.assert_as_readable('readable')
+            assert False
         except ValueError as e:
             self.assertEqual('The value is not a readable', str(e))
 
@@ -277,5 +298,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual({"key": "value"}, task1.result())
         try:
             loop.run_until_complete(task2)
+            assert False
         except Exception as e:
             self.assertEqual('''Failed to parse the value as json format, Value: "{1:'2'}".''', str(e))

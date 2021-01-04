@@ -17,6 +17,14 @@ class Client:
     This is a utility module
     """
 
+    class __ModelEncoder(json.JSONEncoder):
+        def default(self, o: Any) -> Any:
+            if isinstance(o, TeaModel):
+                return o.to_map()
+            elif isinstance(o, bytes):
+                return o.decode('utf-8')
+            super().default(o)
+
     @staticmethod
     def __read_part(f, size=1024):
         while True:
@@ -196,7 +204,7 @@ class Client:
         Stringify a value by JSON format
         @return: the JSON format string
         """
-        return json.dumps(val)
+        return json.dumps(val, cls=Client.__ModelEncoder)
 
     @staticmethod
     def empty(
@@ -328,7 +336,7 @@ class Client:
         @return: the map value
         """
         if not isinstance(value, dict):
-            ValueError(f'{value} is not a dict')
+            raise ValueError(f'{value} is not a dict')
         return value
 
     @staticmethod
