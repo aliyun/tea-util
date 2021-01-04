@@ -192,6 +192,19 @@ describe('Tea Util', function () {
         }, /The value is not a object/);
     });
 
+    it('assertAsArray', function () {
+        assert.deepStrictEqual(Client.assertAsArray([]), []);
+        assert.throws(() => {
+            Client.assertAsArray({});
+        }, /The value is not array/);
+        assert.throws(() => {
+            Client.assertAsArray(true);
+        }, /The value is not array/);
+        assert.throws(() => {
+            Client.assertAsArray(123);
+        }, /The value is not array/);
+    });
+
     it('assertAsBytes', function () {
         assert.deepStrictEqual(Client.assertAsBytes(Buffer.from('test')), Buffer.from('test'));
         assert.throws(() => {

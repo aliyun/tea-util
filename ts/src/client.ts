@@ -211,6 +211,13 @@ export default class Client {
     throw new Error(`The value is not a object`);
   }
 
+  static assertAsArray(value: any): any[] {
+    if (Array.isArray(value)) {
+      return value;
+    }
+    throw new Error(`The value is not array`);
+  }
+
   static assertAsBytes(value: any): Buffer {
     if (Buffer.isBuffer(value)) {
       return value;
