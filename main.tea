@@ -169,6 +169,12 @@ static function assertAsNumber(value: any): number;
 static function assertAsMap(value: any): map[string]any;
 
 /**
+ * Assert a value, if it is a array, return it, otherwise throws
+ * @return the array value
+ */
+static function assertAsArray(value: any): [ any ];
+
+/**
  * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return defaultUserAgent
  * @return the string value
  */
