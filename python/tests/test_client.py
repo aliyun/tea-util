@@ -89,6 +89,13 @@ class TestClient(unittest.TestCase):
         dic["form"] = "test"
         dic["param"] = "test"
         self.assertEqual("form=test&param=test", Client.to_form_string(dic))
+        with open(os.path.join(base_path, 'test_open.txt'), 'rb') as f:
+            dic = {
+                'form': 'test',
+                'param': 'test',
+                'file': f
+            }
+            self.assertEqual("form=test&param=test", Client.to_form_string(dic))
 
     def test_to_json_string(self):
         self.assertEqual('{"key": "value"}',

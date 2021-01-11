@@ -195,7 +195,7 @@ class Client:
         if not val:
             return ""
         keys = sorted(list(val))
-        dic = [(k, val[k]) for k in keys]
+        dic = {k: val[k] for k in keys if not isinstance(val[k], READABLE)}
         return urlencode(dic)
 
     @staticmethod
