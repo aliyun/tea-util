@@ -144,7 +144,8 @@ class Utils
         if (null === $real) {
             return $default;
         }
-        return \intval($real);
+
+        return (int) $real;
     }
 
     /**
@@ -279,7 +280,7 @@ class Utils
         }
         foreach ($map as &$node) {
             if (is_numeric($node)) {
-                $node = (string)$node;
+                $node = (string) $node;
             } elseif (null === $node) {
                 $node = '';
             } elseif (\is_bool($node)) {
@@ -396,7 +397,7 @@ class Utils
     public static function getUserAgent($userAgent = '')
     {
         if (empty(self::$defaultUserAgent)) {
-            self::$defaultUserAgent = sprintf('AlibabaCloud (%s %s) PHP/%s Core/3.1 TeaDSL/1', PHP_OS, PHP_SAPI, PHP_VERSION);
+            self::$defaultUserAgent = sprintf('AlibabaCloud (%s; %s) PHP/%s Core/3.1 TeaDSL/1', PHP_OS, \PHP_SAPI, PHP_VERSION);
         }
         if (!empty($userAgent)) {
             return self::$defaultUserAgent . ' ' . $userAgent;
