@@ -3,6 +3,7 @@ import uuid
 import platform
 import socket
 import time
+import Tea
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -36,7 +37,8 @@ class Client:
 
     @staticmethod
     def __get_default_agent():
-        return f'AlibabaCloud ({platform.platform()}) python/{platform.python_version()} TeaDSL/1'
+        return f'AlibabaCloud ({platform.system()}; {platform.machine()}) ' \
+               f'Python/{platform.python_version()} Core/{Tea.__version__} TeaDSL/1'
 
     @staticmethod
     def to_bytes(
@@ -193,7 +195,7 @@ class Client:
         if not val:
             return ""
         keys = sorted(list(val))
-        dic = [(k, val[k]) for k in keys]
+        dic = {k: val[k] for k in keys if not isinstance(val[k], READABLE)}
         return urlencode(dic)
 
     @staticmethod
