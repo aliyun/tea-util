@@ -163,6 +163,10 @@ namespace AlibabaCloud.TeaUtil
             bool first = true;
             foreach (var entry in map)
             {
+                if(entry.Value == null)
+                {
+                    continue;
+                }
                 if (first)
                 {
                     first = false;

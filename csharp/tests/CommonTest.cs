@@ -172,6 +172,7 @@ namespace tests
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict.Add("form", "test");
             dict.Add("param", "test");
+            dict.Add("testNull", null);
             Assert.Equal("form=test&param=test", Common.ToFormString(dict));
         }
 
