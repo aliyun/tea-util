@@ -308,3 +308,24 @@ class TestClient(unittest.TestCase):
             assert False
         except Exception as e:
             self.assertEqual('''Failed to parse the value as json format, Value: "{1:'2'}".''', str(e))
+
+    def test_sleep_async(self):
+        loop = asyncio.get_event_loop()
+
+        async def main():
+            t1 = time.time()
+            await Client.sleep_async(1500)
+            self.assertTrue(1 < time.time() - t1 < 2)
+
+        loop.run_until_complete(main())
+
+    def test_assert_as_array(self):
+        array = ['str', 'int', 'bool']
+        self.assertEqual(array, Client.assert_as_array(array))
+
+        try:
+            num = 10
+            Client.assert_as_array(num)
+            assert False
+        except Exception as e:
+            self.assertEqual('The value is not a list', str(e))

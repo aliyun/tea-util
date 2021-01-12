@@ -4,6 +4,7 @@ import platform
 import socket
 import time
 import Tea
+import asyncio
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -427,6 +428,15 @@ class Client:
         time.sleep(millisecond / 1000)
 
     @staticmethod
+    async def sleep_async(
+            millisecond: int,
+    ) -> None:
+        """
+        Suspends the current thread for the specified number of milliseconds.
+        """
+        await asyncio.sleep(millisecond / 1000)
+
+    @staticmethod
     def to_array(
         input: Any,
     ) -> List[Dict[str, Any]]:
@@ -454,4 +464,12 @@ class Client:
         """
         if not isinstance(value, READABLE):
             raise ValueError('The value is not a readable')
+        return value
+
+    @staticmethod
+    def assert_as_array(
+        value: Any,
+    ) -> list:
+        if not isinstance(value, list):
+            raise ValueError('The value is not a list')
         return value
