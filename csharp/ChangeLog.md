@@ -1,3 +1,6 @@
+### 2021-01-12 Version 0.1.10
+* `ToFormString()` ignore `null`
+
 ### 2020-08-27 Version 0.1.9
 * Supported `AssertAsReadable()`
 
