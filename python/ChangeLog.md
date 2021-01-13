@@ -1,3 +1,8 @@
+### 2021-01-13 Version 0.3.3
+* Add assert_as_array method.
+* to_form_string method ignore readable objects.
+* Improve User-Agent.
+
 ### 2021-01-04 Version 0.3.2
 * Support json encoding of Tea model.
 
