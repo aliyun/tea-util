@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import Tea
 import json
 import uuid
 import platform
@@ -16,6 +17,11 @@ class Client(object):
     """
     This is a utility module
     """
+    class _ModelEncoder(json.JSONEncoder):
+        def default(self, o):
+            if isinstance(o, TeaModel):
+                return o.to_map()
+            super(Client._ModelEncoder, self).default(o)
 
     @staticmethod
     def __read_part(f, size=1024):
@@ -28,8 +34,8 @@ class Client(object):
 
     @staticmethod
     def __get_default_agent():
-        return 'AlibabaCloud (%s) python/%s TeaDSL/1' % (
-            platform.platform(), platform.python_version()
+        return 'AlibabaCloud (%s;%s) Python/%s Core/%s TeaDSL/1' % (
+            platform.system(), platform.machine(), platform.python_version(), Tea.__version__
         )
 
     @staticmethod
@@ -138,7 +144,7 @@ class Client(object):
         if not val:
             return ""
         keys = sorted(list(val))
-        dic = [(k, val[k]) for k in keys]
+        dic = [(k, val[k]) for k in keys if not isinstance(val[k], READABLE)]
         return urlencode(dic)
 
     @staticmethod
@@ -147,7 +153,7 @@ class Client(object):
         Stringify a value by JSON format
         @return: the JSON format string
         """
-        return json.dumps(val)
+        return json.dumps(val, cls=Client._ModelEncoder)
 
     @staticmethod
     def empty(val):

@@ -90,9 +90,31 @@ class TestClient(unittest.TestCase):
         dic["param"] = "test"
         self.assertEqual("form=test&param=test", Client.to_form_string(dic))
 
+        with open(os.path.join(base_path, 'test_open.txt')) as f:
+            dic = {
+                'form': 'test',
+                'param': 'test',
+                'file': f
+            }
+            self.assertEqual("form=test&param=test", Client.to_form_string(dic))
+
     def test_to_json_string(self):
         self.assertEqual('{"key": "value"}',
                          Client.to_jsonstring({"key": "value"}))
+        model = self.TestModel()
+        any_dict = {
+            'bytes': '100',
+            'str': u'100',
+            'int': 100,
+            'model': model,
+            'float': 100.1,
+            'bool': True,
+            'None': None,
+        }
+        self.assertEqual(
+            '{"None": null, "int": 100, "float": 100.1, "bytes": "100", "bool": true, "str": "100", "model": {"test_b": "b", "test_a": "a"}}',
+            Client.to_jsonstring(any_dict)
+        )
 
     def test_empty(self):
         self.assertTrue(Client.empty(None))
