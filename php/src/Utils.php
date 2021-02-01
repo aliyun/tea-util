@@ -386,6 +386,14 @@ class Utils
         throw new \InvalidArgumentException('It is not a map value.');
     }
 
+    public static function assertAsArray($any){
+        if (\is_array($any)) {
+            return $any;
+        }
+
+        throw new \InvalidArgumentException('It is not a array value.');
+    }
+
     /**
      * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return
      * defaultUserAgent.
