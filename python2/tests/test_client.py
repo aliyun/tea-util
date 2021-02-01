@@ -278,3 +278,14 @@ class TestClient(unittest.TestCase):
             assert False
         except ValueError as e:
             self.assertEqual('The value is not a readable', str(e))
+
+    def test_assert_as_array(self):
+        array = ['str', 'int', 'bool']
+        self.assertEqual(array, Client.assert_as_array(array))
+
+        try:
+            num = 10
+            Client.assert_as_array(num)
+            assert False
+        except Exception as e:
+            self.assertEqual('The value is not a list', str(e))

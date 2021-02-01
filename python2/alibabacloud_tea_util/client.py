@@ -358,3 +358,13 @@ class Client(object):
         if not isinstance(value, READABLE):
             raise ValueError('The value is not a readable')
         return value
+
+    @staticmethod
+    def assert_as_array(value):
+        """
+        Assert a value, if it is a array, return it, otherwise throws
+        @return the array value
+        """
+        if not isinstance(value, list):
+            raise ValueError('The value is not a list')
+        return value
