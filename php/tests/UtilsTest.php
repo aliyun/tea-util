@@ -220,6 +220,21 @@ final class UtilsTest extends TestCase
         }
     }
 
+    public function testAssertAsArray()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a array value.');
+        Utils::assertAsArray('is not array');
+
+        try {
+            $map = ['foo'];
+            $this->assertEquals($map, Utils::assertAsArray($map));
+        } catch (\Exception $e) {
+            // should not be here
+            $this->assertTrue(false);
+        }
+    }
+
     public function testGetUserAgent()
     {
         $this->assertTrue(false !== strpos(Utils::getUserAgent('CustomUserAgent'), 'CustomUserAgent'));
