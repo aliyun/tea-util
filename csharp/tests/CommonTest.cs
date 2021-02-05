@@ -429,6 +429,20 @@ namespace tests
 
             Assert.Throws<ArgumentException>(() => { Common.AssertAsReadable("test"); });
         }
+
+        [Fact]
+        public void Test_AssertAsArray()
+        {
+            List<int> listInt = new List<int>
+            {
+                1,
+                2,
+                3
+            };
+            Assert.Equal(1, Common.AssertAsArray(listInt)[0]);
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsArray("test"); });
+        }
     }
 
     public class TestRegModel : TeaModel

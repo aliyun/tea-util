@@ -1,3 +1,6 @@
+### 2021-02-05 Version 0.1.11
+* Supported `AssertAsArray()`
+
 ### 2021-01-12 Version 0.1.10
 * `ToFormString()` ignore `null`
 
