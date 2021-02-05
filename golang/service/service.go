@@ -321,6 +321,19 @@ func AssertAsReadable(a interface{}) io.Reader {
 	return res
 }
 
+func AssertAsArray(a interface{}) []interface{} {
+	r := reflect.ValueOf(a)
+	if r.Kind().String() != "array" {
+		panic(fmt.Sprintf("%v is not a [x]interface{}", a))
+	}
+	aLen := r.Cap()
+	res := make([]interface{}, 0)
+	for i := 0; i < aLen; i++ {
+		res = append(res, r.Index(i).Interface())
+	}
+	return res
+}
+
 func ParseJSON(a *string) interface{} {
 	tmp := make(map[string]interface{})
 	d := json.NewDecoder(bytes.NewReader([]byte(tea.StringValue(a))))
