@@ -2,6 +2,7 @@ package com.aliyun.teautil;
 
 import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.TeaRequest;
+import com.aliyun.teautil.models.RuntimeOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -178,6 +179,42 @@ public class CommonTest {
         Map<String, String> map = new HashMap<>();
         map.put("test", "test");
         Assert.assertEquals("test", Common.assertAsMap(map).get("test"));
+    }
+
+    @Test
+    public void assertAsArrayTest() {
+        Map<String, String> map = new HashMap<>();
+        map.put("test", "test");
+        try {
+            Common.assertAsArray(map);
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a array", e.getMessage());
+        }
+
+        try {
+            Common.assertAsArray(null);
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a array", e.getMessage());
+        }
+
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        Assert.assertEquals("test", Common.assertAsArray(list).get(0));
+
+        List<Number> list2 = new ArrayList<>();
+        list2.add(1);
+        Assert.assertEquals(1, Common.assertAsArray(list2).get(0));
+
+        List<Map<String, String>> list3 = new ArrayList<>();
+        list3.add(map);
+        Assert.assertEquals("test", ((Map<String, String>)Common.assertAsArray(list3).get(0)).get("test"));
+
+        List<RuntimeOptions> list4 = new ArrayList<>();
+        RuntimeOptions option = new RuntimeOptions();
+        list4.add(option);
+        Assert.assertEquals(true, ((RuntimeOptions)Common.assertAsArray(list4).get(0)).ignoreSSL);
     }
 
     @Test

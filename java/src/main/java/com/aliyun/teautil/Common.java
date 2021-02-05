@@ -74,6 +74,18 @@ public class Common {
     }
 
     /**
+     * Assert a value, if it is a array, return it, otherwise throws
+     *
+     * @return the array
+     */
+    public static List<Object> assertAsArray(Object object) {
+        if (null != object && List.class.isAssignableFrom(object.getClass())) {
+            return (List<Object>) object;
+        }
+        throw new TeaUtilException("The value is not a array");
+    }
+
+    /**
      * Assert a value, if it is a readable, return it, otherwise throws
      *
      * @return the readable value
