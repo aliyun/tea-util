@@ -374,3 +374,25 @@ func Test_ToArray(t *testing.T) {
 	res = ToArray(nil)
 	utils.AssertNil(t, res)
 }
+
+func Test_AssertAsArray(t *testing.T) {
+	str := [3]string{"one", "two", "three"}
+	defer func() {
+		err := recover()
+		if err != nil {
+			utils.AssertEqual(t, "[one two three] is not a [x]interface{}", err)
+		}
+	}()
+	array := AssertAsArray(str)
+	for i := 0; i < len(str); i++ {
+		if i == 0 {
+			utils.AssertEqual(t, "one", array[i])
+		}
+		if i == 1 {
+			utils.AssertEqual(t, "two", array[i])
+		}
+		if i == 2 {
+			utils.AssertEqual(t, "three", array[i])
+		}
+	}
+}
