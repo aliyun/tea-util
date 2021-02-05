@@ -279,6 +279,23 @@ namespace AlibabaCloud.TeaUtil
             throw new ArgumentException("The value is not number");
         }
 
+        public static List<object> AssertAsArray(object obj)
+        {
+            if(obj is IList)
+            {
+                var list = (IList)obj;
+                var result = new List<object>();
+                foreach(var item in list)
+                {
+                    result.Add(item);
+                }
+
+                return result;
+
+            }
+            throw new ArgumentException("The value is not list");
+        }
+
         public static string GetUserAgent(string userAgent)
         {
             if (!string.IsNullOrEmpty(userAgent))
