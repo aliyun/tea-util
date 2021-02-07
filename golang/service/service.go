@@ -323,10 +323,10 @@ func AssertAsReadable(a interface{}) io.Reader {
 
 func AssertAsArray(a interface{}) []interface{} {
 	r := reflect.ValueOf(a)
-	if r.Kind().String() != "array" {
+	if r.Kind().String() != "array" && r.Kind().String() != "slice" {
 		panic(fmt.Sprintf("%v is not a [x]interface{}", a))
 	}
-	aLen := r.Cap()
+	aLen := r.Len()
 	res := make([]interface{}, 0)
 	for i := 0; i < aLen; i++ {
 		res = append(res, r.Index(i).Interface())
@@ -335,12 +335,20 @@ func AssertAsArray(a interface{}) []interface{} {
 }
 
 func ParseJSON(a *string) interface{} {
-	tmp := make(map[string]interface{})
+	mapTmp := make(map[string]interface{})
 	d := json.NewDecoder(bytes.NewReader([]byte(tea.StringValue(a))))
 	d.UseNumber()
-	err := d.Decode(&tmp)
+	err := d.Decode(&mapTmp)
 	if err == nil {
-		return tmp
+		return mapTmp
+	}
+
+	sliceTmp := make([]interface{}, 0)
+	d = json.NewDecoder(bytes.NewReader([]byte(tea.StringValue(a))))
+	d.UseNumber()
+	err = d.Decode(&sliceTmp)
+	if err == nil {
+		return sliceTmp
 	}
 
 	if num, err := strconv.Atoi(tea.StringValue(a)); err == nil {
