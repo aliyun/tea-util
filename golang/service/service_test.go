@@ -170,6 +170,9 @@ func Test_ParseJSON(t *testing.T) {
 	obj := ParseJSON(tea.String(`{"test":"ok"}`)).(map[string]interface{})
 	utils.AssertEqual(t, "ok", obj["test"])
 
+	obj1 := ParseJSON(tea.String(`["test1", "test2", "test3"]`)).([]interface{})
+	utils.AssertEqual(t, "test2", obj1[1])
+
 	num := ParseJSON(tea.String(`10`)).(int)
 	utils.AssertEqual(t, 10, num)
 
@@ -179,7 +182,7 @@ func Test_ParseJSON(t *testing.T) {
 	float64Val := ParseJSON(tea.String(`1.00`)).(float64)
 	utils.AssertEqual(t, 1.00, float64Val)
 
-	null := ParseJSON(tea.String(`[1.00]`))
+	null := ParseJSON(tea.String(`}}}}`))
 	utils.AssertEqual(t, nil, null)
 }
 
@@ -376,7 +379,7 @@ func Test_ToArray(t *testing.T) {
 }
 
 func Test_AssertAsArray(t *testing.T) {
-	str := [3]string{"one", "two", "three"}
+	str := []string{"one", "two", "three"}
 	defer func() {
 		err := recover()
 		if err != nil {
