@@ -94,12 +94,8 @@ boost::any Darabonba_Util::Client::parseJSON(const shared_ptr<string> &val) {
   return parse_json(pt);
 }
 
-template <typename T> bool can_cast(const boost::any &v) {
-  return typeid(T) == v.type();
-}
-
 void json_encode(boost::any val, stringstream &ss) {
-  if (can_cast<map<string, boost::any>>(val)) {
+  if (typeid(map<string, boost::any>) == val.type()) {
     map<string, boost::any> m = boost::any_cast<map<string, boost::any>>(val);
     ss << '{';
     if (!m.empty()) {
@@ -114,7 +110,7 @@ void json_encode(boost::any val, stringstream &ss) {
       }
     }
     ss << '}';
-  } else if (can_cast<vector<boost::any>>(val)) {
+  } else if (typeid(vector<boost::any>) == val.type()) {
     vector<boost::any> v = boost::any_cast<vector<boost::any>>(val);
     ss << '[';
     if (!v.empty()) {
@@ -128,29 +124,29 @@ void json_encode(boost::any val, stringstream &ss) {
       }
     }
     ss << ']';
-  } else if (can_cast<int>(val)) {
+  } else if (typeid(int) == val.type()) {
     int i = boost::any_cast<int>(val);
     ss << to_string(i);
-  } else if (can_cast<long>(val)) {
+  } else if (typeid(long) == val.type()) {
     long l = boost::any_cast<long>(val);
     ss << to_string(l);
-  } else if (can_cast<double>(val)) {
+  } else if (typeid(double) == val.type()) {
     auto d = boost::any_cast<double>(val);
     ss << to_string(d);
-  } else if (can_cast<float>(val)) {
+  } else if (typeid(float) == val.type()) {
     auto f = boost::any_cast<float>(val);
     ss << to_string(f);
-  } else if (can_cast<string>(val)) {
+  } else if (typeid(string) == val.type()) {
     auto s = boost::any_cast<string>(val);
     ss << '"' << s << '"';
-  } else if (can_cast<bool>(val)) {
+  } else if (typeid(bool) == val.type()) {
     auto b = boost::any_cast<bool>(val);
     string c = b ? "true" : "false";
     ss << c;
-  } else if (can_cast<const char *>(val)) {
+  } else if (typeid(const char *) == val.type()) {
     auto s = boost::any_cast<const char *>(val);
     ss << '"' << s << '"';
-  } else if (can_cast<char *>(val)) {
+  } else if (typeid(char *) == val.type()) {
     auto s = boost::any_cast<char *>(val);
     ss << '"' << s << '"';
   }
