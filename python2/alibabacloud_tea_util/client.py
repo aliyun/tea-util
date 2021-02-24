@@ -5,6 +5,8 @@ import uuid
 import platform
 import socket
 import time
+
+from io import BytesIO
 from datetime import datetime
 from urllib import urlencode
 
@@ -355,6 +357,8 @@ class Client(object):
         Assert a value, if it is a readable, return it, otherwise throws
         @return: the readable value
         """
+        if isinstance(value, basestring):
+            value = BytesIO(TeaConverter.to_str(value))
         if not isinstance(value, READABLE):
             raise ValueError('The value is not a readable')
         return value
