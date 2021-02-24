@@ -1,3 +1,6 @@
+### 2021-02-24 Version 0.3.4
+* `assert_as_readable` method support parsing string.
+
 ### 2021-01-13 Version 0.3.3
 * Add assert_as_array method.
 * to_form_string method ignore readable objects.
