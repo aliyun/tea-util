@@ -273,10 +273,14 @@ class TestClient(unittest.TestCase):
             f.read()
 
         try:
-            Client.assert_as_readable('readable')
+            Client.assert_as_readable(100)
             assert False
         except ValueError as e:
             self.assertEqual('The value is not a readable', str(e))
+
+        Client.assert_as_readable(b'test')
+        readable = Client.assert_as_readable('test')
+        self.assertEqual(b'test', readable.read())
 
     def test_read_as_bytes_async(self):
         loop = asyncio.get_event_loop()

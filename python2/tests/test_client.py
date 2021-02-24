@@ -274,10 +274,13 @@ class TestClient(unittest.TestCase):
             f.read()
 
         try:
-            Client.assert_as_readable('readable')
+            Client.assert_as_readable(100)
             assert False
         except ValueError as e:
             self.assertEqual('The value is not a readable', str(e))
+
+        readable = Client.assert_as_readable('test')
+        self.assertEqual('test', readable.read())
 
     def test_assert_as_array(self):
         array = ['str', 'int', 'bool']

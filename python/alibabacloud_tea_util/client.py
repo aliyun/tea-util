@@ -8,6 +8,7 @@ import asyncio
 
 from datetime import datetime
 from urllib.parse import urlencode
+from io import BytesIO
 
 from Tea.model import TeaModel
 from Tea.stream import READABLE
@@ -462,8 +463,13 @@ class Client:
         Assert a value, if it is a readable, return it, otherwise throws
         @return: the readable value
         """
-        if not isinstance(value, READABLE):
-            raise ValueError('The value is not a readable')
+        if isinstance(value, str):
+            value = value.encode('utf-8')
+
+        if isinstance(value, bytes):
+            value = BytesIO(value)
+        elif not isinstance(value, READABLE):
+            raise ValueError(f'The value is not a readable')
         return value
 
     @staticmethod
