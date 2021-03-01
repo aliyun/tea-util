@@ -191,7 +191,7 @@ class TestClient(unittest.TestCase):
             Client.assert_as_bytes(s)
             assert False
         except ValueError as e:
-            self.assertEqual('test is not a str', str(e))
+            self.assertEqual('test is not a bytes', str(e))
 
     def test_assert_as_string(self):
         num = 1
@@ -202,7 +202,7 @@ class TestClient(unittest.TestCase):
             Client.assert_as_string(num)
             assert False
         except ValueError as e:
-            self.assertEqual('1 is not a unicode', str(e))
+            self.assertEqual('1 is not a string', str(e))
 
     def test_assert_as_number(self):
         s = 'test'

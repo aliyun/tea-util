@@ -8,7 +8,10 @@ import time
 
 from io import BytesIO
 from datetime import datetime
-from urllib import urlencode
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 from Tea.converter import TeaConverter
 from Tea.model import TeaModel
@@ -23,6 +26,8 @@ class Client(object):
         def default(self, o):
             if isinstance(o, TeaModel):
                 return o.to_map()
+            elif isinstance(o, bytes):
+                return TeaConverter.to_str(o)
             super(Client._ModelEncoder, self).default(o)
 
     @staticmethod
@@ -46,7 +51,7 @@ class Client(object):
         Convert a string(utf8) to bytes
         @return: the return bytes
         """
-        return TeaConverter.to_str(val)
+        return TeaConverter.to_bytes(val)
 
     @staticmethod
     def to_string(val):
@@ -54,7 +59,7 @@ class Client(object):
         Convert a bytes to string(utf8)
         @return: the return string
         """
-        return TeaConverter.to_unicode(val)
+        return TeaConverter.to_string(val)
 
     @staticmethod
     def parse_json(val):
@@ -74,10 +79,8 @@ class Client(object):
         @param stream: the readable stream
         @return: the bytes result
         """
-        if isinstance(stream, str):
-            return stream
-        elif isinstance(stream, unicode):
-            return stream.encode('utf-8')
+        if isinstance(stream, TeaConverter.basestring):
+            return TeaConverter.to_bytes(stream)
         else:
             b = ''
             for part in Client.__read_part(stream, 1024):
@@ -146,7 +149,7 @@ class Client(object):
         if not val:
             return ""
         keys = sorted(list(val))
-        dic = [(k, val[k]) for k in keys if not isinstance(val[k], READABLE)]
+        dic = [(k, TeaConverter.to_str(val[k])) for k in keys if not isinstance(val[k], READABLE)]
         return urlencode(dic)
 
     @staticmethod
@@ -201,7 +204,7 @@ class Client(object):
         dic_result = {}
         for k, v in m.items():
             if v is not None:
-                v = TeaConverter.to_unicode(v)
+                v = TeaConverter.to_string(v)
             dic_result[k] = v
         return dic_result
 
@@ -229,8 +232,8 @@ class Client(object):
         Assert a value, if it is a string, return it, otherwise throws
         @return: the string value
         """
-        if not isinstance(value, unicode):
-            raise ValueError('%s is not a unicode' % TeaConverter.to_str(value))
+        if not isinstance(value, TeaConverter.unicode):
+            raise ValueError('%s is not a string' % TeaConverter.to_str(value))
         return value
 
     @staticmethod
@@ -239,8 +242,8 @@ class Client(object):
         Assert a value, if it is a bytes, return it, otherwise throws
         @return: the bytes value
         """
-        if not isinstance(value, str):
-            raise ValueError('%s is not a str' % TeaConverter.to_str(value))
+        if not isinstance(value, bytes):
+            raise ValueError('%s is not a bytes' % TeaConverter.to_str(value))
         return value
 
     @staticmethod
@@ -249,8 +252,7 @@ class Client(object):
         Assert a value, if it is a number, return it, otherwise throws
         @return: the number value
         """
-        number = (int, float, long)
-        if not isinstance(value, number):
+        if not isinstance(value, TeaConverter.number):
             raise ValueError('%s is not a number' % TeaConverter.to_str(value))
         return value
 
@@ -357,8 +359,8 @@ class Client(object):
         Assert a value, if it is a readable, return it, otherwise throws
         @return: the readable value
         """
-        if isinstance(value, basestring):
-            value = BytesIO(TeaConverter.to_str(value))
+        if isinstance(value, TeaConverter.basestring):
+            value = BytesIO(TeaConverter.to_bytes(value))
         if not isinstance(value, READABLE):
             raise ValueError('The value is not a readable')
         return value
