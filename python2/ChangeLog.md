@@ -1,3 +1,6 @@
+###2021-03-02 Version 0.0.4
+* Compatible version for python2/3.
+
 ### 2021-02-24 Version 0.0.3
 * `assert_as_readable` method support parsing string.
 
