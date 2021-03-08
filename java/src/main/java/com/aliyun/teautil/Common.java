@@ -4,7 +4,9 @@ import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.utils.StringUtils;
 import com.aliyun.teautil.models.TeaUtilException;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -56,9 +58,12 @@ public class Common {
      * @return the parsed result
      */
     public static Object parseJSON(String json) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(new TypeToken<Map<String,Object>>(){}.getType(),new MapTypeAdapter()).create();
+
         JsonElement jsonElement = gson.fromJson(json, JsonElement.class);
-        return jsonElement.isJsonArray() ? gson.fromJson(json, List.class) : gson.fromJson(json, Map.class);
+        return jsonElement.isJsonArray() ? gson.fromJson(json,List.class):
+                gson.fromJson(json,new TypeToken<Map<String, Object>>(){}.getType());;
     }
 
     /**

@@ -76,7 +76,11 @@ public class CommonTest {
         InputStream is = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(is);
         Assert.assertEquals("test", map.get("test"));
-       
+
+        InputStream test = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
+        Map<String, Object> te = (Map<String, Object>) Common.readAsJSON(is);
+        Assert.assertEquals(1614825493911L, te.get("112911614825392239"));
+
         InputStream listInputStream = new ByteArrayInputStream("[{\"test\":\"test\"}]".getBytes("UTF-8"));
         List<Object> list = (List<Object>) Common.readAsJSON(listInputStream);
         Assert.assertEquals("{test=test}", list.get(0).toString());
