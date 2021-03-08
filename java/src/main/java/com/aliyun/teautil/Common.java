@@ -3,13 +3,14 @@ package com.aliyun.teautil;
 import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.utils.StringUtils;
 import com.aliyun.teautil.models.TeaUtilException;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -56,13 +57,16 @@ public class Common {
      * @return the parsed result
      */
     public static Object parseJSON(String json) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(new TypeToken<Map<String,Object>>(){}.getType(),new MapTypeAdapter()).create();
+
         JsonElement jsonElement = gson.fromJson(json, JsonElement.class);
-        return jsonElement.isJsonArray() ? gson.fromJson(json, List.class) : gson.fromJson(json, Map.class);
+        return jsonElement.isJsonArray() ? gson.fromJson(json,List.class):
+                gson.fromJson(json,new TypeToken<Map<String, Object>>(){}.getType());
     }
 
     /**
-     * Assert a value, if it is a map, return it, otherwise throws
+     * Assert a value, if it is a map,  it, otherwise throws
      *
      * @return the map value
      */

@@ -72,15 +72,22 @@ public class CommonTest {
     public void readAsJSONTest() throws IOException {
         new Common();
         Assert.assertEquals(0, Common.readAsBytes(null).length);
-
-        InputStream is = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(is);
-        Assert.assertEquals("test", map.get("test"));
-       
+        Assert.assertEquals(1614825493911L, map.get("112911614825392239"));
+
+        InputStream test = new ByteArrayInputStream("{\"112911614825392239\":\"4444222\"}".getBytes("UTF-8"));
+        Map<String, Object> testMap = (Map<String, Object>) Common.readAsJSON(test);
+        Assert.assertEquals("4444222", testMap.get("112911614825392239"));
+        
+         InputStream testJson = new ByteArrayInputStream("{\"112911614825392239\":{\"FF\":{\"DD\":444}}}".getBytes("UTF-8"));
+         Map<String, Object> testJsonMap = (Map<String, Object>) Common.readAsJSON(testJson);
+         Assert.assertEquals("444", testJsonMap.get("DD"));
+
         InputStream listInputStream = new ByteArrayInputStream("[{\"test\":\"test\"}]".getBytes("UTF-8"));
         List<Object> list = (List<Object>) Common.readAsJSON(listInputStream);
         Assert.assertEquals("{test=test}", list.get(0).toString());
-        
+
         try {
             is = new ByteArrayInputStream("<xml>test</xml>".getBytes("UTF-8"));
             Common.readAsJSON(is);
@@ -109,8 +116,8 @@ public class CommonTest {
     @Test
     public void toJSONStringTest() {
         Map map = new HashMap();
-        map.put("test", "test");
-        Assert.assertEquals("{\"test\":\"test\"}", Common.toJSONString(map));
+        map.put("112911614825392239", "1614825493911");
+        Assert.assertEquals("{\"112911614825392239\":\"1614825493911\"}", Common.toJSONString(map));
     }
 
     @Test
@@ -209,12 +216,12 @@ public class CommonTest {
 
         List<Map<String, String>> list3 = new ArrayList<>();
         list3.add(map);
-        Assert.assertEquals("test", ((Map<String, String>)Common.assertAsArray(list3).get(0)).get("test"));
+        Assert.assertEquals("test", ((Map<String, String>) Common.assertAsArray(list3).get(0)).get("test"));
 
         List<RuntimeOptions> list4 = new ArrayList<>();
         RuntimeOptions option = new RuntimeOptions();
         list4.add(option);
-        Assert.assertEquals(true, ((RuntimeOptions)Common.assertAsArray(list4).get(0)).ignoreSSL);
+        Assert.assertEquals(true, ((RuntimeOptions) Common.assertAsArray(list4).get(0)).ignoreSSL);
     }
 
     @Test
@@ -330,7 +337,7 @@ public class CommonTest {
         long start = System.currentTimeMillis();
         Common.sleep(10);
         long end = System.currentTimeMillis();
-        Assert.assertTrue((end-start) >= 10);
+        Assert.assertTrue((end - start) >= 10);
     }
 
     @Test
