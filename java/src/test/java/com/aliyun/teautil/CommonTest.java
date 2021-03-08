@@ -13,8 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.sun.xml.internal.messaging.saaj.packaging.mime.util.ASCIIUtility.getBytes;
-
 public class CommonTest {
     @Test
     public void emptyTest() {
@@ -79,8 +77,8 @@ public class CommonTest {
         Assert.assertEquals(1614825493911L, map.get("112911614825392239"));
         int number = 10;
         InputStream numTest = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
-        Map<String, Object> numMap = (Map<String, Object>) Common.readAsJSON(is);
-        Assert.assertEquals("test", map.get("test"));
+        Map<String, Object> numMap = (Map<String, Object>) Common.readAsJSON(numTest);
+        Assert.assertEquals("test", numMap.get("test"));
 
         InputStream test = new ByteArrayInputStream("{\"112911614825392239\":\"4444222\"}".getBytes("UTF-8"));
         Map<String, Object> testMap = (Map<String, Object>) Common.readAsJSON(test);
