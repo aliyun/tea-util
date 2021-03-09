@@ -49,7 +49,7 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
 
                 // 数字超过long的最大值，返回浮点类型
                 if (dbNum > Long.MAX_VALUE) {
-                    return String.valueOf(dbNum);
+                    return dbNum;
                 }
 
                 // 判断数字是否为整数值
@@ -57,7 +57,7 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
                 if (dbNum == lngNum) {
                     return lngNum;
                 } else {
-                    return String.valueOf(dbNum);
+                    return dbNum;
                 }
 
             case BOOLEAN:

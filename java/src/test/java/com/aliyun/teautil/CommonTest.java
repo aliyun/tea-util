@@ -75,15 +75,20 @@ public class CommonTest {
         InputStream is = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(is);
         Assert.assertEquals(1614825493911L, map.get("112911614825392239"));
+        int number = 10;
+        InputStream numTest = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
+        Map<String, Object> numMap = (Map<String, Object>) Common.readAsJSON(numTest);
+        Assert.assertEquals("test", numMap.get("test"));
 
         InputStream test = new ByteArrayInputStream("{\"112911614825392239\":\"4444222\"}".getBytes("UTF-8"));
         Map<String, Object> testMap = (Map<String, Object>) Common.readAsJSON(test);
         Assert.assertEquals("4444222", testMap.get("112911614825392239"));
-        
+
         InputStream testJson = new ByteArrayInputStream("{\"112911614825392239\":{\"FF\":{\"DD\":444}}}".getBytes("UTF-8"));
         Map<String, Object> testJsonMap = (Map<String, Object>) Common.readAsJSON(testJson);
         String s = testJsonMap.get("112911614825392239").toString();
-        Assert.assertEquals("{FF={DD=444}}",s);
+        Assert.assertEquals("{FF={DD=444}}", s);
+
 
         InputStream listInputStream = new ByteArrayInputStream("[{\"test\":\"test\"}]".getBytes("UTF-8"));
         List<Object> list = (List<Object>) Common.readAsJSON(listInputStream);
@@ -116,10 +121,22 @@ public class CommonTest {
 
     @Test
     public void toJSONStringTest() {
+
         Map map = new HashMap();
-        map.put("112911614825392239", "1614825493911");
-        Assert.assertEquals("{\"112911614825392239\":\"1614825493911\"}", Common.toJSONString(map));
+        map.put("test", "test");
+        Assert.assertEquals("{\"test\":\"test\"}", Common.toJSONString(map));
+
+        Map testString = new HashMap();
+        testString.put("112911614825392239", "1614825493911");
+        Assert.assertEquals("{\"112911614825392239\":\"1614825493911\"}", Common.toJSONString(testString));
+
+        Map testNum = new HashMap();
+        testString.put("112911614825392239", 1614825493911L);
+        Assert.assertEquals("{\"112911614825392239\":1614825493911}",Common.toJSONString(testString));
+
+
     }
+
 
     @Test
     public void getNonceTest() {
