@@ -58,11 +58,13 @@ public class Common {
      */
     public static Object parseJSON(String json) {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(new TypeToken<Map<String,Object>>(){}.getType(),new MapTypeAdapter()).create();
+                .registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+                }.getType(), new MapTypeAdapter()).create();
 
         JsonElement jsonElement = gson.fromJson(json, JsonElement.class);
-        return jsonElement.isJsonArray() ? gson.fromJson(json,List.class):
-                gson.fromJson(json,new TypeToken<Map<String, Object>>(){}.getType());
+        return jsonElement.isJsonArray() ? gson.fromJson(json, List.class) :
+                gson.fromJson(json, new TypeToken<Map<String, Object>>() {
+                }.getType());
     }
 
     /**

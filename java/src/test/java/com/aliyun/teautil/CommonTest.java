@@ -72,31 +72,35 @@ public class CommonTest {
     public void readAsJSONTest() throws IOException {
         new Common();
         Assert.assertEquals(0, Common.readAsBytes(null).length);
-        InputStream is = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
-        Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(is);
+        InputStream longTest = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
+        Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(longTest);
         Assert.assertEquals(1614825493911L, map.get("112911614825392239"));
-        int number = 10;
-        InputStream numTest = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
-        Map<String, Object> numMap = (Map<String, Object>) Common.readAsJSON(numTest);
-        Assert.assertEquals("test", numMap.get("test"));
 
-        InputStream test = new ByteArrayInputStream("{\"112911614825392239\":\"4444222\"}".getBytes("UTF-8"));
-        Map<String, Object> testMap = (Map<String, Object>) Common.readAsJSON(test);
-        Assert.assertEquals("4444222", testMap.get("112911614825392239"));
+        InputStream strTest = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
+        map = (Map<String, Object>) Common.readAsJSON(strTest);
+        Assert.assertEquals("test", map.get("test"));
 
-        InputStream testJson = new ByteArrayInputStream("{\"112911614825392239\":{\"FF\":{\"DD\":444}}}".getBytes("UTF-8"));
-        Map<String, Object> testJsonMap = (Map<String, Object>) Common.readAsJSON(testJson);
-        String s = testJsonMap.get("112911614825392239").toString();
-        Assert.assertEquals("{FF={DD=444}}", s);
+        strTest = new ByteArrayInputStream("{\"112911614825392239\":\"4444222\"}".getBytes("UTF-8"));
+        map = (Map<String, Object>) Common.readAsJSON(strTest);
+        Assert.assertEquals("4444222", map.get("112911614825392239"));
+
+        InputStream intTest = new ByteArrayInputStream("{\"112911614825392239\":444}".getBytes("UTF-8"));
+        map = (Map<String, Object>) Common.readAsJSON(intTest);
+        Assert.assertEquals(444L, map.get("112911614825392239"));
+
+        InputStream mapTest = new ByteArrayInputStream("{\"112911614825392239\":{\"FF\":{\"DD\":444}}}".getBytes("UTF-8"));
+        map = (Map<String, Object>) Common.readAsJSON(mapTest);
+        String mapStr = map.get("112911614825392239").toString();
+        Assert.assertEquals("{FF={DD=444}}", mapStr);
 
 
-        InputStream listInputStream = new ByteArrayInputStream("[{\"test\":\"test\"}]".getBytes("UTF-8"));
-        List<Object> list = (List<Object>) Common.readAsJSON(listInputStream);
+        InputStream listTest = new ByteArrayInputStream("[{\"test\":\"test\"}]".getBytes("UTF-8"));
+        List<Object> list = (List<Object>) Common.readAsJSON(listTest);
         Assert.assertEquals("{test=test}", list.get(0).toString());
 
         try {
-            is = new ByteArrayInputStream("<xml>test</xml>".getBytes("UTF-8"));
-            Common.readAsJSON(is);
+            InputStream xmlTest = new ByteArrayInputStream("<xml>test</xml>".getBytes("UTF-8"));
+            Common.readAsJSON(xmlTest);
             Assert.fail();
         } catch (RuntimeException e) {
             Assert.assertEquals("Error: convert to JSON, response is:\n<xml>test</xml>", e.getMessage());
