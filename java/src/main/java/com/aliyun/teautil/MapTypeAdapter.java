@@ -30,7 +30,7 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
                 return list;
 
             case BEGIN_OBJECT:
-                Map<String, Object> map = new LinkedTreeMap<String,Object>();
+                Map<String, Object> map = new LinkedTreeMap<String, Object>();
                 in.beginObject();
                 while (in.hasNext()) {
                     map.put(in.nextName(), read(in));
@@ -74,6 +74,6 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
 
     @Override
     public void write(JsonWriter out, Object value) throws IOException {
-        delegate.write(out,value);
+        delegate.write(out, value);
     }
 }
