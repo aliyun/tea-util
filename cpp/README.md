@@ -86,7 +86,7 @@ sh scripts/install.sh
 
 ## Related
 
-* [OpenAPI Explorer][open-api]
+* [OpenAPI Developer Portal][open-api]
 * [Latest Release][latest-release]
 * [Alibabacloud Console System][console]
 * [Alibaba Cloud Home Page][aliyun]
@@ -97,7 +97,7 @@ sh scripts/install.sh
 
 Copyright (c) 2009-present, Alibaba Cloud All rights reserved.
 
-[open-api]: https://api.aliyun.com
+[open-api]: https://next.api.aliyun.com
 [latest-release]: https://github.com/alibabacloud-sdk-cpp/dara-util/releases
 [console]: https://home.console.aliyun.com
 [aliyun]: https://www.aliyun.com
