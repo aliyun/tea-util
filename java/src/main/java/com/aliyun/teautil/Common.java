@@ -503,5 +503,12 @@ public class Common {
             return null;
         }
     }
+    
+    /**
+     * append element to array
+     */
+    public static void addArray(List list, Object obj) {
+        list.add(obj);
+    }
 }
 

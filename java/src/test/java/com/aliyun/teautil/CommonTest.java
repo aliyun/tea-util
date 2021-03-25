@@ -394,4 +394,11 @@ public class CommonTest {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes("UTF-8"));
         Assert.assertEquals(inputStream, Common.assertAsReadable(inputStream));
     }
+
+    @Test
+    public void addArrayTest() {
+        List<String> list = new ArrayList<>();
+        Common.addArray(list, "test");
+        Assert.assertEquals(list.get(0), "test");
+    }
 }
