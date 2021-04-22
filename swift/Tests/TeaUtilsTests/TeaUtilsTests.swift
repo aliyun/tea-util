@@ -1,5 +1,17 @@
 import XCTest
+import Tea
 @testable import TeaUtils
+
+
+class TestModel: TeaModel {
+    var num: Int = 100
+    var str: String = "string"
+}
+
+class TestModel2: TeaModel {
+    var num: Int = 200
+    var str: String = "model2"
+}
 
 final class TeaUtilsTests: XCTestCase {
     func testToBytes() {
@@ -110,25 +122,207 @@ final class TeaUtilsTests: XCTestCase {
         source["0"] = 0
         target["0"] = "0"
 
-        let result: [String: Any] = TeaUtils.stringifyMapValue(source)
-        XCTAssertEqual(target["true"], result["true"] as? String)
-        XCTAssertEqual(target["123"], result["123"] as? String)
-        XCTAssertEqual(target["foo"], result["foo"] as? String)
-        XCTAssertEqual(target["0"], result["0"] as? String)
+        let result = TeaUtils.stringifyMapValue(source)
+        XCTAssertEqual(target["true"], result["true"])
+        XCTAssertEqual(target["123"], result["123"])
+        XCTAssertEqual(target["foo"], result["foo"])
+        XCTAssertEqual(target["0"], result["0"])
     }
 
-    func testAssertAsMap() {
-        XCTAssertFalse(TeaUtils.assertAsMap(nil))
-        XCTAssertFalse(TeaUtils.assertAsMap("string"))
+    func testAssertAsMap() throws {
+        do {
+            try TeaUtils.assertAsMap("map")
+            assert(false)
+        } catch {
+            switch error{
+            case TeaException.Error:
+                assert(true)
+            default:
+                throw error
+            }
+        }
 
-        let map: [String: String] = [String: String]()
-        XCTAssertTrue(TeaUtils.assertAsMap(map))
+        let map = [String: String]()
+        let res = try TeaUtils.assertAsMap(map)
+        XCTAssertEqual(map, res as? [String: String])
     }
 
     func testGetUserAgent() {
         let userAgent: String = TeaUtils.getUserAgent("CustomizedUserAgent")
         print(userAgent)
         XCTAssertTrue(userAgent.contains("CustomizedUserAgent"))
+    }
+
+    func testAnyifyMapValue() {
+        var source: [String: Any] = [String: Any]()
+        var target: [String: String] = [String: String]()
+
+        source["true"] = true
+        target["true"] = "true"
+        source["123"] = 123
+        target["123"] = "123"
+        source["foo"] = "bar"
+        target["foo"] = "bar"
+        source["0"] = 0
+        target["0"] = "0"
+
+        let result = TeaUtils.anyifyMapValue(target)
+        XCTAssertEqual(target["true"], result["true"] as? String)
+        XCTAssertEqual(target["123"], result["123"] as? String)
+        XCTAssertEqual(target["foo"], result["foo"] as? String)
+        XCTAssertEqual(target["0"], result["0"] as? String)
+    }
+
+    func testAssertAsBoolean() throws {
+        do {
+            try TeaUtils.assertAsBoolean("string")
+            assert(false)
+        } catch {
+            switch error{
+            case TeaException.Error:
+                assert(true)
+            default:
+                throw error
+            }
+        }
+
+        let res = try TeaUtils.assertAsBoolean(false)
+        XCTAssertFalse(res)
+    }
+
+    func testAssertAsString() throws {
+        do {
+            try TeaUtils.assertAsString(false)
+            assert(false)
+        } catch {
+            switch error{
+            case TeaException.Error:
+                assert(true)
+            default:
+                throw error
+            }
+        }
+
+        let res = try TeaUtils.assertAsString("string")
+        XCTAssertEqual("string", res)
+    }
+
+    func testAssertAsBytes() throws {
+        do {
+            try TeaUtils.assertAsBytes("bytes")
+            assert(false)
+        } catch {
+            switch error{
+            case TeaException.Error:
+                assert(true)
+            default:
+                throw error
+            }
+        }
+
+        let bytes = [UInt8]()
+        let res = try TeaUtils.assertAsBytes(bytes)
+        XCTAssertEqual(bytes, res)
+    }
+
+    func testAssertAsNumber() throws {
+        do {
+            try TeaUtils.assertAsNumber("number")
+            assert(false)
+        } catch {
+            switch error{
+            case TeaException.Error:
+                assert(true)
+            default:
+                throw error
+            }
+        }
+
+        let res = try TeaUtils.assertAsNumber(101)
+        XCTAssertEqual(101, res)
+    }
+
+    func testAssertAsArray() throws {
+        do {
+            try TeaUtils.assertAsArray("array")
+            assert(false)
+        } catch {
+            switch error{
+            case TeaException.Error:
+                assert(true)
+            default:
+                throw error
+            }
+        }
+
+        var array = [Any]()
+        array.append(1)
+        let res = try TeaUtils.assertAsArray(array)
+        XCTAssertEqual(array[0] as! Int, res[0] as! Int)
+    }
+
+    func testis2xx() {
+        let n1 = 200
+        let n2 = 300
+        XCTAssertTrue(TeaUtils.is2xx(n1))
+        XCTAssertFalse(TeaUtils.is2xx(n2))
+    }
+
+    func testis3xx() {
+        let n1 = 200
+        let n2 = 300
+        XCTAssertFalse(TeaUtils.is3xx(n1))
+        XCTAssertTrue(TeaUtils.is3xx(n2))
+    }
+
+    func testis4xx() {
+        let n1 = 300
+        let n2 = 400
+        XCTAssertFalse(TeaUtils.is4xx(n1))
+        XCTAssertTrue(TeaUtils.is4xx(n2))
+    }
+
+    func testis5xx() {
+        let n1 = 400
+        let n2 = 500
+        XCTAssertFalse(TeaUtils.is5xx(n1))
+        XCTAssertTrue(TeaUtils.is5xx(n2))
+    }
+
+    func testValidateModel() throws {
+        try TeaUtils.validateModel(TestModel())
+    }
+
+    func testToMap() throws {
+        let model = TestModel()
+        let map = TeaUtils.toMap(model)
+        XCTAssertEqual(model.str, map["str"] as! String)
+        XCTAssertEqual(model.num, map["num"] as! Int)
+    }
+
+    func testSleep() throws {
+        let time1 = Date()
+        let timeInterval1:TimeInterval = time1.timeIntervalSince1970
+
+        TeaUtils.sleep(2000)
+
+        let time2 = Date()
+        let timeInterval2:TimeInterval = time2.timeIntervalSince1970
+        let diff = Int(timeInterval2) - Int(timeInterval1)
+
+        XCTAssertTrue(1 < diff && diff < 3)
+    }
+
+    func testToArray() throws {
+        var array = [TeaModel]()
+        array.append(TestModel())
+        array.append(TestModel2())
+        let res = TeaUtils.toArray(array)
+
+        XCTAssertEqual(100, res[0]["num"] as! Int)
+        XCTAssertEqual("string", res[0]["str"] as! String)
+        XCTAssertEqual(200, res[1]["num"] as! Int)
+        XCTAssertEqual("model2", res[1]["str"] as! String)
     }
 
     static var allTests = [
