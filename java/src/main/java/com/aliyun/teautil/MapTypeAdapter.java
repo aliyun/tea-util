@@ -6,8 +6,11 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import sun.rmi.runtime.Log;
+import sun.security.jgss.GSSCaller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,19 +48,11 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
                 /**
                  * 改写数字的处理逻辑，将数字值分为整型与浮点型。
                  */
-                double dbNum = in.nextDouble();
-
-                // 数字超过long的最大值，返回浮点类型
-                if (dbNum > Long.MAX_VALUE) {
-                    return dbNum;
-                }
-
-                // 判断数字是否为整数值
-                long lngNum = (long) dbNum;
-                if (dbNum == lngNum) {
-                    return lngNum;
+                String s1 = in.nextString();
+                if (s1.contains(".")) {
+                    return Double.parseDouble(s1);
                 } else {
-                    return dbNum;
+                    return Long.parseLong(s1);
                 }
 
             case BOOLEAN:
