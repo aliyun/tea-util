@@ -71,10 +71,19 @@ public class CommonTest {
     @Test
     public void readAsJSONTest() throws IOException {
         new Common();
+        InputStream lonTest = new ByteArrayInputStream("{\"disputeId\":83600149525598071}".getBytes("UTF-8"));
+        Map<String, Object> mapLong = (Map<String, Object>) Common.readAsJSON(lonTest);
+        Assert.assertEquals(83600149525598071L, mapLong.get("disputeId"));
+
+        InputStream doubleTest = new ByteArrayInputStream("{\"disputeId1\":83.600149525598071}".getBytes("UTF-8"));
+        Map<String, Object> mapDouble = (Map<String, Object>) Common.readAsJSON(doubleTest);
+        Assert.assertEquals(83.600149525598071, mapDouble.get("disputeId1"));
+
         Assert.assertEquals(0, Common.readAsBytes(null).length);
         InputStream longTest = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(longTest);
         Assert.assertEquals(1614825493911L, map.get("112911614825392239"));
+
 
         InputStream strTest = new ByteArrayInputStream("{\"test\":\"test\"}".getBytes("UTF-8"));
         map = (Map<String, Object>) Common.readAsJSON(strTest);
@@ -136,7 +145,7 @@ public class CommonTest {
 
         Map testNum = new HashMap();
         testString.put("112911614825392239", 1614825493911L);
-        Assert.assertEquals("{\"112911614825392239\":1614825493911}",Common.toJSONString(testString));
+        Assert.assertEquals("{\"112911614825392239\":1614825493911}", Common.toJSONString(testString));
 
 
     }

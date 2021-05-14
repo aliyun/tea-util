@@ -1,3 +1,6 @@
+2021-05-14 Version: 0.2.12
+1. Adapt JSON  number conversion rules for method 'read' in the MapTypeAdapter class
+
 2021-03-08 Version: 0.2.11
 1. Adapt JSON conversion rules for method 'parseJSON'
 2。Added a new class for MapTypeAdapter
