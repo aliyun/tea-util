@@ -399,3 +399,13 @@ func Test_AssertAsArray(t *testing.T) {
 		}
 	}
 }
+
+func TestToJSONString(t *testing.T) {
+	tests := []interface{}{"hello", strings.NewReader("abcd"), []byte("hello")}
+	str := ToJSONString(tests[0])
+	utils.AssertEqual(t, "hello", tea.StringValue(str))
+	str = ToJSONString(tests[1])
+	utils.AssertEqual(t, "abcd", tea.StringValue(str))
+	str = ToJSONString(tests[2])
+	utils.AssertEqual(t, "hello", tea.StringValue(str))
+}
