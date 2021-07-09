@@ -176,7 +176,7 @@ func ToJSONString(a interface{}) *string {
 	case []byte:
 		return tea.String(string(v))
 	case io.Reader:
-		byt, err := io.ReadAll(v)
+		byt, err := ioutil.ReadAll(v)
 		if err != nil {
 			fmt.Println(err)
 			return nil
