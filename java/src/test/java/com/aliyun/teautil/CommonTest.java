@@ -147,7 +147,9 @@ public class CommonTest {
         testString.put("112911614825392239", 1614825493911L);
         Assert.assertEquals("{\"112911614825392239\":1614825493911}", Common.toJSONString(testString));
 
-
+        String testReturn = "112911614825392239";
+        String test = Common.toJSONString(testReturn);
+        Assert.assertEquals("112911614825392239",test);
     }
 
 

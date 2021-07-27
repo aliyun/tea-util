@@ -301,6 +301,9 @@ public class Common {
      * @return the return string
      */
     public static String toJSONString(Object object) {
+        if (object instanceof String) {
+            return (String) object;
+        }
         return new Gson().toJson(object);
     }
 
