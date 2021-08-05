@@ -1,3 +1,6 @@
+### 2021-08-05 Version 0.3.5
+* `to_jsonstring` method support string.
+
 ### 2021-02-24 Version 0.3.4
 * `assert_as_readable` method support parsing string.
 
