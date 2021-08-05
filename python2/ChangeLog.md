@@ -1,3 +1,6 @@
+### 2021-08-05 Version 0.0.5
+* `to_jsonstring` method support string.
+
 ###2021-03-02 Version 0.0.4
 * Compatible version for python2/3.
 
