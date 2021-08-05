@@ -99,6 +99,8 @@ class TestClient(unittest.TestCase):
             self.assertEqual("form=test&param=test", Client.to_form_string(dic))
 
     def test_to_json_string(self):
+        self.assertEqual('test string for to_jsonstring',
+                         Client.to_jsonstring('test string for to_jsonstring'))
         self.assertEqual('{"key": "value"}',
                          Client.to_jsonstring({"key": "value"}))
         model = self.TestModel()

@@ -158,6 +158,8 @@ class Client(object):
         Stringify a value by JSON format
         @return: the JSON format string
         """
+        if isinstance(val, str):
+            return str(val)
         return json.dumps(val, cls=Client._ModelEncoder)
 
     @staticmethod
