@@ -396,6 +396,12 @@ namespace tests
             TimeSpan tsAfter = new TimeSpan(DateTime.Now.Ticks);
             TimeSpan tsSubtract = tsBefore.Subtract(tsAfter).Duration();
             Assert.InRange(tsSubtract.TotalMilliseconds, 990, 1100);
+
+            tsBefore = new TimeSpan(DateTime.Now.Ticks);
+            Common.Sleep(null);
+            tsAfter = new TimeSpan(DateTime.Now.Ticks);
+            tsSubtract = tsBefore.Subtract(tsAfter).Duration();
+            Assert.InRange(tsSubtract.TotalMilliseconds, 0, 10);
         }
 
         [Fact]
@@ -406,6 +412,12 @@ namespace tests
             TimeSpan tsAfter = new TimeSpan(DateTime.Now.Ticks);
             TimeSpan tsSubtract = tsBefore.Subtract(tsAfter).Duration();
             Assert.InRange(tsSubtract.TotalMilliseconds, 990, 1100);
+
+            tsBefore = new TimeSpan(DateTime.Now.Ticks);
+            await Common.SleepAsync(null);
+            tsAfter = new TimeSpan(DateTime.Now.Ticks);
+            tsSubtract = tsBefore.Subtract(tsAfter).Duration();
+            Assert.InRange(tsSubtract.TotalMilliseconds, 0, 10);
         }
 
         [Fact]

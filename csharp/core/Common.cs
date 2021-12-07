@@ -390,14 +390,20 @@ namespace AlibabaCloud.TeaUtil
 
         public static void Sleep(int? millisecond)
         {
-            Thread.Sleep(1000);
+            if (millisecond != null)
+            {
+                Thread.Sleep(millisecond.Value);
+            }
         }
 
         public async static Task SleepAsync(int? millisecond)
         {
-            await Task.Run(()=>{
-                Thread.Sleep(1000);
-            });
+            if (millisecond != null)
+            {
+                await Task.Run(()=>{
+                    Thread.Sleep(millisecond.Value);
+                });
+            }
         }
 
         public static List<Dictionary<string, object>> ToArray(object input)
