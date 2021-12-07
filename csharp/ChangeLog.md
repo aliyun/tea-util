@@ -1,3 +1,6 @@
+### 2021-12-07 Version 0.1.12
+* Fix `Sleep()`
+
 ### 2021-02-05 Version 0.1.11
 * Supported `AssertAsArray()`
 
