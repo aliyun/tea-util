@@ -53,8 +53,18 @@ func Test_ReadAsString(t *testing.T) {
 }
 
 func Test_ToJSONString(t *testing.T) {
+	// interface
 	str := ToJSONString(map[string]interface{}{"test": "ok"})
 	utils.AssertEqual(t, `{"test":"ok"}`, tea.StringValue(str))
+	// string
+	str = ToJSONString("test")
+	utils.AssertEqual(t, "test", tea.StringValue(str))
+	// []byte
+	str = ToJSONString([]byte("test"))
+	utils.AssertEqual(t, "test", tea.StringValue(str))
+	// io.Reader
+	str = ToJSONString(strings.NewReader("test"))
+	utils.AssertEqual(t, "test", tea.StringValue(str))
 }
 
 func Test_ReadAsBytes(t *testing.T) {

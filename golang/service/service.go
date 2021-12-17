@@ -172,20 +172,19 @@ func DefaultString(reaStr, defaultStr *string) *string {
 func ToJSONString(a interface{}) *string {
 	switch v := a.(type) {
 	case string:
-		return tea.String(string(v))
+		return tea.String(v)
 	case []byte:
 		return tea.String(string(v))
 	case io.Reader:
 		byt, err := ioutil.ReadAll(v)
 		if err != nil {
-			fmt.Println(err)
 			return nil
 		}
 		return tea.String(string(byt))
 	}
 	byt, err := json.Marshal(a)
 	if err != nil {
-		fmt.Println(err)
+		return nil
 	}
 	return tea.String(string(byt))
 }
