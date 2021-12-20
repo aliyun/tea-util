@@ -171,6 +171,8 @@ func DefaultString(reaStr, defaultStr *string) *string {
 
 func ToJSONString(a interface{}) *string {
 	switch v := a.(type) {
+	case *string:
+		return v
 	case string:
 		return tea.String(v)
 	case []byte:

@@ -65,6 +65,9 @@ func Test_ToJSONString(t *testing.T) {
 	// io.Reader
 	str = ToJSONString(strings.NewReader("test"))
 	utils.AssertEqual(t, "test", tea.StringValue(str))
+
+	str = ToJSONString(tea.String("test"))
+	utils.AssertEqual(t, "test", tea.StringValue(str))
 }
 
 func Test_ReadAsBytes(t *testing.T) {
