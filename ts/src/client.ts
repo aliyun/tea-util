@@ -133,6 +133,9 @@ export default class Client {
   }
 
   static toJSONString(val: any): string {
+    if (typeof val === 'string') {
+      return val;
+    }
     return JSON.stringify(val);
   }
 

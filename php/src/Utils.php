@@ -177,8 +177,8 @@ class Utils
      */
     public static function toJSONString($object)
     {
-        if (null === $object) {
-            $object = new \stdClass();
+        if (is_string($object)) {
+            return $object;
         }
 
         if ($object instanceof Model) {

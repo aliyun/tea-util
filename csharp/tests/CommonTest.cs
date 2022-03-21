@@ -185,6 +185,12 @@ namespace tests
             string jsonStr = Common.ToJSONString(dict);
             Assert.NotNull(jsonStr);
             Assert.NotEmpty(jsonStr);
+            Assert.Equal("{\"key\":\"value\"}", jsonStr);
+            Assert.Equal("{}", Common.ToJSONString(new Dictionary<string, object>()));
+            Assert.Equal("test str", Common.ToJSONString("test str"));
+            Assert.Equal("1", Common.ToJSONString(1));
+            Assert.Equal("true", Common.ToJSONString(true));
+            Assert.Equal("null", Common.ToJSONString(null));
         }
 
         [Fact]
