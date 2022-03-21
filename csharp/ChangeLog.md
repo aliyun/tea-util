@@ -1,3 +1,6 @@
+### 2022-03-21 Version 0.1.13
+* Fix `ToJSONString()`
+
 ### 2021-12-07 Version 0.1.12
 * Fix `Sleep()`
 
