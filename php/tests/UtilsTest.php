@@ -106,6 +106,17 @@ final class UtilsTest extends TestCase
     {
         $object = new \stdClass();
         $this->assertJson(Utils::toJSONString($object));
+        $this->assertEquals('[]', Utils::toJSONString([]));
+        $this->assertEquals('["foo"]', Utils::toJSONString(['foo']));
+        $this->assertEquals('{"str":"test","number":1,"bool":false,"null":null}', Utils::toJSONString([
+            'str'            => 'test',
+            'number'         => 1,
+            'bool'           => FALSE,
+            'null'           => null,
+        ]));
+        $this->assertEquals('1', Utils::toJSONString(1));
+        $this->assertEquals('true', Utils::toJSONString(TRUE));
+        $this->assertEquals('null', Utils::toJSONString(null));
     }
 
     public function testEmpty()

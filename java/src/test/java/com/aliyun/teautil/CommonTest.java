@@ -144,12 +144,18 @@ public class CommonTest {
         Assert.assertEquals("{\"112911614825392239\":\"1614825493911\"}", Common.toJSONString(testString));
 
         Map testNum = new HashMap();
-        testString.put("112911614825392239", 1614825493911L);
-        Assert.assertEquals("{\"112911614825392239\":1614825493911}", Common.toJSONString(testString));
+        testNum.put("112911614825392239", 1614825493911L);
+        Assert.assertEquals("{\"112911614825392239\":1614825493911}", Common.toJSONString(testNum));
 
         String testReturn = "112911614825392239";
-        String test = Common.toJSONString(testReturn);
-        Assert.assertEquals("112911614825392239",test);
+        Assert.assertEquals("112911614825392239", Common.toJSONString(testReturn));
+
+        Assert.assertEquals("{}", Common.toJSONString(new HashMap()));
+        Assert.assertEquals("[]", Common.toJSONString(new ArrayList()));
+        Assert.assertEquals("test str", Common.toJSONString("test str"));
+        Assert.assertEquals("1", Common.toJSONString(1));
+        Assert.assertEquals("true", Common.toJSONString(true));
+        Assert.assertEquals("null", Common.toJSONString(null));
     }
 
 

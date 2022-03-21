@@ -32,6 +32,12 @@ describe('Tea Util', function () {
 
     it('toJSONString should ok', function () {
         assert.deepStrictEqual(Client.toJSONString({}), '{}');
+        assert.deepStrictEqual(Client.toJSONString({'str': 'test', 'number': 1, 'bool': false, 'null': null}), '{"str":"test","number":1,"bool":false,"null":null}');
+        assert.deepStrictEqual(Client.toJSONString([]), '[]');
+        assert.deepStrictEqual(Client.toJSONString('test str'), 'test str');
+        assert.deepStrictEqual(Client.toJSONString(1), '1');
+        assert.deepStrictEqual(Client.toJSONString(true), 'true');
+        assert.deepStrictEqual(Client.toJSONString(null), 'null');
     });
 
     it('defaultString should ok', function () {
