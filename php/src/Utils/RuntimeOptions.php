@@ -35,5 +35,7 @@ class RuntimeOptions extends Model
     public $socks5Proxy;
 
     public $socks5NetWork;
+
+    public $keepAlive;
     protected $_name = [];
 }

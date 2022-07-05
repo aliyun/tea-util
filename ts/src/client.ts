@@ -17,6 +17,7 @@ export class RuntimeOptions extends $tea.Model {
   httpsProxy?: string;
   noProxy?: string;
   maxIdleConns?: number;
+  keepAlive?: boolean;
   static names(): { [key: string]: string } {
     return {
       autoretry: 'autoretry',
@@ -30,6 +31,7 @@ export class RuntimeOptions extends $tea.Model {
       httpsProxy: 'httpsProxy',
       noProxy: 'noProxy',
       maxIdleConns: 'maxIdleConns',
+      keepAlive: 'keepAlive',
     };
   }
 
@@ -46,6 +48,7 @@ export class RuntimeOptions extends $tea.Model {
       httpsProxy: 'string',
       noProxy: 'string',
       maxIdleConns: 'number',
+      keepAlive: 'boolean',
     };
   }
 

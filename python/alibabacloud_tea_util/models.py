@@ -23,6 +23,7 @@ class RuntimeOptions(TeaModel):
         local_addr: str = None,
         socks_5proxy: str = None,
         socks_5net_work: str = None,
+        keep_alive: bool = None,
     ):
         # whether to try again
         self.autoretry = autoretry
@@ -52,6 +53,8 @@ class RuntimeOptions(TeaModel):
         self.socks_5proxy = socks_5proxy
         # SOCKS5 netWork
         self.socks_5net_work = socks_5net_work
+        # whether to enable keep-alive
+        self.keep_alive = keep_alive
 
     def validate(self):
         pass
@@ -86,6 +89,8 @@ class RuntimeOptions(TeaModel):
             result['socks5Proxy'] = self.socks_5proxy
         if self.socks_5net_work is not None:
             result['socks5NetWork'] = self.socks_5net_work
+        if self.keep_alive is not None:
+            result['keepAlive'] = self.keep_alive
         return result
 
     def from_map(self, m: dict = None):
@@ -118,6 +123,8 @@ class RuntimeOptions(TeaModel):
             self.socks_5proxy = m.get('socks5Proxy')
         if m.get('socks5NetWork') is not None:
             self.socks_5net_work = m.get('socks5NetWork')
+        if m.get('keepAlive') is not None:
+            self.keep_alive = m.get('keepAlive')
         return self
 
 

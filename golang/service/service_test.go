@@ -24,7 +24,8 @@ func Test_SetFunc(t *testing.T) {
 		SetNoProxy("noproxy").
 		SetReadTimeout(50).
 		SetSocks5NetWork("tcp").
-		SetSocks5Proxy("sock5proxy")
+		SetSocks5Proxy("sock5proxy").
+		SetKeepAlive(false)
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.Autoretry))
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.IgnoreSSL))
 	utils.AssertEqual(t, 10, tea.IntValue(runtime.BackoffPeriod))
@@ -39,6 +40,7 @@ func Test_SetFunc(t *testing.T) {
 	utils.AssertEqual(t, "noproxy", tea.StringValue(runtime.NoProxy))
 	utils.AssertEqual(t, "tcp", tea.StringValue(runtime.Socks5NetWork))
 	utils.AssertEqual(t, "sock5proxy", tea.StringValue(runtime.Socks5Proxy))
+	utils.AssertEqual(t, false, tea.BoolValue(runtime.KeepAlive))
 	runtime.GoString()
 }
 

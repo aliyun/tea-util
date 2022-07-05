@@ -23,7 +23,8 @@ class TestClient(unittest.TestCase):
             max_idle_conns=1,
             local_addr="test",
             socks_5proxy="test",
-            socks_5net_work="test"
+            socks_5net_work="test",
+            keep_alive=False
         )
         self.assertEqual(True, option.autoretry)
         self.assertEqual(True, option.ignore_ssl)
@@ -39,6 +40,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', option.local_addr)
         self.assertEqual('test', option.socks_5proxy)
         self.assertEqual('test', option.socks_5net_work)
+        self.assertEqual(False, option.keep_alive)
 
     def test_to_map(self):
         option = RuntimeOptions(
@@ -55,7 +57,8 @@ class TestClient(unittest.TestCase):
             max_idle_conns=1,
             local_addr="test",
             socks_5proxy="test",
-            socks_5net_work="test"
+            socks_5net_work="test",
+            keep_alive=False
         )
         result = option.to_map()
         self.assertEqual(True, result.get('autoretry'))
@@ -72,6 +75,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', result.get('localAddr'))
         self.assertEqual('test', result.get('socks5Proxy'))
         self.assertEqual('test', result.get('socks5NetWork'))
+        self.assertEqual(False, result.get('keepAlive'))
 
     def test_from_map(self):
         option = RuntimeOptions()
@@ -89,7 +93,8 @@ class TestClient(unittest.TestCase):
             'maxIdleConns': 1,
             'localAddr': 'test',
             'socks5Proxy': 'test',
-            'socks5NetWork': 'test'
+            'socks5NetWork': 'test',
+            'keepAlive': False
         }
         option.from_map(dic)
         self.assertEqual(True, option.autoretry)
@@ -106,3 +111,4 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', option.local_addr)
         self.assertEqual('test', option.socks_5proxy)
         self.assertEqual('test', option.socks_5net_work)
+        self.assertEqual(False, option.keep_alive)
