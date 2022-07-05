@@ -181,39 +181,73 @@ final class UtilsTest extends TestCase
 
     public function testAssertAsBoolean()
     {
-        $this->assertTrue(Utils::assertAsBoolean(true));
-        $this->assertFalse(Utils::assertAsBoolean('true'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a boolean value.');
+        Utils::assertAsBoolean('true');
+
+        try {
+            $map = true;
+            $this->assertEquals($map, Utils::assertAsBoolean($map));
+        } catch (\Exception $e) {
+            // should not be here
+            $this->assertTrue(false);
+        }
     }
 
     public function testAssertAsString()
     {
-        $this->assertTrue(Utils::assertAsString('123'));
-        $this->assertFalse(Utils::assertAsString(123));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a string value.');
+        Utils::assertAsString(123);
+
+        try {
+            $map = '123';
+            $this->assertEquals($map, Utils::assertAsString($map));
+        } catch (\Exception $e) {
+            // should not be here
+            $this->assertTrue(false);
+        }
     }
 
     public function testAssertAsBytes()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a bytes value.');
         // failed because $var is not array
-        $this->assertFalse(Utils::assertAsBytes('test'));
-
+        Utils::assertAsBytes('test');
         // failed because $var is map not array
-        $this->assertFalse(Utils::assertAsBytes(['foo' => 1]));
-
+        Utils::assertAsBytes(['foo' => 1]);
         // failed because item value is not int
-        $this->assertFalse(Utils::assertAsBytes(['1']));
-
+        Utils::assertAsBytes(['1']);
         // failed because item value is out off range
-        $this->assertFalse(Utils::assertAsBytes([256]));
+        Utils::assertAsBytes([256]);
 
-        // success
-        $this->assertTrue(Utils::assertAsBytes([1, 2, 3]));
-        $this->assertTrue(Utils::assertAsBytes(Utils::toBytes('string')));
+        try {
+            // success
+            $map = [1, 2, 3];
+            $this->assertEquals($map, Utils::assertAsBytes($map));
+            $this->assertEquals([
+                115, 116, 114, 105, 110, 103,
+            ], Utils::assertAsBytes(Utils::toBytes('string')));
+        } catch (\Exception $e) {
+            // should not be here
+            $this->assertTrue(false);
+        }
     }
 
     public function testAssertAsNumber()
     {
-        $this->assertTrue(Utils::assertAsNumber(123));
-        $this->assertFalse(Utils::assertAsNumber('string'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a number value.');
+        Utils::assertAsNumber('is not number');
+
+        try {
+            $map = 123;
+            $this->assertEquals($map, Utils::assertAsNumber($map));
+        } catch (\Exception $e) {
+            // should not be here
+            $this->assertTrue(false);
+        }
     }
 
     public function testAssertAsMap()
