@@ -1,3 +1,6 @@
+### 2022-07-05 Version 0.1.14
+* Add `KeepAlive`
+
 ### 2022-03-21 Version 0.1.13
 * Fix `ToJSONString()`
 
