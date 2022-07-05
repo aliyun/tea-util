@@ -24,6 +24,7 @@ namespace tests.Models
             runtime.ReadTimeout = 2000;
             runtime.Socks5NetWork = "socks5";
             runtime.Socks5Proxy = "socks5Proxy";
+            runtime.KeepAlive = false;
 
             Assert.NotNull(runtime);
             Assert.True(runtime.Autoretry);
@@ -40,6 +41,7 @@ namespace tests.Models
             Assert.Equal(2000, runtime.ReadTimeout);
             Assert.Equal("socks5", runtime.Socks5NetWork);
             Assert.Equal("socks5Proxy", runtime.Socks5Proxy);
+            Assert.False(runtime.KeepAlive);
         }
     }
 }

@@ -60,5 +60,9 @@ namespace AlibabaCloud.TeaUtil.Models
         [Validation(Required = false)]
         public string Socks5NetWork { get; set; }
 
+        [NameInMap("keepAlive")]
+        [Validation(Required = false)]
+        public bool? KeepAlive { get; set; }
+
     }
 }
