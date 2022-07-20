@@ -2,8 +2,11 @@ import { Readable } from 'stream';
 import * as $tea from '@alicloud/tea-typescript';
 import * as kitx from 'kitx';
 import querystring from 'querystring';
-import { platform, arch } from 'os';
-const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`;
+import { arch, platform } from 'os';
+
+const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${
+  process.version
+} Core/1.0.1 TeaDSL/1`;
 
 export class RuntimeOptions extends $tea.Model {
   autoretry?: boolean;
@@ -18,6 +21,11 @@ export class RuntimeOptions extends $tea.Model {
   noProxy?: string;
   maxIdleConns?: number;
   keepAlive?: boolean;
+
+  constructor(map?: { [key: string]: any }) {
+    super(map);
+  }
+
   static names(): { [key: string]: string } {
     return {
       autoretry: 'autoretry',
@@ -50,10 +58,6 @@ export class RuntimeOptions extends $tea.Model {
       maxIdleConns: 'number',
       keepAlive: 'boolean',
     };
-  }
-
-  constructor(map?: { [key: string]: any }) {
-    super(map);
   }
 }
 
@@ -92,7 +96,6 @@ function read(readable: Readable): Promise<Buffer> {
 }
 
 export default class Client {
-
   static toString(buff: Buffer): string {
     return buff.toString();
   }
@@ -131,7 +134,7 @@ export default class Client {
     return real || defaultValue;
   }
 
-  static toFormString(val: {[key: string]: any}): string {
+  static toFormString(val: { [key: string]: any }): string {
     return querystring.stringify(val);
   }
 
@@ -170,12 +173,14 @@ export default class Client {
     return false;
   }
 
-  static stringifyMapValue(m: {[key: string]: any} ): {[key: string]: string} {
+  static stringifyMapValue(m: { [key: string]: any }): {
+    [key: string]: string;
+  } {
     if (!m) {
       return m;
     }
 
-    const result: {[key: string]: string} = {};
+    const result: { [key: string]: string } = {};
     for (const [key, value] of Object.entries(m)) {
       if (typeof value === 'undefined' || value === null) {
         continue;
@@ -185,7 +190,7 @@ export default class Client {
     return result;
   }
 
-  static anyifyMapValue(m: { [key: string]: string }): {[key: string]: any } {
+  static anyifyMapValue(m: { [key: string]: string }): { [key: string]: any } {
     return m;
   }
 
@@ -210,9 +215,9 @@ export default class Client {
     throw new Error(`The value is not a number`);
   }
 
-  static assertAsMap(value: any): {[key: string]: any} {
+  static assertAsMap(value: any): { [key: string]: any } {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return value as {[key: string]: any};
+      return value as { [key: string]: any };
     }
     throw new Error(`The value is not a object`);
   }
@@ -232,10 +237,10 @@ export default class Client {
   }
 
   static getUserAgent(userAgent: string): string {
-    if(!userAgent || !userAgent.length){
+    if (!userAgent || !userAgent.length) {
       return DEFAULT_USER_AGENT;
     }
-    return DEFAULT_USER_AGENT + " " + userAgent;
+    return DEFAULT_USER_AGENT + ' ' + userAgent;
   }
 
   static is2xx(code: number): boolean {
@@ -253,20 +258,19 @@ export default class Client {
   static is5xx(code: number): boolean {
     return code >= 500 && code < 600;
   }
-  static validateModel(m: $tea.Model): void {
-  
-  }
+
+  static validateModel(m: $tea.Model): void {}
 
   static toMap(inputModel: $tea.Model): { [key: string]: any } {
     return $tea.toMap(inputModel);
   }
 
   static async sleep(millisecond: number): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, millisecond)
-    })
+      }, millisecond);
+    });
   }
 
   static toArray(input: any): { [key: string]: any }[] {
@@ -279,9 +283,7 @@ export default class Client {
         return;
       }
       ret.push($tea.toMap(model));
-    })
+    });
     return ret;
   }
 }
-
-
