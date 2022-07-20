@@ -10,6 +10,20 @@ const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${
 
 export class RuntimeOptions extends $tea.Model {
   autoretry?: boolean;
+  /**
+   * Available values:
+   * + never
+   * + always
+   * + simple: retry until maxAttempts times
+   * + timeout: retry until reach retryTimeout
+   *
+   * Any other value will be considered as 'never'
+   */
+  retryPolicy?: string;
+  /**
+   * millisecond before giving up retry
+   */
+  retryTimeout?: number;
   ignoreSSL?: boolean;
   maxAttempts?: number;
   backoffPolicy?: string;
@@ -29,6 +43,8 @@ export class RuntimeOptions extends $tea.Model {
   static names(): { [key: string]: string } {
     return {
       autoretry: 'autoretry',
+      retryPolicy: 'retryPolicy',
+      retryTimeout: 'retryTimeout',
       ignoreSSL: 'ignoreSSL',
       maxAttempts: 'max_attempts',
       backoffPolicy: 'backoff_policy',
@@ -46,6 +62,8 @@ export class RuntimeOptions extends $tea.Model {
   static types(): { [key: string]: any } {
     return {
       autoretry: 'boolean',
+      retryPolicy: 'string',
+      retryTimeout: 'number',
       ignoreSSL: 'boolean',
       maxAttempts: 'number',
       backoffPolicy: 'string',
@@ -166,11 +184,7 @@ export default class Client {
       return true;
     }
 
-    if (value === null) {
-      return true;
-    }
-
-    return false;
+    return value === null;
   }
 
   static stringifyMapValue(m: { [key: string]: any }): {

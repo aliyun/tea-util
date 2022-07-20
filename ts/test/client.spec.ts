@@ -120,8 +120,13 @@ describe('Tea Util', function () {
   it('RuntimeOptions', function () {
     const opts = new RuntimeOptions();
     assert.ok(opts);
-    const casted = $tea.cast({}, opts);
+    const casted = $tea.cast(
+      { retryPolicy: 'timeout', retryTimeout: 3000 },
+      opts
+    );
     assert.ok(casted);
+    assert.strictEqual('timeout', casted.retryPolicy);
+    assert.strictEqual(3000, casted.retryTimeout);
   });
 
   it('stringifyMapValue', function () {
