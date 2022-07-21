@@ -63,7 +63,11 @@ for:
         - job_group: java_task
 
     build_script:
+    - JVAR=JAVA_HOME_8_X64 # https://github.com/appveyor-tests/jdk-versions-linux/blob/master/appveyor.yml
+    - export JAVA_HOME=${!JVAR}
+    - export PATH=$JAVA_HOME/bin:$PATH
     - cd java/
+    - java -version
     - mvn test -B
 
   -
