@@ -1,7 +1,7 @@
 build: off
 
 image:
-  - Ubuntu
+  - Ubuntu # https://www.appveyor.com/docs/linux-images-software/
 
 clone_folder: /github.com/aliyun/tea-util
 
@@ -20,7 +20,7 @@ environment:
 
   - job_name: go_task2
     job_group: go_task
-    go: 1.13.x 
+    go: 1.13.x
 
   - job_name: go_task3
     job_group: go_task
@@ -28,7 +28,7 @@ environment:
 
   - job_name: go_task4
     job_group: go_task
-    go: 1.15.x 
+    go: 1.15.x
 
   - job_name: java_task1
     job_group: java_task
@@ -73,6 +73,7 @@ for:
 
     build_script:
     - cd ts/
+    - nvm use ${node} # use the desired node version defined above
     - npm install
     - npm run test-cov
 
@@ -83,7 +84,7 @@ for:
 
     build_script:
     - export PYTHONPATH=$PYTHONPATH:`pwd`/python
-    - echo $PYTHONPATH 
+    - echo $PYTHONPATH
     # install
     - cd python
     - pip install coverage
