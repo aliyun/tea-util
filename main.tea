@@ -7,6 +7,17 @@
  */
 model RuntimeOptions {
   autoretry?: boolean(description='whether to try again', name='autoretry'),
+  // Available values:
+  // + never
+  // + always
+  // + simple: retry until maxAttempts times
+  // + timeout: retry until reach retryTimeout
+  //
+  // Any other value will be considered as 'never'
+  //
+  retryPolicy?: string(description='how to try again', name='retryPolicy'),
+  // millisecond before giving up retry when using 'timeout' policy
+  retryTimeout?: number(description='millisecond before giving up retry when using \'timeout\' policy', name='retryTimeout'),
   ignoreSSL?: boolean(description='ignore SSL validation', name='ignoreSSL'),
   maxAttempts?: number(description='maximum number of retries', name='max_attempts'),
   backoffPolicy?: string(description='backoff policy', name='backoff_policy'),
