@@ -19,6 +19,9 @@ class Utils
      */
     public static function toBytes($string)
     {
+        if (self::is_bytes($string)) {
+            return $string;
+        }
         $bytes = [];
         for ($i = 0; $i < \strlen($string); ++$i) {
             $bytes[] = \ord($string[$i]);
@@ -36,6 +39,9 @@ class Utils
      */
     public static function toString($bytes)
     {
+        if (\is_string($bytes)) {
+            return $bytes;
+        }
         $str = '';
         foreach ($bytes as $ch) {
             $str .= \chr($ch);

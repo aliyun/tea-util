@@ -50,7 +50,13 @@ class Client:
         Convert a string(utf8) to bytes
         @return: the return bytes
         """
-        return val.encode(encoding="utf-8")
+        if isinstance(val, bytes):
+            return val
+        elif isinstance(val, str):
+            return val.encode(encoding="utf-8")
+        else:
+            return str(val).encode(encoding="utf-8")
+
 
     @staticmethod
     def to_string(
@@ -60,7 +66,12 @@ class Client:
         Convert a bytes to string(utf8)
         @return: the return string
         """
-        return val.decode('utf-8')
+        if isinstance(val, str):
+            return val
+        elif isinstance(val, bytes):
+            return val.decode('utf-8')
+        else:
+            return str(val)
 
     @staticmethod
     def parse_json(
