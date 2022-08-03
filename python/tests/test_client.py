@@ -28,9 +28,15 @@ class TestClient(unittest.TestCase):
     def test_to_bytes(self):
         result = Client.to_bytes("test")
         self.assertEqual(b'test', result)
+        result = Client.to_bytes(b'test')
+        self.assertEqual(b'test', result)
+        result = Client.to_bytes(["test"])
+        self.assertEqual(b"['test']", result)
 
     def test_to_string(self):
         self.assertEqual("test", Client.to_string(b'test'))
+        self.assertEqual("test", Client.to_string("test"))
+        self.assertEqual("['test']", Client.to_string(["test"]))
 
     def test_parse_json(self):
         json_str = '{"arrayObj":[[{"itemName":"item","itemInt":1},{"itemName":"item2","itemInt":2}],[{"itemName":"item3","itemInt":3}]],"arrayList":[[[1,2],[3,4]],[[5,6],[7]],[]],"listStr":[1,2,3],"items":[{"total_size":18,"partNumber":1,"tags":[{"aa":"11"}]},{"total_size":20,"partNumber":2,"tags":[{"aa":"22"}]}],"next_marker":"","test":{"total_size":19,"partNumber":1,"tags":[{"aa":"11"}]}}'

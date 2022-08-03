@@ -131,7 +131,7 @@ export default class Client {
     return real || defaultValue;
   }
 
-  static toFormString(val: {[key: string]: any}): string {
+  static toFormString(val: { [key: string]: any }): string {
     return querystring.stringify(val);
   }
 
@@ -170,12 +170,12 @@ export default class Client {
     return false;
   }
 
-  static stringifyMapValue(m: {[key: string]: any} ): {[key: string]: string} {
+  static stringifyMapValue(m: { [key: string]: any }): { [key: string]: string } {
     if (!m) {
       return m;
     }
 
-    const result: {[key: string]: string} = {};
+    const result: { [key: string]: string } = {};
     for (const [key, value] of Object.entries(m)) {
       if (typeof value === 'undefined' || value === null) {
         continue;
@@ -185,7 +185,7 @@ export default class Client {
     return result;
   }
 
-  static anyifyMapValue(m: { [key: string]: string }): {[key: string]: any } {
+  static anyifyMapValue(m: { [key: string]: string }): { [key: string]: any } {
     return m;
   }
 
@@ -210,9 +210,9 @@ export default class Client {
     throw new Error(`The value is not a number`);
   }
 
-  static assertAsMap(value: any): {[key: string]: any} {
+  static assertAsMap(value: any): { [key: string]: any } {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return value as {[key: string]: any};
+      return value as { [key: string]: any };
     }
     throw new Error(`The value is not a object`);
   }
@@ -232,7 +232,7 @@ export default class Client {
   }
 
   static getUserAgent(userAgent: string): string {
-    if(!userAgent || !userAgent.length){
+    if (!userAgent || !userAgent.length) {
       return DEFAULT_USER_AGENT;
     }
     return DEFAULT_USER_AGENT + " " + userAgent;
@@ -254,7 +254,7 @@ export default class Client {
     return code >= 500 && code < 600;
   }
   static validateModel(m: $tea.Model): void {
-  
+
   }
 
   static toMap(inputModel: $tea.Model): { [key: string]: any } {

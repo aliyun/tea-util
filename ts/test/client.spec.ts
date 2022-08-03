@@ -32,7 +32,7 @@ describe('Tea Util', function () {
 
     it('toJSONString should ok', function () {
         assert.deepStrictEqual(Client.toJSONString({}), '{}');
-        assert.deepStrictEqual(Client.toJSONString({'str': 'test', 'number': 1, 'bool': false, 'null': null}), '{"str":"test","number":1,"bool":false,"null":null}');
+        assert.deepStrictEqual(Client.toJSONString({ 'str': 'test', 'number': 1, 'bool': false, 'null': null }), '{"str":"test","number":1,"bool":false,"null":null}');
         assert.deepStrictEqual(Client.toJSONString([]), '[]');
         assert.deepStrictEqual(Client.toJSONString('test str'), 'test str');
         assert.deepStrictEqual(Client.toJSONString(1), '1');
@@ -48,6 +48,10 @@ describe('Tea Util', function () {
     it('toFormString should ok', function () {
         assert.deepStrictEqual(Client.toFormString({}), '');
         assert.deepStrictEqual(Client.toFormString({ a: 'b c d' }), 'a=b%20c%20d');
+    });
+
+    it('toString', function () {
+        assert.deepStrictEqual(Client.toString(Buffer.from('Hello world!')), 'Hello world!');
     });
 
     it('toBytes', function () {
@@ -128,9 +132,9 @@ describe('Tea Util', function () {
             'null': null,
             'undefined': undefined
         }), {
-                'bool': 'true',
-                'string': 'str',
-                'number': '0'
+            'bool': 'true',
+            'string': 'str',
+            'number': '0'
         });
         assert.deepStrictEqual(Client.stringifyMapValue(null), null);
     });
@@ -281,7 +285,7 @@ describe('Tea Util', function () {
                 super(map);
             }
         }
-        let inputModel = new TestModel({test: 'testValue'});
+        let inputModel = new TestModel({ test: 'testValue' });
         let result = Client.toMap(inputModel);
         assert.strictEqual(result['test'], 'testValue');
     });
@@ -311,7 +315,7 @@ describe('Tea Util', function () {
             }
         }
         let inputModel = new TestModel({ test: 'testValue' });
-        let input: any = [ inputModel ]; 
+        let input: any = [inputModel];
         assert.deepStrictEqual(Client.toArray(input), [{
             test: 'testValue'
         }]);

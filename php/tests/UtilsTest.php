@@ -24,6 +24,11 @@ final class UtilsTest extends TestCase
         $this->assertEquals([
             115, 116, 114, 105, 110, 103,
         ], Utils::toBytes('string'));
+        $this->assertEquals([
+            115, 116, 114, 105, 110, 103,
+        ], Utils::toBytes([
+            115, 116, 114, 105, 110, 103,
+        ]));
     }
 
     public function testToString()
@@ -31,6 +36,7 @@ final class UtilsTest extends TestCase
         $this->assertEquals('string', Utils::toString([
             115, 116, 114, 105, 110, 103,
         ]));
+        $this->assertEquals('string', Utils::toString('string'));
     }
 
     public function testParseJSON()
