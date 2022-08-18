@@ -143,37 +143,37 @@ static function anyifyMapValue(m: map[string]string): map[string]any;
  * Assert a value, if it is a boolean, return it, otherwise throws
  * @return the boolean value
  */
-static function assertAsBoolean(value: any): boolean;
+static function assertAsBoolean(value: any)throws : boolean;
 
 /**
  * Assert a value, if it is a string, return it, otherwise throws
  * @return the string value
  */
-static function assertAsString(value: any): string;
+static function assertAsString(value: any)throws : string;
 
 /**
  * Assert a value, if it is a bytes, return it, otherwise throws
  * @return the bytes value
  */
-static function assertAsBytes(value: any): bytes;
+static function assertAsBytes(value: any)throws : bytes;
 
 /**
  * Assert a value, if it is a number, return it, otherwise throws
  * @return the number value
  */
-static function assertAsNumber(value: any): number;
+static function assertAsNumber(value: any)throws : number;
 
 /**
  * Assert a value, if it is a map, return it, otherwise throws
  * @return the map value
  */
-static function assertAsMap(value: any): map[string]any;
+static function assertAsMap(value: any)throws : map[string]any;
 
 /**
  * Assert a value, if it is a array, return it, otherwise throws
  * @return the array value
  */
-static function assertAsArray(value: any): [ any ];
+static function assertAsArray(value: any)throws : [ any ];
 
 /**
  * Get user agent, if it userAgent is not null, splice it with defaultUserAgent and return, otherwise return defaultUserAgent
@@ -232,4 +232,4 @@ static function toArray(input: any): [ map[string]any ];
  * Assert a value, if it is a readable, return it, otherwise throws
  * @return the readable value
  */
-static function assertAsReadable(value: any): readable;
+static function assertAsReadable(value: any)throws : readable;

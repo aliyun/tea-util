@@ -17,6 +17,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set default Xcode version
+      shell: bash
+      run: |
+        echo "Switching Xcode to version '13.0'..."
+        sudo xcode-select --switch /Applications/Xcode_13.0.app
+    - name: Install gems
+      run: bundle install
     - name: Build
       run: swift build -v
     - name: Run tests
