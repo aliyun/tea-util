@@ -1,7 +1,3 @@
-//
-// Created by Axios on 2020/2/17.
-//
-
 import Foundation
 
 func isBool(_ val: Any?) -> Bool {
@@ -55,11 +51,8 @@ func version() -> String {
     return package
 }
 
-var defaultUserAgent:String = ""
-
 func getDefaultUserAgent() -> String {
-    if defaultUserAgent.isEmpty {
-        defaultUserAgent += osName() + " " + version() + " TeaDSL/1"
-    }
+    var defaultUserAgent: String = "AlibabaCloud"
+    defaultUserAgent += " " + osName() + " Swift" + " Core/" + version() + " TeaDSL/1"
     return defaultUserAgent
 }

@@ -6,11 +6,75 @@ import Tea
 class TestModel: TeaModel {
     var num: Int = 100
     var str: String = "string"
+    
+    public override init() {
+        super.init()
+    }
+
+    public init(_ dict: [String: Any]) {
+        super.init()
+        self.fromMap(dict)
+    }
+    
+    public override func validate() throws -> Void {
+    }
+    
+    public override func toMap() -> [String : Any] {
+        var map = super.toMap()
+        if self.num != nil {
+            map["num"] = self.num
+        }
+        if self.str != nil {
+            map["str"] = self.str
+        }
+        return map
+    }
+    
+    public override func fromMap(_ dict: [String: Any]) -> Void {
+        if dict.keys.contains("num") {
+            self.num = dict["num"] as! Int
+        }
+        if dict.keys.contains("str") {
+            self.str = dict["str"] as! String
+        }
+    }
 }
 
 class TestModel2: TeaModel {
     var num: Int = 200
     var str: String = "model2"
+    
+    public override init() {
+        super.init()
+    }
+
+    public init(_ dict: [String: Any]) {
+        super.init()
+        self.fromMap(dict)
+    }
+    
+    public override func validate() throws -> Void {
+    }
+    
+    public override func toMap() -> [String : Any] {
+        var map = super.toMap()
+        if self.num != nil {
+            map["num"] = self.num
+        }
+        if self.str != nil {
+            map["str"] = self.str
+        }
+        return map
+    }
+    
+    public override func fromMap(_ dict: [String: Any]) -> Void {
+        if dict.keys.contains("num") {
+            self.num = dict["num"] as! Int
+        }
+        if dict.keys.contains("str") {
+            self.str = dict["str"] as! String
+        }
+    }
 }
 
 final class TeaUtilsTests: XCTestCase {
@@ -30,23 +94,23 @@ final class TeaUtilsTests: XCTestCase {
         XCTAssertTrue(target["foo"] == result["foo"])
     }
 
-    func testReadAsBytes() {
+    func testReadAsBytes() async throws {
         let data: Data = "string".data(using: .utf8)!
-        XCTAssertEqual([115, 116, 114, 105, 110, 103], TeaUtils.readAsBytes(data))
+        let result: [UInt8] = try await TeaUtils.readAsBytes(data)
+        XCTAssertTrue(result == [115, 116, 114, 105, 110, 103])
     }
 
-    func testReadAsString() {
+    func testReadAsString() async throws {
         let data: Data = "string".data(using: .utf8)!
-        XCTAssertEqual("string", TeaUtils.readAsString(data))
+        let result: String = try await TeaUtils.readAsString(data)
+        XCTAssertEqual("string", result)
     }
 
-    func testReadAsJSON() {
+    func testReadAsJSON() async throws {
         let data: Data = "{\"foo\":\"bar\"}".data(using: .utf8)!
-
         var target: [String: String] = [String: String]()
         target["foo"] = "bar"
-
-        let result: [String: String] = TeaUtils.readAsJSON(data) as! [String: String]
+        let result: [String: String] = try await TeaUtils.readAsJSON(data) as! [String: String]
         XCTAssertTrue(target["foo"] == result["foo"])
     }
 
@@ -67,7 +131,7 @@ final class TeaUtilsTests: XCTestCase {
 
     func testDefaultNumber() {
         XCTAssertEqual(1, TeaUtils.defaultNumber(nil, 1))
-        XCTAssertEqual(1, TeaUtils.defaultNumber(0, 1))
+        XCTAssertEqual(0, TeaUtils.defaultNumber(0, 1))
         XCTAssertEqual(200, TeaUtils.defaultNumber(200, 1))
     }
 
@@ -103,10 +167,10 @@ final class TeaUtilsTests: XCTestCase {
 
     func testIsUnset() {
         var a: Any? = nil
-        XCTAssertTrue(TeaUtils.isUnset(&a))
+        XCTAssertTrue(TeaUtils.isUnset(a))
 
         a = "a"
-        XCTAssertFalse(TeaUtils.isUnset(&a))
+        XCTAssertFalse(TeaUtils.isUnset(a))
     }
 
     func testStringifyMapValue() {
@@ -134,11 +198,10 @@ final class TeaUtilsTests: XCTestCase {
             try TeaUtils.assertAsMap("map")
             assert(false)
         } catch {
-            switch error{
-            case TeaException.Error:
+            if (error is Tea.TeaError) {
                 assert(true)
-            default:
-                throw error
+            } else {
+                assertionFailure()
             }
         }
 
@@ -178,11 +241,10 @@ final class TeaUtilsTests: XCTestCase {
             try TeaUtils.assertAsBoolean("string")
             assert(false)
         } catch {
-            switch error{
-            case TeaException.Error:
+            if (error is Tea.TeaError) {
                 assert(true)
-            default:
-                throw error
+            } else {
+                assertionFailure()
             }
         }
 
@@ -195,11 +257,10 @@ final class TeaUtilsTests: XCTestCase {
             try TeaUtils.assertAsString(false)
             assert(false)
         } catch {
-            switch error{
-            case TeaException.Error:
+            if (error is Tea.TeaError) {
                 assert(true)
-            default:
-                throw error
+            } else {
+                assertionFailure()
             }
         }
 
@@ -212,11 +273,10 @@ final class TeaUtilsTests: XCTestCase {
             try TeaUtils.assertAsBytes("bytes")
             assert(false)
         } catch {
-            switch error{
-            case TeaException.Error:
+            if (error is Tea.TeaError) {
                 assert(true)
-            default:
-                throw error
+            } else {
+                assertionFailure()
             }
         }
 
@@ -230,14 +290,15 @@ final class TeaUtilsTests: XCTestCase {
             try TeaUtils.assertAsNumber("number")
             assert(false)
         } catch {
-            switch error{
-            case TeaException.Error:
+            if (error is Tea.TeaError) {
                 assert(true)
-            default:
-                throw error
+            } else {
+                assertionFailure()
             }
         }
-
+        var num: NSNumber = 1
+        num = try TeaUtils.assertAsNumber(num)
+        XCTAssertEqual(1, num)
         let res = try TeaUtils.assertAsNumber(101)
         XCTAssertEqual(101, res)
     }
@@ -247,11 +308,10 @@ final class TeaUtilsTests: XCTestCase {
             try TeaUtils.assertAsArray("array")
             assert(false)
         } catch {
-            switch error{
-            case TeaException.Error:
+            if (error is Tea.TeaError) {
                 assert(true)
-            default:
-                throw error
+            } else {
+                assertionFailure()
             }
         }
 
@@ -318,7 +378,7 @@ final class TeaUtilsTests: XCTestCase {
         array.append(TestModel())
         array.append(TestModel2())
         let res = TeaUtils.toArray(array)
-
+        XCTAssertEqual(2, res.count)
         XCTAssertEqual(100, res[0]["num"] as! Int)
         XCTAssertEqual("string", res[0]["str"] as! String)
         XCTAssertEqual(200, res[1]["num"] as! Int)
@@ -327,5 +387,36 @@ final class TeaUtilsTests: XCTestCase {
 
     static var allTests = [
         ("testToBytes", testToBytes),
+        ("testToString", testToString),
+        ("testParseJSON", testParseJSON),
+        ("testReadAsBytes", testReadAsBytes),
+        ("testReadAsString", testReadAsString),
+        ("testReadAsJSON", testReadAsJSON),
+        ("testGetNonce", testGetNonce),
+        ("testGetDateUTCString", testGetDateUTCString),
+        ("testDefaultString", testDefaultString),
+        ("testDefaultNumber", testDefaultNumber),
+        ("testToFormString", testToFormString),
+        ("testToJSONString", testToJSONString),
+        ("testEqualString", testEqualString),
+        ("testEqualNumber", testEqualNumber),
+        ("testIsUnset", testIsUnset),
+        ("testStringifyMapValue", testStringifyMapValue),
+        ("testAssertAsMap", testAssertAsMap),
+        ("testGetUserAgent", testGetUserAgent),
+        ("testAnyifyMapValue", testAnyifyMapValue),
+        ("testAssertAsBoolean", testAssertAsBoolean),
+        ("testAssertAsString", testAssertAsString),
+        ("testAssertAsBytes", testAssertAsBytes),
+        ("testAssertAsNumber", testAssertAsNumber),
+        ("testAssertAsArray", testAssertAsArray),
+        ("testis2xx", testis2xx),
+        ("testis3xx", testis3xx),
+        ("testis4xx", testis4xx),
+        ("testis5xx", testis5xx),
+        ("testValidateModel", testValidateModel),
+        ("testToMap", testToMap),
+        ("testSleep", testSleep),
+        ("testToArray", testToArray),
     ]
 }

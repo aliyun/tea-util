@@ -1,7 +1,3 @@
-//
-// Created by Axios on 2020/2/17.
-//
-
 import Foundation
 
 extension String {
@@ -20,10 +16,10 @@ extension String {
         [UInt8](self.utf8)
     }
 
-    func jsonDecode() -> [String: AnyObject] {
+    func jsonDecode() -> [String: Any] {
         let jsonData: Data = self.data(using: .utf8)!
-        guard let data = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as? [String: AnyObject] else {
-            return [String: AnyObject]()
+        guard let data = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as? [String: Any] else {
+            return [String: Any]()
         }
         return data
     }

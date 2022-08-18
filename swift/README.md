@@ -8,7 +8,7 @@ English | [简体中文](README-CN.md)
 
 - iOS 13.3+ / macOS 10.15+
 - Xcode 11.3+
-- Swift 5.1
+- Swift 5.6
 
 ## Installation
 
@@ -17,7 +17,7 @@ English | [简体中文](README-CN.md)
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate `TeaUtils` into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'TeaUtils', '~> 0.1.0'
+pod 'TeaUtils', '~> 1.0.0'
 ```
 
 ### Carthage
@@ -25,7 +25,7 @@ pod 'TeaUtils', '~> 0.1.0'
 To integrate `TeaUtils` into your Xcode project using [Carthage](https://github.com/Carthage/Carthage), specify it in your `Cartfile`:
 
 ```ogdl
-github "alibabacloud-sdk-swift/tea-utils" "0.1.0"
+github "alibabacloud-sdk-swift/tea-utils" "1.0.0"
 ```
 
 ### Swift Package Manager
@@ -34,7 +34,7 @@ To integrate `TeaUtils` into your Xcode project using [Swift Package Manager](ht
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/alibabacloud-sdk-swift/tea-utils.git", from: "0.1.0")
+    .package(url: "https://github.com/alibabacloud-sdk-swift/tea-utils.git", from: "1.0.0")
 ]
 ```
 
