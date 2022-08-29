@@ -3,15 +3,6 @@ import Foundation
 extension String {
     private static let randomDict = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    static func randomString(len: Int) -> String {
-        var ranStr = ""
-        for _ in 0..<len {
-            let index = Int(arc4random_uniform(UInt32(randomDict.count)))
-            ranStr.append(randomDict[randomDict.index(randomDict.startIndex, offsetBy: index)])
-        }
-        return ranStr
-    }
-
     func toBytes() -> [UInt8] {
         [UInt8](self.utf8)
     }

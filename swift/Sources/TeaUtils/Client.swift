@@ -1,6 +1,5 @@
 import Foundation
 import CryptoSwift
-import SwiftyJSON
 import Tea
 
 
@@ -65,7 +64,7 @@ public class Client {
     public static func getNonce() -> String {
         let timestamp: TimeInterval = Date().toTimestamp()
         let timestampStr: String = String(timestamp)
-        return (String.randomString(len: 10) + timestampStr + UUID().uuidString).md5()
+        return (timestampStr + UUID().uuidString).md5()
     }
 
     public static func getDateUTCString() -> String {
@@ -81,13 +80,6 @@ public class Client {
             return !real!.isEmpty ? real! : `default` ?? ""
         }
         return `default` ?? ""
-    }
-
-    public static func defaultNumber(_ real: NSNumber?, _ default: NSNumber?) -> NSNumber {
-        if real != nil {
-            return real!
-        }
-        return `default` ?? 0
     }
     
     public static func defaultNumber(_ real: Int?, _ default: Int?) -> Int {
@@ -131,12 +123,18 @@ public class Client {
     }
 
     public static func toJSONString(_ obj: Any?) -> String {
-        var r: String = ""
-        if obj != nil {
-            let json = JSON(obj!)
-            r = json.rawString(.utf8, options: .fragmentsAllowed) ?? ""
+        if obj == nil {
+            return ""
         }
-        return r
+        if obj is [UInt8] {
+            return String(bytes: obj as! [UInt8], encoding: .utf8) ?? ""
+        }
+        if (!JSONSerialization.isValidJSONObject(obj)) {
+            return "\(obj!)"
+        }
+        let data : Data = try! JSONSerialization.data(withJSONObject: obj, options: [])
+        let JSONString = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+        return JSONString! as String
     }
 
     public static func empty(_ val: String?) -> Bool {
@@ -144,10 +142,6 @@ public class Client {
     }
 
     public static func equalString(_ left: String?, _ right: String?) -> Bool {
-        left == right
-    }
-
-    public static func equalNumber(_ left: NSNumber?, _ right: NSNumber?) -> Bool {
         left == right
     }
     
@@ -211,14 +205,17 @@ public class Client {
         throw TeaError("\(any ?? "") is not a Bytes")
     }
 
-    public static func assertAsNumber(_ any: Any?) throws -> NSNumber {
-        if any is NSNumber {
-            return any as! NSNumber
+    public static func assertAsNumber(_ any: Any?) throws -> Int {
+        if any is Int {
+            return any as! Int
         }
-        if any is String || any is Bool {
-            throw TeaError("\(any ?? "") is not a NSNumber")
+        if any is Int32 {
+            return Int(any as! Int32)
         }
-        return NSNumber(nonretainedObject: any)
+        if any is Int64 {
+            return Int(any as! Int64)
+        }
+        throw TeaError("\(any ?? "") is not a Int")
     }
 
     public static func assertAsMap(_ any: Any?) throws -> [String: Any] {

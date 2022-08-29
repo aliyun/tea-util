@@ -87,11 +87,13 @@ final class ClientTests: XCTestCase {
     }
 
     func testParseJSON() {
-        var target: [String: String] = [String: String]()
-        target["foo"] = "bar"
-
-        let result: [String: String] = Client.parseJSON("{\"foo\":\"bar\"}") as! [String: String]
-        XCTAssertTrue(target["foo"] == result["foo"])
+        let result: [String: Any] = Client.parseJSON("{\"foo\":\"bar\",\"num\":10,\"bool\":true,\"list\":[\"1\",\"2\"],\"map\":{\"key1\":\"value1\",\"key2\":\"value2\"},\"null\":null}") as! [String: Any]
+        XCTAssertEqual("bar", result["foo"] as! String)
+        XCTAssertEqual(10, result["num"] as! Int)
+        XCTAssertEqual(true, result["bool"] as! Bool)
+        XCTAssertEqual("1", (result["list"] as! [String])[0])
+        XCTAssertEqual("2", (result["list"] as! [String])[1])
+        XCTAssertEqual("value1", (result["map"] as! [String: String])["key1"])
     }
 
     func testReadAsBytes() async throws {
@@ -145,9 +147,34 @@ final class ClientTests: XCTestCase {
     }
 
     func testToJSONString() {
-        var dict: [String: String] = [String: String]()
+        var dict: [String: Any] = [:]
         dict["foo"] = "bar"
-        XCTAssertEqual("{\"foo\":\"bar\"}", Client.toJSONString(dict))
+        dict["num"] = 10
+        dict["bool"] = true
+        var list: [Any] = []
+        list.append("1")
+        list.append(2)
+        list.append(false)
+        dict["list"] = list
+        var map: [String: Any] = [:]
+        map["key1"] = "value1"
+        map["key2"] = 2
+        map["key3"] = true
+        dict["map"] = map
+        
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"foo\":\"bar\""))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"bool\":true"))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"key1\":\"value1\""))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"key2\":2"))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"key3\":true"))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"num\":10"))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"list\":[\"1\",2,false]"))
+        
+        XCTAssertEqual("", Client.toJSONString(nil))
+        XCTAssertEqual("", Client.toJSONString(""))
+        XCTAssertEqual("test", Client.toJSONString("test"))
+        let bytes: [UInt8] = [115, 116, 114, 105, 110, 103]
+        XCTAssertEqual("string", Client.toJSONString(bytes))
     }
 
     func testEmpty() {
@@ -295,7 +322,7 @@ final class ClientTests: XCTestCase {
                 assertionFailure()
             }
         }
-        var num: NSNumber = 1
+        var num: Int = 1
         num = try Client.assertAsNumber(num)
         XCTAssertEqual(1, num)
         let res = try Client.assertAsNumber(101)
