@@ -3,6 +3,7 @@ package service
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -265,10 +266,10 @@ func ToBytes(a *string) []byte {
 	return []byte(tea.StringValue(a))
 }
 
-func AssertAsMap(a interface{}) map[string]interface{} {
+func AssertAsMap(a interface{}) (_result map[string]interface{}, _err error) {
 	r := reflect.ValueOf(a)
 	if r.Kind().String() != "map" {
-		panic(fmt.Sprintf("%v is not a map[string]interface{}", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a map[string]interface{}", a))
 	}
 
 	res := make(map[string]interface{})
@@ -277,10 +278,10 @@ func AssertAsMap(a interface{}) map[string]interface{} {
 		res[key.String()] = r.MapIndex(key).Interface()
 	}
 
-	return res
+	return res, nil
 }
 
-func AssertAsNumber(a interface{}) *int {
+func AssertAsNumber(a interface{}) (_result *int, _err error) {
 	res := 0
 	switch a.(type) {
 	case int:
@@ -290,13 +291,13 @@ func AssertAsNumber(a interface{}) *int {
 		tmp := a.(*int)
 		res = tea.IntValue(tmp)
 	default:
-		panic(fmt.Sprintf("%v is not a int", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a int", a))
 	}
 
-	return tea.Int(res)
+	return tea.Int(res), nil
 }
 
-func AssertAsBoolean(a interface{}) *bool {
+func AssertAsBoolean(a interface{}) (_result *bool, _err error) {
 	res := false
 	switch a.(type) {
 	case bool:
@@ -306,13 +307,13 @@ func AssertAsBoolean(a interface{}) *bool {
 		tmp := a.(*bool)
 		res = tea.BoolValue(tmp)
 	default:
-		panic(fmt.Sprintf("%v is not a bool", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a bool", a))
 	}
 
-	return tea.Bool(res)
+	return tea.Bool(res), nil
 }
 
-func AssertAsString(a interface{}) *string {
+func AssertAsString(a interface{}) (_result *string, _err error) {
 	res := ""
 	switch a.(type) {
 	case string:
@@ -322,39 +323,39 @@ func AssertAsString(a interface{}) *string {
 		tmp := a.(*string)
 		res = tea.StringValue(tmp)
 	default:
-		panic(fmt.Sprintf("%v is not a string", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a string", a))
 	}
 
-	return tea.String(res)
+	return tea.String(res), nil
 }
 
-func AssertAsBytes(a interface{}) []byte {
+func AssertAsBytes(a interface{}) (_result []byte, _err error) {
 	res, ok := a.([]byte)
 	if !ok {
-		panic(fmt.Sprintf("%v is not []byte", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a []byte", a))
 	}
-	return res
+	return res, nil
 }
 
-func AssertAsReadable(a interface{}) io.Reader {
+func AssertAsReadable(a interface{}) (_result io.Reader, _err error) {
 	res, ok := a.(io.Reader)
 	if !ok {
-		panic(fmt.Sprintf("%v is not reader", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a reader", a))
 	}
-	return res
+	return res, nil
 }
 
-func AssertAsArray(a interface{}) []interface{} {
+func AssertAsArray(a interface{}) (_result []interface{}, _err error) {
 	r := reflect.ValueOf(a)
 	if r.Kind().String() != "array" && r.Kind().String() != "slice" {
-		panic(fmt.Sprintf("%v is not a [x]interface{}", a))
+		return nil, errors.New(fmt.Sprintf("%v is not a []interface{}", a))
 	}
 	aLen := r.Len()
 	res := make([]interface{}, 0)
 	for i := 0; i < aLen; i++ {
 		res = append(res, r.Index(i).Interface())
 	}
-	return res
+	return res, nil
 }
 
 func ParseJSON(a *string) interface{} {

@@ -100,7 +100,7 @@ func Test_DefaultString(t *testing.T) {
 
 func Test_ReadAsJSON(t *testing.T) {
 	result, err := ReadAsJSON(strings.NewReader(`{"cleint":"test"}`))
-	res := AssertAsMap(result)
+	res, err := AssertAsMap(result)
 	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "test", res["cleint"])
 
@@ -109,7 +109,7 @@ func Test_ReadAsJSON(t *testing.T) {
 	utils.AssertNil(t, result)
 
 	result, err = ReadAsJSON(ioutil.NopCloser(strings.NewReader(`{"cleint":"test"}`)))
-	res = AssertAsMap(result)
+	res, err = AssertAsMap(result)
 	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "test", res["cleint"])
 }
@@ -263,85 +263,84 @@ func Test_AssertAsMap(t *testing.T) {
 	in := map[string]interface{}{
 		"num": "10",
 	}
-	out := AssertAsMap(in)
+	out, err := AssertAsMap(in)
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "10", out["num"].(string))
 
-	out = AssertAsMap(map[string]string{"key": "value"})
+	out, err = AssertAsMap(map[string]string{"key": "value"})
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "value", out["key"].(string))
 
-	out = AssertAsMap(map[string]int{"key": 10})
+	out, err = AssertAsMap(map[string]int{"key": 10})
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, 10, out["key"].(int))
 
-	defer func() {
-		err := recover()
-		utils.AssertEqual(t, "10 is not a map[string]interface{}", err)
-	}()
-	AssertAsMap(10)
+	out, err = AssertAsMap(10)
+	utils.AssertEqual(t, "10 is not a map[string]interface{}", err.Error())
+	utils.AssertNil(t, out)
 }
 
 func Test_AssertAsString(t *testing.T) {
-	out := AssertAsString("ok")
+	out, err := AssertAsString("ok")
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "ok", tea.StringValue(out))
 
-	out = AssertAsString(tea.String("ok"))
+	out, err = AssertAsString(tea.String("ok"))
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "ok", tea.StringValue(out))
 
-	defer func() {
-		err := recover()
-		utils.AssertEqual(t, "10 is not a string", err)
-	}()
-	AssertAsString(10)
+	out, err = AssertAsString(10)
+	utils.AssertEqual(t, "10 is not a string", err.Error())
+	utils.AssertNil(t, out)
 }
 
 func Test_AssertAsBytes(t *testing.T) {
-	out := AssertAsBytes([]byte("ok"))
+	out, err := AssertAsBytes([]byte("ok"))
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, []byte("ok"), out)
 
-	defer func() {
-		err := recover()
-		utils.AssertEqual(t, "10 is not []byte", err)
-	}()
-	AssertAsBytes(10)
+	out, err = AssertAsBytes(10)
+	utils.AssertEqual(t, "10 is not a []byte", err.Error())
+	utils.AssertNil(t, out)
 }
 
 func Test_AssertAsReadable(t *testing.T) {
-	out := AssertAsReadable(strings.NewReader("test"))
+	out, err := AssertAsReadable(strings.NewReader("test"))
+	utils.AssertNil(t, err)
 	byt, _ := ioutil.ReadAll(out)
 	utils.AssertEqual(t, []byte("test"), byt)
 
-	defer func() {
-		err := recover()
-		utils.AssertEqual(t, "10 is not reader", err)
-	}()
-	AssertAsReadable(10)
+	out, err = AssertAsReadable(10)
+	utils.AssertEqual(t, "10 is not a reader", err.Error())
+	utils.AssertNil(t, out)
 }
 
 func Test_AssertAsNumber(t *testing.T) {
-	out := AssertAsNumber(10)
+	out, err := AssertAsNumber(10)
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, 10, tea.IntValue(out))
 
-	out = AssertAsNumber(tea.Int(10))
+	out, err = AssertAsNumber(tea.Int(10))
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, 10, tea.IntValue(out))
 
-	defer func() {
-		err := recover()
-		utils.AssertEqual(t, "false is not a int", err)
-	}()
-	AssertAsNumber(false)
+	out, err = AssertAsNumber(false)
+	utils.AssertEqual(t, "false is not a int", err.Error())
+	utils.AssertNil(t, out)
 }
 
 func Test_AssertAsBoolean(t *testing.T) {
-	out := AssertAsBoolean(true)
+	out, err := AssertAsBoolean(true)
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, true, tea.BoolValue(out))
 
-	out = AssertAsBoolean(tea.Bool(true))
+	out, err = AssertAsBoolean(tea.Bool(true))
+	utils.AssertNil(t, err)
 	utils.AssertEqual(t, true, tea.BoolValue(out))
 
-	defer func() {
-		err := recover()
-		utils.AssertEqual(t, "10 is not a bool", err)
-	}()
-	AssertAsBoolean(10)
+	out, err = AssertAsBoolean(10)
+	utils.AssertEqual(t, "10 is not a bool", err.Error())
+	utils.AssertNil(t, out)
 }
 
 func Test_UserAgent(t *testing.T) {
@@ -401,7 +400,8 @@ func Test_AssertAsArray(t *testing.T) {
 			utils.AssertEqual(t, "[one two three] is not a [x]interface{}", err)
 		}
 	}()
-	array := AssertAsArray(str)
+	array, err := AssertAsArray(str)
+	utils.AssertNil(t, err)
 	for i := 0; i < len(str); i++ {
 		if i == 0 {
 			utils.AssertEqual(t, "one", array[i])
