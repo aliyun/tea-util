@@ -1,4 +1,4 @@
-module github.com/alibabacloud-go/tea-utils
+module github.com/alibabacloud-go/tea-utils/v2
 
 go 1.14
 
