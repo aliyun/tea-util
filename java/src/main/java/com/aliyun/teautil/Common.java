@@ -304,7 +304,8 @@ public class Common {
         if (object instanceof String) {
             return (String) object;
         }
-        return new Gson().toJson(object);
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        return gson.toJson(object);
     }
 
     /**
