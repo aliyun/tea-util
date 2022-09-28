@@ -150,6 +150,10 @@ public class CommonTest {
         String testReturn = "112911614825392239";
         Assert.assertEquals("112911614825392239", Common.toJSONString(testReturn));
 
+        Map testHTMLCharacters = new HashMap();
+        testHTMLCharacters.put("ossurl","http://test-cn-shanghai.oss-cn-shanghai.aliyuncs.com/image.png?Expires=1664261316&Signature=xxx%3D") ;
+        Assert.assertEquals("{\"ossurl\":\"http://test-cn-shanghai.oss-cn-shanghai.aliyuncs.com/image.png?Expires=1664261316&Signature=xxx%3D\"}",Common.toJSONString(testHTMLCharacters));
+
         Assert.assertEquals("{}", Common.toJSONString(new HashMap()));
         Assert.assertEquals("[]", Common.toJSONString(new ArrayList()));
         Assert.assertEquals("test str", Common.toJSONString("test str"));
