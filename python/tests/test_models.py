@@ -11,6 +11,9 @@ class TestClient(unittest.TestCase):
         option = RuntimeOptions(
             autoretry=True,
             ignore_ssl=True,
+            key="key",
+            cert="cert",
+            ca="ca",
             max_attempts=1,
             backoff_policy="test",
             backoff_period=1,
@@ -27,6 +30,9 @@ class TestClient(unittest.TestCase):
         )
         self.assertEqual(True, option.autoretry)
         self.assertEqual(True, option.ignore_ssl)
+        self.assertEqual('key', option.key)
+        self.assertEqual('cert', option.cert)
+        self.assertEqual('ca', option.ca)
         self.assertEqual(1, option.max_attempts)
         self.assertEqual('test', option.backoff_policy)
         self.assertEqual(1, option.backoff_period)
@@ -45,6 +51,9 @@ class TestClient(unittest.TestCase):
         option = RuntimeOptions(
             autoretry=True,
             ignore_ssl=True,
+            key="key",
+            cert="cert",
+            ca="ca",
             max_attempts=1,
             backoff_policy="test",
             backoff_period=1,
@@ -62,6 +71,9 @@ class TestClient(unittest.TestCase):
         result = option.to_map()
         self.assertEqual(True, result.get('autoretry'))
         self.assertEqual(True, result.get('ignoreSSL'))
+        self.assertEqual('key', result.get('key'))
+        self.assertEqual('cert', result.get('cert'))
+        self.assertEqual('ca', result.get('ca'))
         self.assertEqual(1, result.get('max_attempts'))
         self.assertEqual('test', result.get('backoff_policy'))
         self.assertEqual(1, result.get('backoff_period'))
@@ -81,6 +93,9 @@ class TestClient(unittest.TestCase):
         dic = {
             'autoretry': True,
             'ignoreSSL': True,
+            'key': 'key',
+            'cert': 'cert',
+            'ca': 'ca',
             'max_attempts': 1,
             'backoff_policy': 'test',
             'backoff_period': 1,
@@ -98,6 +113,9 @@ class TestClient(unittest.TestCase):
         option.from_map(dic)
         self.assertEqual(True, option.autoretry)
         self.assertEqual(True, option.ignore_ssl)
+        self.assertEqual('key', option.key)
+        self.assertEqual('cert', option.cert)
+        self.assertEqual('ca', option.ca)
         self.assertEqual(1, option.max_attempts)
         self.assertEqual('test', option.backoff_policy)
         self.assertEqual(1, option.backoff_period)

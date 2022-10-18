@@ -4,6 +4,7 @@ namespace AlibabaCloud\Tea\Utils\Tests;
 
 use AlibabaCloud\Tea\Model;
 use AlibabaCloud\Tea\Utils\Utils;
+use AlibabaCloud\Tea\Utils\Utils\RuntimeOptions;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
@@ -375,6 +376,42 @@ final class UtilsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('It is not a stream value.');
         Utils::assertAsReadable(0);
+    }
+
+    public function testRuntimeOptions()
+    {
+        $opts = new RuntimeOptions([
+            "autoretry" => false,
+            "ignoreSSL" => false,
+            "key" => "key",
+            "cert" => "cert",
+            "ca" => "ca",
+            "maxAttempts" => 3,
+            "backoffPolicy" => "backoffPolicy",
+            "backoffPeriod" => 10,
+            "readTimeout" => 3000,
+            "connectTimeout" => 3000,
+            "httpProxy" => "httpProxy",
+            "httpsProxy" => "httpsProxy",
+            "noProxy" => "noProxy",
+            "maxIdleConns" => 300,
+            "keepAlive" => true,
+        ]);
+        $this->assertEquals(false, $opts->autoretry);
+        $this->assertEquals(false, $opts->ignoreSSL);
+        $this->assertEquals("key", $opts->key);
+        $this->assertEquals("cert", $opts->cert);
+        $this->assertEquals("ca", $opts->ca);
+        $this->assertEquals(3, $opts->maxAttempts);
+        $this->assertEquals("backoffPolicy", $opts->backoffPolicy);
+        $this->assertEquals(10, $opts->backoffPeriod);
+        $this->assertEquals(3000, $opts->readTimeout);
+        $this->assertEquals(3000, $opts->connectTimeout);
+        $this->assertEquals("httpProxy", $opts->httpProxy);
+        $this->assertEquals("httpsProxy", $opts->httpsProxy);
+        $this->assertEquals("noProxy", $opts->noProxy);
+        $this->assertEquals(300, $opts->maxIdleConns);
+        $this->assertEquals(true, $opts->keepAlive);
     }
 
     private function convert($body, &$content)

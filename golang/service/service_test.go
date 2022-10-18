@@ -18,6 +18,9 @@ func Test_SetFunc(t *testing.T) {
 		SetHttpProxy("httpproxy").
 		SetHttpsProxy("httpsproxy").
 		SetIgnoreSSL(true).
+		SetKey("key").
+		SetCert("cert").
+		SetCa("ca").
 		SetLocalAddr("localaddr").
 		SetMaxAttempts(3).
 		SetMaxIdleConns(5).
@@ -28,6 +31,9 @@ func Test_SetFunc(t *testing.T) {
 		SetKeepAlive(false)
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.Autoretry))
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.IgnoreSSL))
+	utils.AssertEqual(t, "key", tea.StringValue(runtime.Key))
+	utils.AssertEqual(t, "cert", tea.StringValue(runtime.Cert))
+	utils.AssertEqual(t, "ca", tea.StringValue(runtime.Ca))
 	utils.AssertEqual(t, 10, tea.IntValue(runtime.BackoffPeriod))
 	utils.AssertEqual(t, 100, tea.IntValue(runtime.ConnectTimeout))
 	utils.AssertEqual(t, 50, tea.IntValue(runtime.ReadTimeout))
