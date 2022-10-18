@@ -8,6 +8,9 @@
 model RuntimeOptions {
   autoretry?: boolean(description='whether to try again', name='autoretry'),
   ignoreSSL?: boolean(description='ignore SSL validation', name='ignoreSSL'),
+  key?: string(description='privite key for client certificate', name='key'),
+  cert?: string(description='client certificate', name='cert'),
+  ca?: string(description='server certificate', name='ca'),
   maxAttempts?: number(description='maximum number of retries', name='max_attempts'),
   backoffPolicy?: string(description='backoff policy', name='backoff_policy'),
   backoffPeriod?: number(description='backoff period', name='backoff_period'),

@@ -115,10 +115,43 @@ describe('Tea Util', function () {
     });
 
     it('RuntimeOptions', function () {
-        const opts = new RuntimeOptions();
+        let opts = new RuntimeOptions();
         assert.ok(opts);
         const casted = $tea.cast({}, opts);
         assert.ok(casted);
+        opts = new RuntimeOptions(
+            {
+                autoretry: false,
+                ignoreSSL: false,
+                key: 'key',
+                cert: 'cert',
+                ca: 'ca',
+                maxAttempts: 3,
+                backoffPolicy: 'backoffPolicy',
+                backoffPeriod: 10,
+                readTimeout: 3000,
+                connectTimeout: 3000,
+                httpProxy: 'httpProxy',
+                httpsProxy: 'httpsProxy',
+                noProxy: 'noProxy',
+                maxIdleConns: 300,
+                keepAlive: true,
+            }
+        );
+        assert.ok(opts.autoretry === false);
+        assert.ok(opts.ignoreSSL === false);
+        assert.ok(opts.key === 'key');
+        assert.ok(opts.cert === 'cert');
+        assert.ok(opts.ca === 'ca');
+        assert.ok(opts.maxAttempts === 3);
+        assert.ok(opts.backoffPolicy === 'backoffPolicy');
+        assert.ok(opts.backoffPeriod === 10);
+        assert.ok(opts.readTimeout === 3000);
+        assert.ok(opts.connectTimeout === 3000);
+        assert.ok(opts.httpProxy === 'httpProxy');
+        assert.ok(opts.httpsProxy === 'httpsProxy');
+        assert.ok(opts.maxIdleConns === 300);
+        assert.ok(opts.keepAlive === true);
     });
 
     it('stringifyMapValue', function () {

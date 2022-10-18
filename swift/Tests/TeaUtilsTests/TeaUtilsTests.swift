@@ -411,6 +411,43 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual("model2", res[1]["str"] as! String)
     }
 
+    func testRuntimeOptions() throws {
+        var opts = RuntimeOptions(
+            [
+                "autoretry": false,
+                "ignoreSSL": false,
+                "key": "key",
+                "cert": "cert",
+                "ca": "ca",
+                "max_attempts": 3,
+                "backoff_policy": "backoffPolicy",
+                "backoff_period": 10,
+                "readTimeout": 3000,
+                "connectTimeout": 3000,
+                "httpProxy": "httpProxy",
+                "httpsProxy": "httpsProxy",
+                "noProxy": "noProxy",
+                "maxIdleConns": 300,
+                "keepAlive": true,
+            ]
+        )
+        XCTAssertEqual(false, opts.autoretry)
+        XCTAssertEqual(false, opts.ignoreSSL)
+        XCTAssertEqual("key", opts.key)
+        XCTAssertEqual("cert", opts.cert)
+        XCTAssertEqual("ca", opts.ca)
+        XCTAssertEqual(3, opts.maxAttempts)
+        XCTAssertEqual("backoffPolicy", opts.backoffPolicy)
+        XCTAssertEqual(10, opts.backoffPeriod)
+        XCTAssertEqual(3000, opts.readTimeout)
+        XCTAssertEqual(3000, opts.connectTimeout)
+        XCTAssertEqual("httpProxy", opts.httpProxy)
+        XCTAssertEqual("httpsProxy", opts.httpsProxy)
+        XCTAssertEqual("noProxy", opts.noProxy)
+        XCTAssertEqual(300, opts.maxIdleConns)
+        XCTAssertEqual(true, opts.keepAlive)
+    }
+
     static var allTests = [
         ("testToBytes", testToBytes),
         ("testToString", testToString),

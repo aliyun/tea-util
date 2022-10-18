@@ -8,6 +8,9 @@ const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${pr
 export class RuntimeOptions extends $tea.Model {
   autoretry?: boolean;
   ignoreSSL?: boolean;
+  key?: string;
+  cert?: string;
+  ca?: string;
   maxAttempts?: number;
   backoffPolicy?: string;
   backoffPeriod?: number;
@@ -22,6 +25,9 @@ export class RuntimeOptions extends $tea.Model {
     return {
       autoretry: 'autoretry',
       ignoreSSL: 'ignoreSSL',
+      key: 'key',
+      cert: 'cert',
+      ca: 'ca',
       maxAttempts: 'max_attempts',
       backoffPolicy: 'backoff_policy',
       backoffPeriod: 'backoff_period',
@@ -39,6 +45,9 @@ export class RuntimeOptions extends $tea.Model {
     return {
       autoretry: 'boolean',
       ignoreSSL: 'boolean',
+      key: 'string',
+      cert: 'string',
+      ca: 'string',
       maxAttempts: 'number',
       backoffPolicy: 'string',
       backoffPeriod: 'number',

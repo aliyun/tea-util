@@ -24,11 +24,20 @@ class RuntimeOptions(TeaModel):
         socks_5proxy: str = None,
         socks_5net_work: str = None,
         keep_alive: bool = None,
+        key: str = None,
+        cert: str = None,
+        ca: str = None,
     ):
         # whether to try again
         self.autoretry = autoretry
         # ignore SSL validation
         self.ignore_ssl = ignore_ssl
+        # privite key for client certificate
+        self.key = key
+        # client certificate
+        self.cert = cert
+        # server certificate
+        self.ca = ca
         # maximum number of retries
         self.max_attempts = max_attempts
         # backoff policy
@@ -65,6 +74,12 @@ class RuntimeOptions(TeaModel):
             result['autoretry'] = self.autoretry
         if self.ignore_ssl is not None:
             result['ignoreSSL'] = self.ignore_ssl
+        if self.key is not None:
+            result['key'] = self.key
+        if self.cert is not None:
+            result['cert'] = self.cert
+        if self.ca is not None:
+            result['ca'] = self.ca
         if self.max_attempts is not None:
             result['max_attempts'] = self.max_attempts
         if self.backoff_policy is not None:
@@ -99,6 +114,12 @@ class RuntimeOptions(TeaModel):
             self.autoretry = m.get('autoretry')
         if m.get('ignoreSSL') is not None:
             self.ignore_ssl = m.get('ignoreSSL')
+        if m.get('key') is not None:
+            self.key = m.get('key')
+        if m.get('cert') is not None:
+            self.cert = m.get('cert')
+        if m.get('ca') is not None:
+            self.ca = m.get('ca')
         if m.get('max_attempts') is not None:
             self.max_attempts = m.get('max_attempts')
         if m.get('backoff_policy') is not None:

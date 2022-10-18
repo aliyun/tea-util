@@ -6,6 +6,12 @@ public class RuntimeOptions : Tea.TeaModel {
 
     public var ignoreSSL: Bool?
 
+    public var key: String?
+
+    public var cert: String?
+
+    public var ca: String?
+
     public var maxAttempts: Int?
 
     public var backoffPolicy: String?
@@ -51,6 +57,15 @@ public class RuntimeOptions : Tea.TeaModel {
         }
         if self.ignoreSSL != nil {
             map["ignoreSSL"] = self.ignoreSSL!
+        }
+        if self.key != nil {
+            map["key"] = self.key!
+        }
+        if self.cert != nil {
+            map["cert"] = self.cert!
+        }
+        if self.ca != nil {
+            map["ca"] = self.ca!
         }
         if self.maxAttempts != nil {
             map["max_attempts"] = self.maxAttempts!
@@ -100,6 +115,15 @@ public class RuntimeOptions : Tea.TeaModel {
         }
         if dict.keys.contains("ignoreSSL") {
             self.ignoreSSL = dict["ignoreSSL"] as! Bool
+        }
+        if dict.keys.contains("key") {
+            self.key = dict["key"] as! String
+        }
+        if dict.keys.contains("cert") {
+            self.cert = dict["cert"] as! String
+        }
+        if dict.keys.contains("ca") {
+            self.ca = dict["ca"] as! String
         }
         if dict.keys.contains("max_attempts") {
             self.maxAttempts = dict["max_attempts"] as! Int

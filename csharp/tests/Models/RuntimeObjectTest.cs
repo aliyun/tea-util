@@ -17,6 +17,9 @@ namespace tests.Models
             runtime.HttpProxy = "proxy";
             runtime.HttpsProxy = "httpsProxy";
             runtime.IgnoreSSL = false;
+            runtime.Key = "key";
+            runtime.Cert = "cert";
+            runtime.Ca = "ca";
             runtime.LocalAddr = "localAddr";
             runtime.MaxAttempts = 3;
             runtime.MaxIdleConns = 4;
@@ -34,6 +37,9 @@ namespace tests.Models
             Assert.Equal("proxy", runtime.HttpProxy);
             Assert.Equal("httpsProxy", runtime.HttpsProxy);
             Assert.False(runtime.IgnoreSSL);
+            Assert.Equal("key", runtime.Key);
+            Assert.Equal("cert", runtime.Cert);
+            Assert.Equal("ca", runtime.Ca);
             Assert.Equal("localAddr", runtime.LocalAddr);
             Assert.Equal(3, runtime.MaxAttempts);
             Assert.Equal(4, runtime.MaxIdleConns);
