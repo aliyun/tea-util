@@ -1,3 +1,6 @@
+2022-10-29 Version: 0.2.15
+1. Disable html escaping in Gson
+
 2022-07-05 Version: 0.2.14
 1. Add keepAlive
 
