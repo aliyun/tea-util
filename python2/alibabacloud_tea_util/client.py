@@ -160,8 +160,9 @@ class Client(object):
         """
         if isinstance(val, str):
             return str(val)
-        return json.dumps(val, cls=Client._ModelEncoder)
-
+        return json.dumps(
+            val, cls=Client._ModelEncoder, ensure_ascii=False, separators=(",", ":")
+        )
     @staticmethod
     def empty(val):
         """

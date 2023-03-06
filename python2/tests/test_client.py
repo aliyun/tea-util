@@ -107,20 +107,21 @@ class TestClient(unittest.TestCase):
     def test_to_json_string(self):
         self.assertEqual('test string for to_jsonstring',
                          Client.to_jsonstring('test string for to_jsonstring'))
-        self.assertEqual('{"key": "value"}',
+        self.assertEqual('{"key":"value"}',
                          Client.to_jsonstring({"key": "value"}))
         model = self.TestModel()
         any_dict = {
             'bytes': '100',
-            'str': u'100',
+            'str': '100',
             'int': 100,
             'model': model,
             'float': 100.1,
             'bool': True,
             'None': None,
+            'utf8': '你好'
         }
         self.assertEqual(
-            '{"None": null, "int": 100, "float": 100.1, "bytes": "100", "bool": true, "str": "100", "model": {"test_b": "b", "test_a": "a"}}',
+            '{"None":null,"bool":true,"str":"100","int":100,"utf8":"你好","model":{"test_b":"b","test_a":"a"},"float":100.1,"bytes":"100"}',
             Client.to_jsonstring(any_dict)
         )
 
