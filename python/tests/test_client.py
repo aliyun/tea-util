@@ -106,7 +106,7 @@ class TestClient(unittest.TestCase):
     def test_to_json_string(self):
         self.assertEqual('test string for to_jsonstring',
                          Client.to_jsonstring('test string for to_jsonstring'))
-        self.assertEqual('{"key": "value"}',
+        self.assertEqual('{"key":"value"}',
                          Client.to_jsonstring({"key": "value"}))
         model = self.TestModel()
         any_dict = {
@@ -115,10 +115,11 @@ class TestClient(unittest.TestCase):
             'int': 100,
             'model': model,
             'float': 100.1,
-            'bool': True
+            'bool': True,
+            'utf8': '你好'
         }
         self.assertEqual(
-            '{"bytes": "100", "str": "100", "int": 100, "model": {"test_a": "a", "test_b": "b"}, "float": 100.1, "bool": true}',
+            '{"bytes":"100","str":"100","int":100,"model":{"test_a":"a","test_b":"b"},"float":100.1,"bool":true,"utf8":"你好"}',
             Client.to_jsonstring(any_dict)
         )
 
