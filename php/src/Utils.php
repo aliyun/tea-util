@@ -191,7 +191,7 @@ class Utils
             $object = $object->toMap();
         }
 
-        return json_encode($object);
+        return json_encode($object, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES);
     }
 
     /**
