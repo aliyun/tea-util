@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 2.2.207
     - name: install altcover
-      run: cd core/ && dotnet tool install --global altcover.visualizer
+      run: cd core/ && dotnet tool install --global altcover.visualizer --version 8.6.14
     - name: Install dependencies
       run: cd core/ && dotnet restore
     - name: Build
