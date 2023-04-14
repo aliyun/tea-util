@@ -1,14 +1,14 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"main": "./main.tea",
 	"releases": {
 		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.1",
 		"ts": "@alicloud/tea-util:^1.4.5",
-		"csharp": "AlibabaCloud.TeaUtil:0.1.15",
+		"csharp": "AlibabaCloud.TeaUtil:0.1.16",
 		"java": "com.aliyun:tea-util:0.2.16",
-		"php": "alibabacloud/tea-utils:^0.2.17",
+		"php": "alibabacloud/tea-utils:^0.2.18",
 		"python": "alibabacloud_tea_util:0.3.8",
 		"python2": "alibabacloud_tea_util_py2:0.0.7",
 		"swift": "alibabacloud-sdk-swift/tea-utils:1.0.2"
@@ -51,5 +51,12 @@
 		  "author": "Alibaba Cloud SDK",
 		  "email": "sdk-team@alibabacloud.com"
 		}
-	}
+	},
+	"releaselog": {
+		"changelog": [
+		  "[php]feat: support unescaped string from json",
+		  "[csharp]improve Newtonsoft.Json version"
+		],
+		"compatible": true
+	  }
 }
