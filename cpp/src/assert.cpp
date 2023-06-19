@@ -1,128 +1,85 @@
-#include "util.h"
-#include <boost/lexical_cast.hpp>
-#include <boost/spirit/home/support/detail/hold_any.hpp>
-#include <boost/throw_exception.hpp>
-#include <cpprest/streams.h>
 #include <darabonba/util.hpp>
 
 using namespace std;
 
-bool Darabonba_Util::Client::empty(const shared_ptr<string> &val) {
-  return !val || val->empty();
+bool Darabonba::Util::empty(const string &val) {
+  return val.empty();
 }
 
-bool Darabonba_Util::Client::equalString(const shared_ptr<string> &val1,
-                                         const shared_ptr<string> &val2) {
-  if (!val1 && !val2) {
+bool Darabonba::Util::equalString(const string &val1,
+                                         const string &val2) {
+  if (val1.empty() && val2.empty()) {
     return true;
-  }
-  if (!val1 || !val2) {
-    return false;
-  }
-  return *val1 == *val2;
-}
-
-bool Darabonba_Util::Client::equalNumber(const shared_ptr<int> &val1,
-                                         const shared_ptr<int> &val2) {
-  if (!val1 && !val2) {
-    return true;
-  }
-  if (!val1 ^ !val2) {
-    return false;
   }
   return val1 == val2;
 }
 
-template<class T> T assertAsValue(const boost::any &value) {
-  if (typeid(shared_ptr<T>) == value.type()) {
-    shared_ptr<T> ptr = cast_any<T>(value);
-    if (ptr) {
-      return *ptr;
-    }
-  } else if (typeid(shared_ptr<boost::any>) == value.type()) {
-    shared_ptr<boost::any> any_ptr = cast_any<boost::any>(value);
-    if (any_ptr && !any_ptr->empty()) {
-      if (typeid(shared_ptr<T>) == any_ptr->type()) {
-        shared_ptr<T> ptr = cast_any<T>(*any_ptr);
-        if (ptr) {
-          return *ptr;
-        }
-      } else if (typeid(T) == any_ptr->type()) {
-        return boost::any_cast<T>(*any_ptr);
-      }
-    }
-  }
-  throw exception();
+bool Darabonba::Util::equalNumber(const int64_t &val1,
+                                         const int64_t &val2) {
+  return val1 == val2;
 }
 
-bool Darabonba_Util::Client::assertAsBoolean(const boost::any &value) {
+bool Darabonba::Util::assertAsBoolean(const json &value) {
+  if(!value.is_boolean()) {
+    throw Darabonba::Error("value is not a bool");
+  }
+  return value.get<bool>();
+}
+
+string Darabonba::Util::assertAsString(const json &value) {
+  if(!value.is_string()) {
+    throw Darabonba::Error("value is not a string");
+  }
+  return value.get<string>();
+}
+
+vector<uint8_t> Darabonba::Util::assertAsBytes(const json &value) {
+  if(!value.is_array()) {
+    throw Darabonba::Error("value is not a bytes");
+  }
   try {
-    return assertAsValue<bool>(value);
+    return value.get<vector<uint8_t>>();
   } catch (exception&) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a bool")));
+    throw Darabonba::Error("value is not a bytes");
   }
+
+
 }
 
-string Darabonba_Util::Client::assertAsString(const boost::any &value) {
+int64_t Darabonba::Util::assertAsNumber(const json &value) {
+  if(!value.is_number()) {
+    throw Darabonba::Error("value is not a bytes");
+  }
+  return value.get<int64_t>();
+}
+
+json Darabonba::Util::assertAsMap(const json &value) {
+  if(!value.is_object()) {
+    throw Darabonba::Error("value is not a object");
+  }
+  return value;
+}
+
+ostringstream* Darabonba::Util::assertAsReadable(void* value) {
   try {
-    return assertAsValue<string>(value);
+    return static_cast<ostringstream*>(value);
   } catch (exception&) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a string")));
+    throw Darabonba::Error("value is not a object");
   }
 }
 
-vector<uint8_t> Darabonba_Util::Client::assertAsBytes(const boost::any &value) {
-  try {
-    return assertAsValue<vector<uint8_t>>(value);
-  } catch (exception&) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a bytes")));
-  }
+bool Darabonba::Util::is2xx(const int64_t &code) {
+  return code >= 200 && code < 300;
 }
 
-int Darabonba_Util::Client::assertAsNumber(const boost::any &value) {
-  try {
-    return assertAsValue<int>(value);
-  } catch (exception&) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a int number")));
-  }
+bool Darabonba::Util::is3xx(const int64_t &code) {
+  return code >= 300 && code < 400;
 }
 
-map<string, boost::any>
-Darabonba_Util::Client::assertAsMap(const boost::any &value) {
-  try {
-    return assertAsValue<map<string, boost::any>>(value);
-  } catch (exception&) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a map<string, any>")));
-  }
+bool Darabonba::Util::is4xx(const int64_t &code) {
+  return code >= 400 && code < 500;
 }
 
-Darabonba::Stream
-Darabonba_Util::Client::assertAsReadable(const boost::any &value) {
-  try {
-    return assertAsValue<Darabonba::Stream>(value);
-  } catch (exception&) {
-    BOOST_THROW_EXCEPTION(boost::enable_error_info(
-        runtime_error("value is not a readable")));
-  }
-}
-
-bool Darabonba_Util::Client::is2xx(const shared_ptr<int> &code) {
-  return code && *code >= 200 && *code < 300;
-}
-
-bool Darabonba_Util::Client::is3xx(const shared_ptr<int> &code) {
-  return code && *code >= 300 && *code < 400;
-}
-
-bool Darabonba_Util::Client::is4xx(const shared_ptr<int> &code) {
-  return code && *code >= 400 && *code < 500;
-}
-
-bool Darabonba_Util::Client::is5xx(const shared_ptr<int> &code) {
-  return code && *code >= 500 && *code < 600;
+bool Darabonba::Util::is5xx(const int64_t &code) {
+  return code >= 500 && code < 600;
 }
