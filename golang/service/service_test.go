@@ -249,12 +249,14 @@ func Test_StringifyMapValue(t *testing.T) {
 		"json": map[string]string{
 			"test": "ok",
 		},
-		"str": "ok",
+		"str":  "ok",
+		"*str": tea.String("ok"),
 	}
 	out := StringifyMapValue(in)
 	utils.AssertEqual(t, "10", tea.StringValue(out["num"]))
 	utils.AssertEqual(t, `{"test":"ok"}`, tea.StringValue(out["json"]))
 	utils.AssertEqual(t, "ok", tea.StringValue(out["str"]))
+	utils.AssertEqual(t, "ok", tea.StringValue(out["*str"]))
 }
 
 func Test_AnyifyMapValue(t *testing.T) {

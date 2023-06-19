@@ -155,13 +155,7 @@ func StringifyMapValue(a map[string]interface{}) map[string]*string {
 	res := make(map[string]*string)
 	for key, value := range a {
 		if value != nil {
-			switch value.(type) {
-			case string:
-				res[key] = tea.String(value.(string))
-			default:
-				byt, _ := json.Marshal(value)
-				res[key] = tea.String(string(byt))
-			}
+			res[key] = ToJSONString(value)
 		}
 	}
 	return res
