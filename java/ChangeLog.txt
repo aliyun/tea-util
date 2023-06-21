@@ -1,3 +1,6 @@
+2023-06-21 Version: 0.2.17
+1. Extended support for double data range in the MapTypeAdapter class
+
 2022-11-16 Version: 0.2.16
 1. Support ca params for server and client
 
