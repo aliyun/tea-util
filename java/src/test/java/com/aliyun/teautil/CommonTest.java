@@ -79,6 +79,16 @@ public class CommonTest {
         Map<String, Object> mapDouble = (Map<String, Object>) Common.readAsJSON(doubleTest);
         Assert.assertEquals(83.600149525598071, mapDouble.get("disputeId1"));
 
+        doubleTest = new ByteArrayInputStream("{\"MIN_VALUE\":4.9E-324,\"MAX_VALUE\":1.7976931348623157E308}".getBytes("UTF-8"));
+        mapDouble = (Map<String, Object>) Common.readAsJSON(doubleTest);
+        Assert.assertEquals(4.9E-324, mapDouble.get("MIN_VALUE"));
+        Assert.assertEquals(1.7976931348623157E308, mapDouble.get("MAX_VALUE"));
+
+        doubleTest = new ByteArrayInputStream("{\"MIN_VALUE\":4.9e-324,\"MAX_VALUE\":1.7976931348623157e+308}".getBytes("UTF-8"));
+        mapDouble = (Map<String, Object>) Common.readAsJSON(doubleTest);
+        Assert.assertEquals(4.9E-324, mapDouble.get("MIN_VALUE"));
+        Assert.assertEquals(1.7976931348623157E308, mapDouble.get("MAX_VALUE"));
+
         Assert.assertEquals(0, Common.readAsBytes(null).length);
         InputStream longTest = new ByteArrayInputStream("{\"112911614825392239\":1614825493911}".getBytes("UTF-8"));
         Map<String, Object> map = (Map<String, Object>) Common.readAsJSON(longTest);
@@ -151,8 +161,8 @@ public class CommonTest {
         Assert.assertEquals("112911614825392239", Common.toJSONString(testReturn));
 
         Map testHTMLCharacters = new HashMap();
-        testHTMLCharacters.put("ossurl","http://test-cn-shanghai.oss-cn-shanghai.aliyuncs.com/image.png?Expires=1664261316&Signature=xxx%3D") ;
-        Assert.assertEquals("{\"ossurl\":\"http://test-cn-shanghai.oss-cn-shanghai.aliyuncs.com/image.png?Expires=1664261316&Signature=xxx%3D\"}",Common.toJSONString(testHTMLCharacters));
+        testHTMLCharacters.put("ossurl", "http://test-cn-shanghai.oss-cn-shanghai.aliyuncs.com/image.png?Expires=1664261316&Signature=xxx%3D");
+        Assert.assertEquals("{\"ossurl\":\"http://test-cn-shanghai.oss-cn-shanghai.aliyuncs.com/image.png?Expires=1664261316&Signature=xxx%3D\"}", Common.toJSONString(testHTMLCharacters));
 
         Assert.assertEquals("{}", Common.toJSONString(new HashMap()));
         Assert.assertEquals("[]", Common.toJSONString(new ArrayList()));

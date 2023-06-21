@@ -46,7 +46,7 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
                  * 改写数字的处理逻辑，将数字值分为整型与浮点型。
                  */
                 String s1 = in.nextString();
-                if (s1.contains(".")) {
+                if (s1.contains(".") || s1.contains("E")) {
                     return Double.parseDouble(s1);
                 } else {
                     return Long.parseLong(s1);
