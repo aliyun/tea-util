@@ -194,6 +194,8 @@ public:
 
   static int assertAsNumber(const boost::any &value);
 
+  static int assertAsInteger(const boost::any &value);
+
   static map<string, boost::any> assertAsMap(const boost::any &value);
 
   static Darabonba::Stream assertAsReadable(const boost::any &value);

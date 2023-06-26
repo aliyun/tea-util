@@ -167,6 +167,12 @@ static function assertAsBytes(value: any)throws : bytes;
 static function assertAsNumber(value: any)throws : number;
 
 /**
+ * Assert a value, if it is a integer, return it, otherwise throws
+ * @return the integer value
+ */
+static function assertAsInteger(value: any)throws : integer;
+
+/**
  * Assert a value, if it is a map, return it, otherwise throws
  * @return the map value
  */

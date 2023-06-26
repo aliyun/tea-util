@@ -219,6 +219,17 @@ export default class Client {
     throw new Error(`The value is not a number`);
   }
 
+  /**
+   * Assert a value, if it is a integer, return it, otherwise throws
+   * @return the integer value
+   */
+  static assertAsInteger(value: any): number {
+    if (Number.isInteger(value)) {
+      return value;
+    }
+    throw new Error(`The value is not a int number`);
+  }
+
   static assertAsMap(value: any): { [key: string]: any } {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       return value as { [key: string]: any };

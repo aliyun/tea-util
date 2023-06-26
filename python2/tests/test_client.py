@@ -223,6 +223,16 @@ class TestClient(unittest.TestCase):
         except ValueError as e:
             self.assertEqual('test is not a number', str(e))
 
+    def test_assert_as_integer(self):
+        s = 'test'
+        num = 1
+        res = Client.assert_as_integer(num)
+        self.assertEqual(num, res)
+        try:
+            Client.assert_as_integer(s)
+        except ValueError as e:
+            self.assertEqual('test is not a int number', str(e))
+
     def test_assert_as_boolean(self):
         s = 'test'
         boolean = True

@@ -222,6 +222,21 @@ describe('Tea Util', function () {
         }, /The value is not a number/);
     });
 
+    it('assertAsInteger', function () {
+        assert.deepStrictEqual(Client.assertAsInteger(1), 1);
+        assert.deepStrictEqual(Client.assertAsInteger(-1), -1);
+        assert.deepStrictEqual(Client.assertAsInteger(0), 0);
+        assert.throws(() => {
+            Client.assertAsInteger('1');
+        }, /The value is not a int number/);
+        assert.throws(() => {
+            Client.assertAsInteger(true);
+        }, /The value is not a int number/);
+        assert.throws(() => {
+            Client.assertAsInteger(undefined);
+        }, /The value is not a int number/);
+    });
+
     it('assertAsMap', function () {
         assert.deepStrictEqual(Client.assertAsMap({}), {});
         assert.throws(() => {

@@ -262,6 +262,21 @@ final class UtilsTest extends TestCase
         }
     }
 
+    public function testAssertAsInteger()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('It is not a int value.');
+        Utils::assertAsInteger('is not int');
+
+        try {
+            $map = 123;
+            $this->assertEquals($map, Utils::assertAsInteger($map));
+        } catch (\Exception $e) {
+            // should not be here
+            $this->assertTrue(false);
+        }
+    }
+
     public function testAssertAsMap()
     {
         $this->expectException(\InvalidArgumentException::class);

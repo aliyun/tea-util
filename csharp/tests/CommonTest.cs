@@ -287,6 +287,14 @@ namespace tests
         }
 
         [Fact]
+        public void Test_AssertAsInteger()
+        {
+            Assert.Equal(10, Common.AssertAsInteger(10));
+
+            Assert.Throws<ArgumentException>(() => { Common.AssertAsInteger("ok"); });
+        }
+
+        [Fact]
         public void Test_AssertAsBoolean()
         {
             Assert.True(Common.AssertAsBoolean(true));

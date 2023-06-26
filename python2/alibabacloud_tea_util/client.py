@@ -260,6 +260,16 @@ class Client(object):
         return value
 
     @staticmethod
+    def assert_as_integer(value):
+        """
+        Assert a value, if it is a number, return it, otherwise throws
+        @return: the number value
+        """
+        if not isinstance(value, int):
+            raise ValueError('%s is not a int number' % TeaConverter.to_str(value))
+        return value
+
+    @staticmethod
     def assert_as_map(value):
         """
         Assert a value, if it is a map, return it, otherwise throws
