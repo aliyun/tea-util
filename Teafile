@@ -55,8 +55,9 @@
 	},
 	"releaselog": {
 		"changelog": [
-		  "[php]feat: support unescaped string from json",
-		  "[csharp]improve Newtonsoft.Json version"
+		  "feat: support static method `assertAsInteger()`",
+		  "[java]feat: extended support for double data range in the MapTypeAdapter class",
+		  "[golang]improve stringify map value"
 		],
 		"compatible": true
 	  }
