@@ -128,6 +128,17 @@ public class Common {
     }
 
     /**
+     * Assert a value, if it is a integer, return it, otherwise throws
+     * @return the integer value
+     */
+    public static Integer assertAsInteger(Object value) {
+        if (value instanceof Integer) {
+            return (Integer) value;
+        }
+        throw new TeaUtilException("The value is not a Integer");
+    }
+
+    /**
      * Assert a value, if it is a string, return it, otherwise throws
      *
      * @return the string value

@@ -360,6 +360,19 @@ public class CommonTest {
     }
 
     @Test
+    public void assertAsIntegerTest() throws Exception {
+        Number result = Common.assertAsInteger(1);
+        Assert.assertEquals(1, result);
+
+        try {
+            Common.assertAsInteger("1");
+            Assert.fail();
+        } catch (Exception e) {
+            Assert.assertEquals("The value is not a Integer", e.getMessage());
+        }
+    }
+
+    @Test
     public void assertAsStringTest() throws Exception {
         String result = Common.assertAsString("test");
         Assert.assertEquals("test", result);

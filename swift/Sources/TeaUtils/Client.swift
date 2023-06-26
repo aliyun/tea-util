@@ -218,6 +218,19 @@ public class Client {
         throw TeaError("\(any ?? "") is not a Int")
     }
 
+    public static func assertAsInteger(_ value: Any?) throws -> Int {
+        if any is Int {
+            return any as! Int
+        }
+        if any is Int32 {
+            return Int(any as! Int32)
+        }
+        if any is Int64 {
+            return Int(any as! Int64)
+        }
+        throw TeaError("\(any ?? "") is not a Int")
+    }
+
     public static func assertAsMap(_ any: Any?) throws -> [String: Any] {
         if any is Dictionary<String, Any> {
             return any as! Dictionary<String, Any>

@@ -309,6 +309,26 @@ func AssertAsNumber(a interface{}) (_result *int, _err error) {
 	return tea.Int(res), nil
 }
 
+/**
+ * Assert a value, if it is a integer, return it, otherwise throws
+ * @return the integer value
+ */
+func AssertAsInteger(value interface{}) (_result *int, _err error) {
+	res := 0
+	switch value.(type) {
+	case int:
+		tmp := value.(int)
+		res = tmp
+	case *int:
+		tmp := value.(*int)
+		res = tea.IntValue(tmp)
+	default:
+		return nil, errors.New(fmt.Sprintf("%v is not a int", value))
+	}
+
+	return tea.Int(res), nil
+}
+
 func AssertAsBoolean(a interface{}) (_result *bool, _err error) {
 	res := false
 	switch a.(type) {

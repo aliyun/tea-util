@@ -91,6 +91,15 @@ int Darabonba_Util::Client::assertAsNumber(const boost::any &value) {
   }
 }
 
+int Darabonba_Util::Client::assertAsInteger(const boost::any &value) {
+  try {
+    return assertAsValue<int>(value);
+  } catch (exception&) {
+    BOOST_THROW_EXCEPTION(boost::enable_error_info(
+        runtime_error("value is not a int number")));
+  }
+}
+
 map<string, boost::any>
 Darabonba_Util::Client::assertAsMap(const boost::any &value) {
   try {

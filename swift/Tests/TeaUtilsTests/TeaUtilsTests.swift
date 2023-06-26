@@ -329,6 +329,30 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual(101, res)
     }
 
+    func testAssertAsInteger() throws {
+        do {
+            try Client.assertAsInteger("number")
+            assert(false)
+        } catch {
+            if (error is Tea.TeaError) {
+                assert(true)
+            } else {
+                assertionFailure()
+            }
+        }
+        var num: Int = 1
+        num = try Client.assertAsInteger(num)
+        XCTAssertEqual(1, num)
+        var num32: Int32 = 1
+        num = try Client.assertAsInteger(num32)
+        XCTAssertEqual(1, num)
+        var num64: Int64 = 1
+        num = try Client.assertAsInteger(num64)
+        XCTAssertEqual(1, num)
+        let res = try Client.assertAsInteger(101)
+        XCTAssertEqual(101, res)
+    }
+
     func testAssertAsArray() throws {
         do {
             try Client.assertAsArray("array")

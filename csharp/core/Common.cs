@@ -70,7 +70,7 @@ namespace AlibabaCloud.TeaUtil
         public static byte[] ReadAsBytes(Stream stream)
         {
             int bufferLength = 4096;
-            using(var ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 var buffer = new byte[bufferLength];
 
@@ -99,7 +99,7 @@ namespace AlibabaCloud.TeaUtil
         public async static Task<byte[]> ReadAsBytesAsync(Stream stream)
         {
             int bufferLength = 4096;
-            using(var ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 var buffer = new byte[bufferLength];
 
@@ -132,7 +132,7 @@ namespace AlibabaCloud.TeaUtil
 
         public static string GetDateUTCString()
         {
-            return DateTime.UtcNow.ToUniversalTime().GetDateTimeFormats('r') [0];
+            return DateTime.UtcNow.ToUniversalTime().GetDateTimeFormats('r')[0];
         }
 
         public static string DefaultString(string reaStr, string defaultStr)
@@ -163,7 +163,7 @@ namespace AlibabaCloud.TeaUtil
             bool first = true;
             foreach (var entry in map)
             {
-                if(entry.Value == null)
+                if (entry.Value == null)
                 {
                     continue;
                 }
@@ -235,9 +235,9 @@ namespace AlibabaCloud.TeaUtil
                 var dicObj = dic.Keys.Cast<string>().ToDictionary(key => key, key => dic[key]);
                 return dicObj;
             }
-            else if(value is JObject)
+            else if (value is JObject)
             {
-                return (Dictionary<string, object>) ReadJsonUtil.Deserialize(value);
+                return (Dictionary<string, object>)ReadJsonUtil.Deserialize(value);
             }
 
             throw new ArgumentException("The value is not Dictionary");
@@ -247,7 +247,7 @@ namespace AlibabaCloud.TeaUtil
         {
             if (obj is byte[])
             {
-                return (byte[]) obj;
+                return (byte[])obj;
             }
 
             throw new ArgumentException("The value is not byte[]");
@@ -257,7 +257,7 @@ namespace AlibabaCloud.TeaUtil
         {
             if (obj is bool)
             {
-                return (bool) obj;
+                return (bool)obj;
             }
 
             throw new ArgumentException("The value is not boolean");
@@ -277,19 +277,33 @@ namespace AlibabaCloud.TeaUtil
         {
             if (obj is int)
             {
-                return (int) obj;
+                return (int)obj;
             }
 
             throw new ArgumentException("The value is not number");
         }
 
+        /**
+         * Assert a value, if it is a integer, return it, otherwise throws
+         * @return the integer value
+         */
+        public static int? AssertAsInteger(object value)
+        {
+            if (value is int)
+            {
+                return (int)value;
+            }
+
+            throw new ArgumentException("The value is not int number");
+        }
+
         public static List<object> AssertAsArray(object obj)
         {
-            if(obj is IList)
+            if (obj is IList)
             {
                 var list = (IList)obj;
                 var result = new List<object>();
-                foreach(var item in list)
+                foreach (var item in list)
                 {
                     result.Add(item);
                 }
@@ -404,7 +418,8 @@ namespace AlibabaCloud.TeaUtil
         {
             if (millisecond != null)
             {
-                await Task.Run(()=>{
+                await Task.Run(() =>
+                {
                     Thread.Sleep(millisecond.Value);
                 });
             }
@@ -416,9 +431,9 @@ namespace AlibabaCloud.TeaUtil
             {
                 var listModel = (IList)input;
                 var listResult = new List<Dictionary<string, object>>();
-                foreach(var model in listModel)
+                foreach (var model in listModel)
                 {
-                    if(model != null)
+                    if (model != null)
                     {
                         listResult.Add(((TeaModel)model).ToMap());
                     }
@@ -433,7 +448,7 @@ namespace AlibabaCloud.TeaUtil
 
         public static Stream AssertAsReadable(object a)
         {
-            if(a is Stream)
+            if (a is Stream)
             {
                 return (Stream)a;
             }

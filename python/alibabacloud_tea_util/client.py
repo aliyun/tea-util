@@ -347,6 +347,18 @@ class Client:
         return value
 
     @staticmethod
+    def assert_as_integer(
+        value: Any,
+    ) -> int:
+        """
+        Assert a value, if it is a integer, return it, otherwise throws
+        @return: the integer value
+        """
+        if not isinstance(value, int):
+            raise ValueError(f'{value} is not a int number')
+        return value
+
+    @staticmethod
     def assert_as_map(
         value: Any,
     ) -> Dict[str, Any]:

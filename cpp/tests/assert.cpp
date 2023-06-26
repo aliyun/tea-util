@@ -173,6 +173,27 @@ TEST(tests_assert, assertAsNumber) {
   ASSERT_EQ(20, Client::assertAsNumber(any_ptr1));
 }
 
+TEST(tests_assert, assertAsInteger) {
+  shared_ptr<int> val = make_shared<int>(10);
+  ASSERT_EQ(10, Client::assertAsInteger(val));
+
+  try {
+    shared_ptr<bool> fake = make_shared<bool>(true);
+    Client::assertAsInteger(fake);
+    ASSERT_TRUE(false);
+  } catch (boost::exception &e) {
+    string err = boost::current_exception_cast<std::runtime_error>()->what();
+    ASSERT_EQ("value is not a int number", err);
+  }
+
+  shared_ptr<boost::any> any_ptr = make_shared<boost::any>(10);
+
+  shared_ptr<int> int_ptr = make_shared<int>(20);
+  shared_ptr<boost::any> any_ptr1 = make_shared<boost::any>(int_ptr);
+  ASSERT_EQ(10, Client::assertAsInteger(any_ptr));
+  ASSERT_EQ(20, Client::assertAsInteger(any_ptr1));
+}
+
 TEST(tests_assert, assertAsMap) {
   shared_ptr<map<string, boost::any>> val =
       make_shared<map<string, boost::any>>(

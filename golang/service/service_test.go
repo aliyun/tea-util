@@ -337,6 +337,20 @@ func Test_AssertAsNumber(t *testing.T) {
 	utils.AssertNil(t, out)
 }
 
+func Test_AssertAsInteger(t *testing.T) {
+	out, err := AssertAsInteger(10)
+	utils.AssertNil(t, err)
+	utils.AssertEqual(t, 10, tea.IntValue(out))
+
+	out, err = AssertAsInteger(tea.Int(10))
+	utils.AssertNil(t, err)
+	utils.AssertEqual(t, 10, tea.IntValue(out))
+
+	out, err = AssertAsInteger(false)
+	utils.AssertEqual(t, "false is not a int", err.Error())
+	utils.AssertNil(t, out)
+}
+
 func Test_AssertAsBoolean(t *testing.T) {
 	out, err := AssertAsBoolean(true)
 	utils.AssertNil(t, err)

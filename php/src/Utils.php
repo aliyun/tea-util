@@ -386,7 +386,7 @@ class Utils
      *
      * @param mixed $value
      *
-     * @return bool the number value
+     * @return int the number value
      */
     public static function assertAsNumber($value)
     {
@@ -395,6 +395,19 @@ class Utils
         }
 
         throw new \InvalidArgumentException('It is not a number value.');
+    }
+
+    /**
+     * Assert a value, if it is a integer, return it, otherwise throws
+     * @param mixed $value
+     * @return int the integer value
+     */
+    public static function assertAsInteger($value){
+        if (\is_int($value)) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException('It is not a int value.');
     }
 
     /**
