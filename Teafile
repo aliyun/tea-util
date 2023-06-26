@@ -1,17 +1,18 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.1",
-		"ts": "@alicloud/tea-util:^1.4.5",
-		"csharp": "AlibabaCloud.TeaUtil:0.1.16",
-		"java": "com.aliyun:tea-util:0.2.16",
-		"php": "alibabacloud/tea-utils:^0.2.18",
-		"python": "alibabacloud_tea_util:0.3.8",
-		"python2": "alibabacloud_tea_util_py2:0.0.7",
-		"swift": "alibabacloud-sdk-swift/tea-utils:1.0.2"
+		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.3",
+		"ts": "@alicloud/tea-util:^1.4.6",
+		"csharp": "AlibabaCloud.TeaUtil:0.1.17",
+		"java": "com.aliyun:tea-util:0.2.18",
+		"php": "alibabacloud/tea-utils:^0.2.19",
+		"python": "alibabacloud_tea_util:0.3.9",
+		"python2": "alibabacloud_tea_util_py2:0.0.8",
+		"swift": "alibabacloud-sdk-swift/tea-utils:1.0.3",
+		"cpp": "alibabacloud-sdk-cpp/dara-util:master"
 	},
 	"java": {
 		"package": "com.aliyun.teautil",

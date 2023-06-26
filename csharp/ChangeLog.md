@@ -1,3 +1,6 @@
+### 2023-06-26 Version 0.1.17
+* Support static method `AssertAsInteger()`
+
 ### 2022-11-16 Version 0.1.15
 * Support ca params for server and client
 

@@ -1,3 +1,6 @@
+2023-06-26 Version: 0.2.18
+1. Support static method `assertAsInteger()`
+
 2023-06-21 Version: 0.2.17
 1. Extended support for double data range in the MapTypeAdapter class
 

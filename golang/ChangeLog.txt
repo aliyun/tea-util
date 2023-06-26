@@ -1,3 +1,9 @@
+2023-06-26 Version: v2.0.3
+- Support static method `AssertAsInteger()`.
+
+2023-06-20 Version: v2.0.2
+- Fix stringify map value.
+
 2022-11-16 Version: v2.0.1
 - Support ca params for server and client.
 

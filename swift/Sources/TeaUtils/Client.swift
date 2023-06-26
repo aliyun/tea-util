@@ -219,16 +219,16 @@ public class Client {
     }
 
     public static func assertAsInteger(_ value: Any?) throws -> Int {
-        if any is Int {
-            return any as! Int
+        if value is Int {
+            return value as! Int
         }
-        if any is Int32 {
-            return Int(any as! Int32)
+        if value is Int32 {
+            return Int(value as! Int32)
         }
-        if any is Int64 {
-            return Int(any as! Int64)
+        if value is Int64 {
+            return Int(value as! Int64)
         }
-        throw TeaError("\(any ?? "") is not a Int")
+        throw TeaError("\(value ?? "") is not a Int")
     }
 
     public static func assertAsMap(_ any: Any?) throws -> [String: Any] {

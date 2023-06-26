@@ -1,3 +1,6 @@
+### 2023-06-26 Version 0.3.9
+* Support static method `assert_as_integer()`.
+
 ### 2022-11-16 Version 0.3.8
 * Support ca params for server and client.
 
