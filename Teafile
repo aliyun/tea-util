@@ -1,11 +1,11 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.2.6",
+	"version": "0.2.7",
 	"main": "./main.tea",
 	"releases": {
 		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.3",
-		"ts": "@alicloud/tea-util:^1.4.6",
+		"ts": "@alicloud/tea-util:^1.4.7",
 		"csharp": "AlibabaCloud.TeaUtil:0.1.17",
 		"java": "com.aliyun:tea-util:0.2.18",
 		"php": "alibabacloud/tea-utils:^0.2.19",
@@ -57,7 +57,8 @@
 		"changelog": [
 		  "feat: support static method `assertAsInteger()`",
 		  "[java]feat: extended support for double data range in the MapTypeAdapter class",
-		  "[golang]improve stringify map value"
+		  "[golang]improve stringify map value",
+		  "[ts]feat: support static method `assertAsReadable()`"
 		],
 		"compatible": true
 	  }
