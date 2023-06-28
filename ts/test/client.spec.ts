@@ -371,4 +371,15 @@ describe('Tea Util', function () {
         assert.deepStrictEqual(Client.toArray(undefined), null);
         assert.deepStrictEqual(Client.toArray(null), null);
     });
+    it('assertAsReadable', function () {
+        assert.throws(() => {
+            Client.assertAsReadable("test");
+        }, /The value is not a readable/);
+        assert.throws(() => {
+            Client.assertAsReadable(123);
+        }, /The value is not a readable/);
+        const readable = new MyReadable(Buffer.from("test"));
+        const result = Client.assertAsReadable(readable);
+        assert.deepStrictEqual(result, readable);
+    });
 });

@@ -302,6 +302,17 @@ export default class Client {
     })
     return ret;
   }
+
+  /**
+   * Assert a value, if it is a readable, return it, otherwise throws
+   * @return the readable value
+   */
+  static assertAsReadable(value: any): Readable {
+    if (value instanceof Readable) {
+      return value;
+    }
+    throw new Error(`The value is not a readable`);
+  }
 }
 
 
