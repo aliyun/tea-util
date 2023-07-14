@@ -1,3 +1,6 @@
+### 2023-07-14 Version 0.3.10
+* Limit the minimum version of the alibabacloud-tea lib to 0.3.3.
+
 ### 2023-06-26 Version 0.3.9
 * Support static method `assert_as_integer()`.
 
