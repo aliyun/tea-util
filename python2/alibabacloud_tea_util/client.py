@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import Tea
 import json
-import uuid
 import platform
-import socket
 import time
+import threading
+import random
+import hashlib
 
 from io import BytesIO
 from datetime import datetime
@@ -17,6 +18,7 @@ from Tea.converter import TeaConverter
 from Tea.model import TeaModel
 from Tea.stream import READABLE
 
+process_start_time = int(time.time() * 1000)
 
 class Client(object):
     """
@@ -112,9 +114,14 @@ class Client(object):
         Generate a nonce string
         @return: the nonce string
         """
-        name = socket.gethostname() + str(uuid.uuid1())
-        namespace = uuid.NAMESPACE_URL
-        return str(uuid.uuid5(namespace, name))
+        thread_id = threading.current_thread().ident
+        current_time = int(time.time() * 1000)
+        seq = random.getrandbits(64)
+        msg = '%d-%d-%d-%d' % (process_start_time, thread_id, current_time, seq)
+        # print(msg)
+        md5 = hashlib.md5()
+        md5.update(msg.encode('utf-8'))
+        return md5.hexdigest()
 
     @staticmethod
     def get_date_utcstring():

@@ -1,10 +1,11 @@
 import json
-import uuid
 import platform
-import socket
 import time
 import Tea
 import asyncio
+import threading
+import random
+import hashlib
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -14,6 +15,7 @@ from Tea.model import TeaModel
 from Tea.stream import READABLE
 from typing import Any, BinaryIO, Dict, List
 
+_process_start_time = int(time.time() * 1000)
 
 class Client:
     """
@@ -163,9 +165,13 @@ class Client:
         Generate a nonce string
         @return: the nonce string
         """
-        name = socket.gethostname() + str(uuid.uuid1())
-        namespace = uuid.NAMESPACE_URL
-        return str(uuid.uuid5(namespace, name))
+        thread_id = threading.get_ident()
+        current_time = int(time.time() * 1000)
+        seq = random.getrandbits(64)
+        msg = f'{_process_start_time}-{thread_id}-{current_time}-{seq}'
+        md5 = hashlib.md5()
+        md5.update(msg.encode('utf-8'))
+        return md5.hexdigest()
 
     @staticmethod
     def get_date_utcstring() -> str:

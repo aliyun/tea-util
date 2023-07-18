@@ -14,6 +14,11 @@ import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Common {
 
@@ -232,12 +237,39 @@ public class Common {
      * @return the nonce string
      */
     public static String getNonce() {
-        StringBuffer uniqueNonce = new StringBuffer();
-        UUID uuid = UUID.randomUUID();
-        uniqueNonce.append(uuid.toString());
-        uniqueNonce.append(System.currentTimeMillis());
-        uniqueNonce.append(Thread.currentThread().getId());
-        return uniqueNonce.toString();
+        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+        // process time(JVM start time): ms
+        long processStartTime = rb.getStartTime();
+        // thread id
+        long threadId = Thread.currentThread().getId();
+        // timestamp: ms
+        long currentTime = System.currentTimeMillis();
+        // sequence number
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        long seq = random.nextLong();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(processStartTime).append('-')
+                .append(threadId).append('-')
+                .append(currentTime).append('-')
+                .append(seq);
+        try {
+            // hash
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            // hex
+            byte[] msg = sb.toString().getBytes();
+            sb.setLength(0);
+            for (byte b : digest.digest(msg)) {
+                String hex = Integer.toHexString(b & 0xFF);
+                if (hex.length() < 2) {
+                    sb.append(0);
+                }
+                sb.append(hex);
+            }
+        } catch(NoSuchAlgorithmException e) {
+            throw new TeaUtilException(e.getMessage(), e);
+        }
+        return sb.toString();
     }
 
     /**
