@@ -18,7 +18,8 @@ from Tea.converter import TeaConverter
 from Tea.model import TeaModel
 from Tea.stream import READABLE
 
-process_start_time = int(time.time() * 1000)
+_process_start_time = int(time.time() * 1000)
+_seqId = 0
 
 class Client(object):
     """
@@ -114,10 +115,13 @@ class Client(object):
         Generate a nonce string
         @return: the nonce string
         """
+        global _seqId
         thread_id = threading.current_thread().ident
         current_time = int(time.time() * 1000)
-        seq = random.getrandbits(64)
-        msg = '%d-%d-%d-%d' % (process_start_time, thread_id, current_time, seq)
+        seq = _seqId
+        _seqId += 1
+        randNum = random.getrandbits(64)
+        msg = '%d-%d-%d-%d-%d' % (_process_start_time, thread_id, current_time, seq, randNum)
         # print(msg)
         md5 = hashlib.md5()
         md5.update(msg.encode('utf-8'))
