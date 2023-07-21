@@ -1,16 +1,16 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.2.8",
+	"version": "0.2.9",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.3",
+		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.4",
 		"ts": "@alicloud/tea-util:^1.4.7",
 		"csharp": "AlibabaCloud.TeaUtil:0.1.17",
-		"java": "com.aliyun:tea-util:0.2.18",
+		"java": "com.aliyun:tea-util:0.2.19",
 		"php": "alibabacloud/tea-utils:^0.2.19",
-		"python": "alibabacloud_tea_util:0.3.10",
-		"python2": "alibabacloud_tea_util_py2:0.0.8",
+		"python": "alibabacloud_tea_util:0.3.11",
+		"python2": "alibabacloud_tea_util_py2:0.0.9",
 		"swift": "alibabacloud-sdk-swift/tea-utils:1.0.3",
 		"cpp": "alibabacloud-sdk-cpp/dara-util:master"
 	},
@@ -46,20 +46,21 @@
 	"swift": {
 		"clientName": "Client",
 		"packageInfo": {
-		  "name": "TeaUtils",
-		  "desc": "Alibaba Cloud Tea Util for Swift",
-		  "github": "https://github.com/alibabacloud-sdk-swift/tea-utils",
-		  "author": "Alibaba Cloud SDK",
-		  "email": "sdk-team@alibabacloud.com"
+			"name": "TeaUtils",
+			"desc": "Alibaba Cloud Tea Util for Swift",
+			"github": "https://github.com/alibabacloud-sdk-swift/tea-utils",
+			"author": "Alibaba Cloud SDK",
+			"email": "sdk-team@alibabacloud.com"
 		}
 	},
 	"releaselog": {
 		"changelog": [
-		  "feat: support static method `assertAsInteger()`",
-		  "[java]feat: extended support for double data range in the MapTypeAdapter class",
-		  "[golang]improve stringify map value",
-		  "[ts]feat: support static method `assertAsReadable()`"
+			"fix: Reduce the collision rate of method `getNonce()`",
+			"[golang]fix: Reduce the collision rate of method `GetNonce()`",
+			"[java]fix: Reduce the collision rate of method `getNonce()`",
+			"[python2]fix: Reduce the collision rate of method `get_nonce()`",
+			"[python]fix: Reduce the collision rate of method `get_nonce()`"
 		],
 		"compatible": true
-	  }
+	}
 }

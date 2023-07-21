@@ -1,4 +1,7 @@
-### 2023-06-26 Version 0.3.9
+### 2023-07-21 Version 0.0.9
+* Reduce the collision rate of method `get_nonce()`
+
+### 2023-06-26 Version 0.0.8
 * Support static method `assert_as_integer()`.
 
 ### 2022-11-16 Version 0.0.7
