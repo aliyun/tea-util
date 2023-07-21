@@ -16,6 +16,7 @@ from Tea.stream import READABLE
 from typing import Any, BinaryIO, Dict, List
 
 _process_start_time = int(time.time() * 1000)
+_seqId = 0
 
 class Client:
     """
@@ -165,10 +166,13 @@ class Client:
         Generate a nonce string
         @return: the nonce string
         """
+        global _seqId
         thread_id = threading.get_ident()
         current_time = int(time.time() * 1000)
-        seq = random.getrandbits(64)
-        msg = f'{_process_start_time}-{thread_id}-{current_time}-{seq}'
+        seq = _seqId
+        _seqId += 1
+        randNum = random.getrandbits(64)
+        msg = f'{_process_start_time}-{thread_id}-{current_time}-{seq}-{randNum}'
         md5 = hashlib.md5()
         md5.update(msg.encode('utf-8'))
         return md5.hexdigest()

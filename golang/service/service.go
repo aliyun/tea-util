@@ -16,6 +16,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/alibabacloud-go/tea/tea"
@@ -45,6 +46,7 @@ type RuntimeOptions struct {
 }
 
 var processStartTime int64 = time.Now().UnixNano() / 1e6
+var seqId int64 = 0
 
 func getGID() uint64 {
 	// https://blog.sgmansfield.com/2015/12/goroutine-ids/
@@ -253,8 +255,9 @@ func ReadAsJSON(body io.Reader) (result interface{}, err error) {
 func GetNonce() *string {
 	routineId := getGID()
 	currentTime := time.Now().UnixNano() / 1e6
-	seq := rand.Int63()
-	msg := fmt.Sprintf("%d-%d-%d-%d", processStartTime, routineId, currentTime, seq)
+	seq := atomic.AddInt64(&seqId, 1)
+	randNum := rand.Int63()
+	msg := fmt.Sprintf("%d-%d-%d-%d-%d", processStartTime, routineId, currentTime, seq, randNum)
 	h := md5.New()
 	h.Write([]byte(msg))
 	ret := hex.EncodeToString(h.Sum(nil))

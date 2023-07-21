@@ -19,10 +19,13 @@ import java.lang.management.RuntimeMXBean;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Common {
 
     private static final String defaultUserAgent;
+
+    private static AtomicLong seqId = new AtomicLong(0);
 
     static {
         Properties sysProps = System.getProperties();
@@ -246,13 +249,15 @@ public class Common {
         long currentTime = System.currentTimeMillis();
         // sequence number
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        long seq = random.nextLong();
+        long seq = seqId.getAndIncrement();
+        long rand = random.nextLong();
 
         StringBuffer sb = new StringBuffer();
         sb.append(processStartTime).append('-')
                 .append(threadId).append('-')
                 .append(currentTime).append('-')
-                .append(seq);
+                .append(seq).append('-')
+                .append(rand);
         try {
             // hash
             MessageDigest digest = MessageDigest.getInstance("MD5");
