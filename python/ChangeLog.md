@@ -1,4 +1,4 @@
-### 2023-07-21 Version: 0.3.11
+### 2023-07-24 Version: 0.3.11
 * Reduce the collision rate of method `get_nonce()`
 
 ### 2023-07-14 Version 0.3.10
