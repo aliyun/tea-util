@@ -135,6 +135,8 @@ namespace tests
         public void Test_GetNonce()
         {
             Assert.NotNull(Common.GetNonce());
+            Assert.Equal(32, Common.GetNonce().length);
+            Assert.IsFalse(Common.GetNonce() == Common.GetNonce());
         }
 
         [Fact]
