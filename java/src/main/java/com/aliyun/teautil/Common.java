@@ -14,8 +14,6 @@ import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,6 +24,8 @@ public class Common {
     private static final String defaultUserAgent;
 
     private static AtomicLong seqId = new AtomicLong(0);
+
+    private static final long processStartTime = System.currentTimeMillis();
 
     static {
         Properties sysProps = System.getProperties();
@@ -240,9 +240,6 @@ public class Common {
      * @return the nonce string
      */
     public static String getNonce() {
-        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-        // process time(JVM start time): ms
-        long processStartTime = rb.getStartTime();
         // thread id
         long threadId = Thread.currentThread().getId();
         // timestamp: ms
