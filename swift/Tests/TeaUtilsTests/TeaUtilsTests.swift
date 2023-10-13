@@ -160,6 +160,7 @@ final class ClientTests: XCTestCase {
         map["key1"] = "value1"
         map["key2"] = 2
         map["key3"] = true
+        map["str"] = "test&<>://中文"
         dict["map"] = map
         
         XCTAssertTrue(Client.toJSONString(dict).contains("\"foo\":\"bar\""))
@@ -167,6 +168,7 @@ final class ClientTests: XCTestCase {
         XCTAssertTrue(Client.toJSONString(dict).contains("\"key1\":\"value1\""))
         XCTAssertTrue(Client.toJSONString(dict).contains("\"key2\":2"))
         XCTAssertTrue(Client.toJSONString(dict).contains("\"key3\":true"))
+        XCTAssertTrue(Client.toJSONString(dict).contains("\"str\":\"test&<>:\\/\\/中文\""))
         XCTAssertTrue(Client.toJSONString(dict).contains("\"num\":10"))
         XCTAssertTrue(Client.toJSONString(dict).contains("\"list\":[\"1\",2,false]"))
         

@@ -220,11 +220,13 @@ func ToJSONString(a interface{}) *string {
 		}
 		return tea.String(string(byt))
 	}
-	byt, err := json.Marshal(a)
-	if err != nil {
+	byt := bytes.NewBuffer([]byte{})
+	jsonEncoder := json.NewEncoder(byt)
+	jsonEncoder.SetEscapeHTML(false)
+	if err := jsonEncoder.Encode(a); err != nil {
 		return nil
 	}
-	return tea.String(string(byt))
+	return tea.String(string(bytes.TrimSpace(byt.Bytes())))
 }
 
 func DefaultNumber(reaNum, defaultNum *int) *int {

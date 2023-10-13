@@ -191,6 +191,16 @@ namespace tests
             Assert.Equal("1", Common.ToJSONString(1));
             Assert.Equal("true", Common.ToJSONString(true));
             Assert.Equal("null", Common.ToJSONString(null));
+            Dictionary<string, object> unicode = new Dictionary<string, object>
+            { { "str", "test&<>://中文" }
+            };
+            Assert.Equal("{\"key\":\"value\",\"map\":{\"str\":\"test&<>://中文\"},\"num\":1}", Common.ToJSONString(
+                new Dictionary<string, object>
+                {
+                    { "key", "value" },
+                    { "map", unicode },
+                    { "num", 1 }
+                }));
         }
 
         [Fact]

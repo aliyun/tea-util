@@ -445,4 +445,8 @@ func TestToJSONString(t *testing.T) {
 	utils.AssertEqual(t, "abcd", tea.StringValue(str))
 	str = ToJSONString(tests[2])
 	utils.AssertEqual(t, "hello", tea.StringValue(str))
+
+	testMap := map[string]interface{}{"key": "value", "map": map[string]string{"str": "test&<>://中文"}, "num": 1}
+	str = ToJSONString(testMap)
+	utils.AssertEqual(t, "{\"key\":\"value\",\"map\":{\"str\":\"test&<>://中文\"},\"num\":1}", tea.StringValue(str))
 }
