@@ -1,6 +1,9 @@
 /**
  * This is a utility module
  */
+ model ExtendsParameters {
+  headers?: map[string]string,
+ }
 
 /**
  * The common runtime options model
@@ -24,6 +27,7 @@ model RuntimeOptions {
   socks5Proxy?: string(description='SOCKS5 proxy', name='socks5Proxy'),
   socks5NetWork?: string(description='SOCKS5 netWork', name='socks5NetWork'),
   keepAlive?: boolean(description='whether to enable keep-alive', name='keepAlive'),
+  extendsParameters?: ExtendsParameters(description='Extends Parameters'),
 }
 
 /**
