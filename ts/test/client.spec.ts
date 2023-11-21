@@ -1,10 +1,19 @@
 import Client, { RuntimeOptions } from '../src/client';
 
 import { Readable } from 'stream';
+const http = require('http');
+import { AddressInfo } from 'net';
+import { Agent as HttpAgent } from 'http';
+import * as httpx from 'httpx';
 import * as $tea from '@alicloud/tea-typescript';
 import assert from 'assert';
 import 'mocha';
 import { platform, arch } from 'os';
+
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello world!');
+});
 
 class MyReadable extends Readable {
     value: Buffer
@@ -21,6 +30,15 @@ class MyReadable extends Readable {
 }
 
 describe('Tea Util', function () {
+    before((done) => {
+        server.listen(0, done);
+    });
+
+    after(function (done) {
+        this.timeout(10000);
+        server.close(done);
+    });
+
     it('Module should ok', function () {
         assert.ok(Client);
     });
@@ -77,8 +95,17 @@ describe('Tea Util', function () {
 
     it('readAsBytes', async function () {
         const readable = new MyReadable(Buffer.from(JSON.stringify({ 'a': 'b' })));
-        const result = await Client.readAsBytes(readable);
+        let result = await Client.readAsBytes(readable);
         assert.deepStrictEqual(result, Buffer.from('{"a":"b"}'));
+        const options: httpx.Options = {
+            method: 'GET',
+            agent: new HttpAgent({ keepAlive: true })
+        };
+        const port = (server.address() as AddressInfo).port;
+        const url = 'http://127.0.0.1:' + port;
+        const response = await httpx.request(url, options);
+        result = await Client.readAsBytes(response);
+        assert.deepStrictEqual('Hello world!', result.toString('utf8'));
     });
 
     it('readAsString', async function () {

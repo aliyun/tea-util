@@ -1,4 +1,6 @@
 import { Readable } from 'stream';
+import { IncomingMessage } from 'http';
+import * as httpx from 'httpx';
 import * as $tea from '@alicloud/tea-typescript';
 import * as kitx from 'kitx';
 import querystring from 'querystring';
@@ -111,6 +113,9 @@ export default class Client {
   }
 
   static async readAsBytes(stream: Readable): Promise<Buffer> {
+    if (stream instanceof IncomingMessage) {
+      return await httpx.read(stream, undefined) as Buffer;
+    }
     return await read(stream);
   }
 
