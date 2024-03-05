@@ -1,6 +1,6 @@
 {
-  "name": "@alicloud/tea-util",
-  "version": "1.4.7",
+  "name": "@ali/tea-util",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/client.js",
   "scripts": {
@@ -21,11 +21,14 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@alicloud/tea-typescript": "^1.5.1",
+    "@ali/tea-typescript": "^2",
     "kitx": "^2.0.0"
   },
   "files": [
     "dist",
     "src"
-  ]
+  ],
+  "publishConfig": {
+    "registry": "https://registry.anpm.alibaba-inc.com"
+  }
 }

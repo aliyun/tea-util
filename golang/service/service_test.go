@@ -60,24 +60,6 @@ func Test_ReadAsString(t *testing.T) {
 	utils.AssertEqual(t, "common", tea.StringValue(str))
 }
 
-func Test_ToJSONString(t *testing.T) {
-	// interface
-	str := ToJSONString(map[string]interface{}{"test": "ok"})
-	utils.AssertEqual(t, `{"test":"ok"}`, tea.StringValue(str))
-	// string
-	str = ToJSONString("test")
-	utils.AssertEqual(t, "test", tea.StringValue(str))
-	// []byte
-	str = ToJSONString([]byte("test"))
-	utils.AssertEqual(t, "test", tea.StringValue(str))
-	// io.Reader
-	str = ToJSONString(strings.NewReader("test"))
-	utils.AssertEqual(t, "test", tea.StringValue(str))
-
-	str = ToJSONString(tea.String("test"))
-	utils.AssertEqual(t, "test", tea.StringValue(str))
-}
-
 func Test_ReadAsBytes(t *testing.T) {
 	byt, err := ReadAsBytes(strings.NewReader("common"))
 	utils.AssertNil(t, err)
@@ -437,9 +419,25 @@ func Test_AssertAsArray(t *testing.T) {
 	}
 }
 
-func TestToJSONString(t *testing.T) {
+func Test_ToJSONString(t *testing.T) {
+	// interface
+	str := ToJSONString(map[string]interface{}{"test": "ok"})
+	utils.AssertEqual(t, `{"test":"ok"}`, tea.StringValue(str))
+	// string
+	str = ToJSONString("test")
+	utils.AssertEqual(t, "test", tea.StringValue(str))
+	// []byte
+	str = ToJSONString([]byte("test"))
+	utils.AssertEqual(t, "test", tea.StringValue(str))
+	// io.Reader
+	str = ToJSONString(strings.NewReader("test"))
+	utils.AssertEqual(t, "test", tea.StringValue(str))
+
+	str = ToJSONString(tea.String("test"))
+	utils.AssertEqual(t, "test", tea.StringValue(str))
+
 	tests := []interface{}{"hello", strings.NewReader("abcd"), []byte("hello")}
-	str := ToJSONString(tests[0])
+	str = ToJSONString(tests[0])
 	utils.AssertEqual(t, "hello", tea.StringValue(str))
 	str = ToJSONString(tests[1])
 	utils.AssertEqual(t, "abcd", tea.StringValue(str))

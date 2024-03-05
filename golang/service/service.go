@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bufio"
 	"bytes"
 	"crypto/md5"
 	"encoding/hex"
@@ -65,6 +66,29 @@ type RuntimeOptions struct {
 
 var processStartTime int64 = time.Now().UnixNano() / 1e6
 var seqId int64 = 0
+
+// 定义 Event 结构体
+type SSEEvent struct {
+	ID    string
+	Event string
+	Data  string
+}
+
+// 解析单个事件
+func parseEvent(eventLines []string) SSEEvent {
+	var event SSEEvent
+
+	for _, line := range eventLines {
+		if strings.HasPrefix(line, "data:") {
+			event.Data += strings.TrimPrefix(line, "data:") + "\n"
+		} else if strings.HasPrefix(line, "id:") {
+			event.ID = strings.TrimPrefix(line, "id:")
+		}
+	}
+
+	event.Data = strings.TrimRight(event.Data, "\n")
+	return event
+}
 
 func getGID() uint64 {
 	// https://blog.sgmansfield.com/2015/12/goroutine-ids/
@@ -548,4 +572,36 @@ func ToArray(in interface{}) []map[string]interface{} {
 		return nil
 	}
 	return tmp
+}
+
+func ReadAsSSE(body io.ReadCloser) (<-chan SSEEvent, error) {
+	eventChannel := make(chan SSEEvent)
+
+	// 启动 Goroutine 解析 SSE 数据
+	go func() {
+		defer body.Close()
+		defer close(eventChannel)
+
+		reader := bufio.NewReader(body)
+		var eventLines []string
+
+		for {
+			line, err := reader.ReadString('\n')
+			if err != nil {
+				return
+			}
+
+			line = strings.TrimRight(line, "\n")
+			if line == "" {
+				if len(eventLines) > 0 {
+					event := parseEvent(eventLines)
+					eventChannel <- event
+					eventLines = []string{}
+				}
+				continue
+			}
+			eventLines = append(eventLines, line)
+		}
+	}()
+	return eventChannel, nil
 }

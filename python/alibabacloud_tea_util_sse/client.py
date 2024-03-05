@@ -1,7 +1,7 @@
 import json
 import platform
 import time
-import Tea
+import alibabacloud_tea_sse
 import asyncio
 import threading
 import random
@@ -11,8 +11,9 @@ from datetime import datetime
 from urllib.parse import urlencode
 from io import BytesIO
 
-from Tea.model import TeaModel
-from Tea.stream import READABLE
+from alibabacloud_tea_sse.core import TeaCore
+from alibabacloud_tea_sse.model import TeaModel
+from alibabacloud_tea_sse.stream import READABLE
 from typing import Any, BinaryIO, Dict, List
 
 _process_start_time = int(time.time() * 1000)
@@ -43,7 +44,7 @@ class Client:
     @staticmethod
     def __get_default_agent():
         return f'AlibabaCloud ({platform.system()}; {platform.machine()}) ' \
-               f'Python/{platform.python_version()} Core/{Tea.__version__} TeaDSL/1'
+               f'Python/{platform.python_version()} Core/{alibabacloud_tea_sse.__version__} SSE TeaDSL/1'
 
     @staticmethod
     def to_bytes(
@@ -88,6 +89,26 @@ class Client:
             return json.loads(val)
         except ValueError:
             raise RuntimeError(f'Failed to parse the value as json format, Value: "{val}".')
+
+    @staticmethod
+    async def read_as_sse_async(stream):
+        """
+        Read data from a readable stream, and compose it to a string
+        @param stream: the readable stream
+        @return: the string result
+        """
+        async for res in TeaCore.async_read_as_sse(stream):
+            yield res
+
+    @staticmethod
+    def read_as_sse(stream):
+        """
+        Read data from a readable stream, and parse it by JSON format
+        @param stream: the readable stream
+        @return: the parsed result
+        """
+        for res in TeaCore.read_as_sse(stream):
+            yield res
 
     @staticmethod
     async def read_as_bytes_async(stream) -> bytes:

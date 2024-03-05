@@ -1,5 +1,5 @@
 import unittest
-from alibabacloud_tea_util.models import RuntimeOptions
+from alibabacloud_tea_util_inner.models import RuntimeOptions
 
 
 class TestClient(unittest.TestCase):

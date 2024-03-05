@@ -24,7 +24,7 @@ Created on 3/18/2020
 @author: Alibaba Cloud
 """
 
-PACKAGE = "alibabacloud_tea_util"
+PACKAGE = "alibabacloud_tea_util_sse"
 DESCRIPTION = "The tea-util module of alibabaCloud Python SDK."
 AUTHOR = "Alibaba Cloud"
 AUTHOR_EMAIL = "alibaba-cloud-sdk-dev-team@list.alibaba-inc.com"
@@ -47,7 +47,7 @@ setup_args = {
     'packages': find_packages(exclude=["tests*"]),
     'platforms': 'any',
     'python_requires': '>=3.6',
-    'install_requires': ['alibabacloud-tea>=0.3.3'],
+    'install_requires': ['alibabacloud_tea_sse>=1.0.0'],
     'classifiers': (
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -61,4 +61,4 @@ setup_args = {
     )
 }
 
-setup(name='alibabacloud_tea_util', **setup_args)
+setup(name='alibabacloud_tea_util_sse', **setup_args)

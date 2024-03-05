@@ -3,8 +3,8 @@ import time
 import os
 import asyncio
 
-from Tea.model import TeaModel
-from alibabacloud_tea_util.client import Client
+from alibabacloud_tea_sse.model import TeaModel
+from alibabacloud_tea_util_sse.client import Client
 
 base_path = os.path.dirname(__file__)
 

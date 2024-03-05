@@ -1,6 +1,34 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
-from Tea.model import TeaModel
+from alibabacloud_tea_sse.model import TeaModel
+from typing import Dict
+
+
+class ExtendsParameters(TeaModel):
+    def __init__(
+        self,
+        headers: Dict[str, str] = None,
+    ):
+        self.headers = headers
+
+    def validate(self):
+        pass
+
+    def to_map(self):
+        _map = super().to_map()
+        if _map is not None:
+            return _map
+
+        result = dict()
+        if self.headers is not None:
+            result['headers'] = self.headers
+        return result
+
+    def from_map(self, m: dict = None):
+        m = m or dict()
+        if m.get('headers') is not None:
+            self.headers = m.get('headers')
+        return self
 
 
 class RuntimeOptions(TeaModel):
@@ -27,6 +55,7 @@ class RuntimeOptions(TeaModel):
         key: str = None,
         cert: str = None,
         ca: str = None,
+        extends_parameters: ExtendsParameters = None,
     ):
         # whether to try again
         self.autoretry = autoretry
@@ -64,6 +93,8 @@ class RuntimeOptions(TeaModel):
         self.socks_5net_work = socks_5net_work
         # whether to enable keep-alive
         self.keep_alive = keep_alive
+        # Extends Parameters
+        self.extends_parameters = extends_parameters
 
     def validate(self):
         pass
@@ -106,6 +137,8 @@ class RuntimeOptions(TeaModel):
             result['socks5NetWork'] = self.socks_5net_work
         if self.keep_alive is not None:
             result['keepAlive'] = self.keep_alive
+        if self.extends_parameters is not None:
+            result['extendsParameters'] = self.extends_parameters.to_map()
         return result
 
     def from_map(self, m: dict = None):
@@ -146,6 +179,10 @@ class RuntimeOptions(TeaModel):
             self.socks_5net_work = m.get('socks5NetWork')
         if m.get('keepAlive') is not None:
             self.keep_alive = m.get('keepAlive')
+        if m.get('extendsParameters') is not None:
+            temp_model = ExtendsParameters()
+            self.extends_parameters = temp_model.from_map(m['extendsParameters'])
         return self
+
 
 

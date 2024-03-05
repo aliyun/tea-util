@@ -1,5 +1,5 @@
 import { Readable } from 'stream';
-import * as $tea from '@alicloud/tea-typescript';
+import * as $tea from '@ali/tea-typescript';
 import * as kitx from 'kitx';
 import querystring from 'querystring';
 import { platform, arch } from 'os';
@@ -122,6 +122,17 @@ export default class Client {
   static async readAsJSON(stream: Readable): Promise<any> {
     return Client.parseJSON(await Client.readAsString(stream));
   }
+
+    /**
+   * Read data from a readable stream, and parse it by event iterator format
+   * @param stream the readable stream
+   * @return the parsed result
+   */
+    static async *readAsSSE(stream: Readable): AsyncGenerator<{[key: string]: any}, any, unknown> {
+      for await (const value of $tea.Stream.readAsSSE(stream)) {
+        yield value;
+      }
+    }
 
   static getNonce(): string {
     return kitx.makeNonce();
