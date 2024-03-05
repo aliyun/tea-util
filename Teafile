@@ -1,10 +1,10 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.2.11",
+	"version": "0.2.12",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.4",
+		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.5",
 		"ts": "@alicloud/tea-util:^1.4.7",
 		"csharp": "AlibabaCloud.TeaUtil:0.1.17",
 		"java": "com.aliyun:tea-util:0.2.21",
@@ -55,7 +55,7 @@
 	},
 	"releaselog": {
 		"changelog": [
-			"[java]fix: enable getNonce() on Android platform."
+			"[golang]feat: support extends parameters."
 		],
 		"compatible": true
 	}
