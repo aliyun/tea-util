@@ -118,6 +118,7 @@ final class ClientTests: XCTestCase {
 
     func testGetNonce() {
         XCTAssertEqual(32, (Client.getNonce().lengthOfBytes(using: .utf8)))
+        XCTAssertFalse(Client.getNonce() == Client.getNonce())
     }
 
     func testGetDateUTCString() {
