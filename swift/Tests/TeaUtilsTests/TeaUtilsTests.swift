@@ -98,7 +98,11 @@ final class ClientTests: XCTestCase {
 
     func testReadAsBytes() async throws {
         let data: Data = "string".data(using: .utf8)!
-        let result: [UInt8] = try await Client.readAsBytes(data)
+        var result: [UInt8] = try await Client.readAsBytes(data)
+        XCTAssertTrue(result == [115, 116, 114, 105, 110, 103])
+        
+        let inputStream = InputStream(data: data)
+        result = try await Client.readAsBytes(inputStream)
         XCTAssertTrue(result == [115, 116, 114, 105, 110, 103])
     }
 

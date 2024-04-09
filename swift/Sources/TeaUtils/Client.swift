@@ -29,9 +29,25 @@ public class Client {
     
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     public static func readAsBytes(_ stream: InputStream?) async throws -> [UInt8] {
-        var buff : [UInt8] = []
-        stream?.read(&buff, maxLength: 1024)
-        return buff
+        stream?.open()
+        defer { stream?.close() }
+        let bufferSize = 1024
+        var buffer : [UInt8] = [UInt8](repeating: 0, count: bufferSize)
+        var data = Data()
+        while stream != nil && stream!.hasBytesAvailable {
+            let read = stream!.read(&buffer, maxLength: bufferSize)
+            if read < 0 {
+                if let error = stream!.streamError {
+                    throw error
+                }
+                break
+            }
+            if read == 0 {
+                break
+            }
+            data.append(buffer, count: read)
+        }
+        return [UInt8](data)
     }
 
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -44,8 +60,7 @@ public class Client {
     
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     public static func readAsString(_ stream: InputStream?) async throws -> String {
-        var buff : [UInt8] = []
-        stream?.read(&buff, maxLength: 1024)
+        let buff : [UInt8] = try await readAsBytes(stream)
         return toString(buff)
     }
 
