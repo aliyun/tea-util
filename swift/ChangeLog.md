@@ -1,3 +1,6 @@
+### 2024-04-09 Version 1.0.4
+* Resolve InputStream data read as bytes.
+
 ### 2023-06-26 Version 1.0.3
 * Support static method `assertAsInteger()`.
 
