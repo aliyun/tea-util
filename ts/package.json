@@ -27,5 +27,6 @@
   "files": [
     "dist",
     "src"
-  ]
+  ],
+  "repository": "git@github.com:aliyun/tea-util.git"
 }

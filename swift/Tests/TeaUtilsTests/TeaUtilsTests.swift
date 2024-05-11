@@ -4,8 +4,8 @@ import Tea
 
 
 class TestModel: TeaModel {
-    var num: Int = 100
-    var str: String = "string"
+    var num: Int? = 100
+    var str: String? = "string"
     
     public override init() {
         super.init()
@@ -41,8 +41,8 @@ class TestModel: TeaModel {
 }
 
 class TestModel2: TeaModel {
-    var num: Int = 200
-    var str: String = "model2"
+    var num: Int? = 200
+    var str: String? = "model2"
     
     public override init() {
         super.init()
@@ -96,27 +96,27 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual("value1", (result["map"] as! [String: String])["key1"])
     }
 
-    func testReadAsBytes() async throws {
+    func testReadAsBytes() async {
         let data: Data = "string".data(using: .utf8)!
-        var result: [UInt8] = try await Client.readAsBytes(data)
+        var result: [UInt8] = try! await Client.readAsBytes(data)
         XCTAssertTrue(result == [115, 116, 114, 105, 110, 103])
         
         let inputStream = InputStream(data: data)
-        result = try await Client.readAsBytes(inputStream)
+        result = try! await Client.readAsBytes(inputStream)
         XCTAssertTrue(result == [115, 116, 114, 105, 110, 103])
     }
 
-    func testReadAsString() async throws {
+    func testReadAsString() async {
         let data: Data = "string".data(using: .utf8)!
-        let result: String = try await Client.readAsString(data)
+        let result: String = try! await Client.readAsString(data)
         XCTAssertEqual("string", result)
     }
 
-    func testReadAsJSON() async throws {
+    func testReadAsJSON() async {
         let data: Data = "{\"foo\":\"bar\"}".data(using: .utf8)!
         var target: [String: String] = [String: String]()
         target["foo"] = "bar"
-        let result: [String: String] = try await Client.readAsJSON(data) as! [String: String]
+        let result: [String: String] = try! await Client.readAsJSON(data) as! [String: String]
         XCTAssertTrue(target["foo"] == result["foo"])
     }
 
@@ -226,7 +226,7 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual(target["0"], result["0"])
     }
 
-    func testAssertAsMap() throws {
+    func testAssertAsMap() {
         do {
             try Client.assertAsMap("map")
             assert(false)
@@ -239,7 +239,7 @@ final class ClientTests: XCTestCase {
         }
 
         let map = [String: String]()
-        let res = try Client.assertAsMap(map)
+        let res = try! Client.assertAsMap(map)
         XCTAssertEqual(map, res as? [String: String])
     }
 
@@ -268,7 +268,7 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual(target["0"], result["0"] as? String)
     }
 
-    func testAssertAsBoolean() throws {
+    func testAssertAsBoolean() {
         do {
             try Client.assertAsBoolean("string")
             assert(false)
@@ -280,11 +280,11 @@ final class ClientTests: XCTestCase {
             }
         }
 
-        let res = try Client.assertAsBoolean(false)
+        let res = try! Client.assertAsBoolean(false)
         XCTAssertFalse(res)
     }
 
-    func testAssertAsString() throws {
+    func testAssertAsString() {
         do {
             try Client.assertAsString(false)
             assert(false)
@@ -296,11 +296,11 @@ final class ClientTests: XCTestCase {
             }
         }
 
-        let res = try Client.assertAsString("string")
+        let res = try! Client.assertAsString("string")
         XCTAssertEqual("string", res)
     }
 
-    func testAssertAsBytes() throws {
+    func testAssertAsBytes() {
         do {
             try Client.assertAsBytes("bytes")
             assert(false)
@@ -313,11 +313,11 @@ final class ClientTests: XCTestCase {
         }
 
         let bytes = [UInt8]()
-        let res = try Client.assertAsBytes(bytes)
+        let res = try! Client.assertAsBytes(bytes)
         XCTAssertEqual(bytes, res)
     }
 
-    func testAssertAsNumber() throws {
+    func testAssertAsNumber() {
         do {
             try Client.assertAsNumber("number")
             assert(false)
@@ -329,13 +329,13 @@ final class ClientTests: XCTestCase {
             }
         }
         var num: Int = 1
-        num = try Client.assertAsNumber(num)
+        num = try! Client.assertAsNumber(num)
         XCTAssertEqual(1, num)
-        let res = try Client.assertAsNumber(101)
+        let res = try! Client.assertAsNumber(101)
         XCTAssertEqual(101, res)
     }
 
-    func testAssertAsInteger() throws {
+    func testAssertAsInteger() {
         do {
             try Client.assertAsInteger("number")
             assert(false)
@@ -347,19 +347,19 @@ final class ClientTests: XCTestCase {
             }
         }
         var num: Int = 1
-        num = try Client.assertAsInteger(num)
+        num = try! Client.assertAsInteger(num)
         XCTAssertEqual(1, num)
         var num32: Int32 = 1
-        num = try Client.assertAsInteger(num32)
+        num = try! Client.assertAsInteger(num32)
         XCTAssertEqual(1, num)
         var num64: Int64 = 1
-        num = try Client.assertAsInteger(num64)
+        num = try! Client.assertAsInteger(num64)
         XCTAssertEqual(1, num)
-        let res = try Client.assertAsInteger(101)
+        let res = try! Client.assertAsInteger(101)
         XCTAssertEqual(101, res)
     }
 
-    func testAssertAsArray() throws {
+    func testAssertAsArray() {
         do {
             try Client.assertAsArray("array")
             assert(false)
@@ -373,7 +373,7 @@ final class ClientTests: XCTestCase {
 
         var array = [Any]()
         array.append(1)
-        let res = try Client.assertAsArray(array)
+        let res = try! Client.assertAsArray(array)
         XCTAssertEqual(array[0] as! Int, res[0] as! Int)
     }
 
@@ -405,18 +405,18 @@ final class ClientTests: XCTestCase {
         XCTAssertTrue(Client.is5xx(n2))
     }
 
-    func testValidateModel() throws {
-        try Client.validateModel(TestModel())
+    func testValidateModel() {
+        try! Client.validateModel(TestModel())
     }
 
-    func testToMap() throws {
+    func testToMap() {
         let model = TestModel()
         let map = Client.toMap(model)
         XCTAssertEqual(model.str, map["str"] as! String)
         XCTAssertEqual(model.num, map["num"] as! Int)
     }
 
-    func testSleep() throws {
+    func testSleep() {
         let time1 = Date()
         let timeInterval1:TimeInterval = time1.timeIntervalSince1970
 
@@ -429,7 +429,7 @@ final class ClientTests: XCTestCase {
         XCTAssertTrue(1 < diff && diff < 3)
     }
 
-    func testToArray() throws {
+    func testToArray() {
         var array = [TeaModel]()
         array.append(TestModel())
         array.append(TestModel2())
@@ -441,7 +441,7 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual("model2", res[1]["str"] as! String)
     }
 
-    func testRuntimeOptions() throws {
+    func testRuntimeOptions() {
         var opts = RuntimeOptions(
             [
                 "autoretry": false,
@@ -459,6 +459,11 @@ final class ClientTests: XCTestCase {
                 "noProxy": "noProxy",
                 "maxIdleConns": 300,
                 "keepAlive": true,
+                "extendsParameters": [
+                    "headers": [
+                        "key": "value"
+                    ],
+                ],
             ]
         )
         XCTAssertEqual(false, opts.autoretry)
@@ -476,40 +481,7 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual("noProxy", opts.noProxy)
         XCTAssertEqual(300, opts.maxIdleConns)
         XCTAssertEqual(true, opts.keepAlive)
+        XCTAssertEqual("value", opts.extendsParameters!.headers!["key"])
     }
 
-    static var allTests = [
-        ("testToBytes", testToBytes),
-        ("testToString", testToString),
-        ("testParseJSON", testParseJSON),
-        ("testReadAsBytes", testReadAsBytes),
-        ("testReadAsString", testReadAsString),
-        ("testReadAsJSON", testReadAsJSON),
-        ("testGetNonce", testGetNonce),
-        ("testGetDateUTCString", testGetDateUTCString),
-        ("testDefaultString", testDefaultString),
-        ("testDefaultNumber", testDefaultNumber),
-        ("testToFormString", testToFormString),
-        ("testToJSONString", testToJSONString),
-        ("testEqualString", testEqualString),
-        ("testEqualNumber", testEqualNumber),
-        ("testIsUnset", testIsUnset),
-        ("testStringifyMapValue", testStringifyMapValue),
-        ("testAssertAsMap", testAssertAsMap),
-        ("testGetUserAgent", testGetUserAgent),
-        ("testAnyifyMapValue", testAnyifyMapValue),
-        ("testAssertAsBoolean", testAssertAsBoolean),
-        ("testAssertAsString", testAssertAsString),
-        ("testAssertAsBytes", testAssertAsBytes),
-        ("testAssertAsNumber", testAssertAsNumber),
-        ("testAssertAsArray", testAssertAsArray),
-        ("testis2xx", testis2xx),
-        ("testis3xx", testis3xx),
-        ("testis4xx", testis4xx),
-        ("testis5xx", testis5xx),
-        ("testValidateModel", testValidateModel),
-        ("testToMap", testToMap),
-        ("testSleep", testSleep),
-        ("testToArray", testToArray),
-    ]
 }

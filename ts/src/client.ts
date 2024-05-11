@@ -5,6 +5,25 @@ import querystring from 'querystring';
 import { platform, arch } from 'os';
 const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`;
 
+export class ExtendsParameters extends $tea.Model {
+  headers?: { [key: string]: string };
+  static names(): { [key: string]: string } {
+    return {
+      headers: 'headers',
+    };
+  }
+
+  static types(): { [key: string]: any } {
+    return {
+      headers: { 'type': 'map', 'keyType': 'string', 'valueType': 'string' },
+    };
+  }
+
+  constructor(map?: { [key: string]: any }) {
+    super(map);
+  }
+}
+
 export class RuntimeOptions extends $tea.Model {
   autoretry?: boolean;
   ignoreSSL?: boolean;
@@ -21,6 +40,7 @@ export class RuntimeOptions extends $tea.Model {
   noProxy?: string;
   maxIdleConns?: number;
   keepAlive?: boolean;
+  extendsParameters?: ExtendsParameters;
   static names(): { [key: string]: string } {
     return {
       autoretry: 'autoretry',
@@ -38,6 +58,7 @@ export class RuntimeOptions extends $tea.Model {
       noProxy: 'noProxy',
       maxIdleConns: 'maxIdleConns',
       keepAlive: 'keepAlive',
+      extendsParameters: 'extendsParameters',
     };
   }
 
@@ -58,6 +79,7 @@ export class RuntimeOptions extends $tea.Model {
       noProxy: 'string',
       maxIdleConns: 'number',
       keepAlive: 'boolean',
+      extendsParameters: ExtendsParameters,
     };
   }
 

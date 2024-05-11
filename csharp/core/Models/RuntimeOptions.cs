@@ -85,5 +85,12 @@ namespace AlibabaCloud.TeaUtil.Models
         [Validation(Required = false)]
         public bool? KeepAlive { get; set; }
 
+        /// <summary>
+        /// Extends Parameters
+        /// </summary>
+        [NameInMap("extendsParameters")]
+        [Validation(Required=false)]
+        public ExtendsParameters ExtendsParameters { get; set; }
+
     }
 }

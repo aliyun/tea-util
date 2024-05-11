@@ -26,6 +26,12 @@ public class RuntimeOptionsTest {
         map.put("maxIdleConns", 300);
         map.put("keepAlive", true);
 
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("key", "value");
+        Map<String, Object> extendsParameters = new HashMap<String, Object>();
+        extendsParameters.put("headers", headers);
+        map.put("extendsParameters", extendsParameters);
+
         RuntimeOptions opts = RuntimeOptions.build(map);
         Assert.assertEquals(false, opts.autoretry);
         Assert.assertEquals(false, opts.ignoreSSL);
@@ -42,5 +48,6 @@ public class RuntimeOptionsTest {
         Assert.assertEquals("noProxy", opts.noProxy);
         Assert.assertEquals(300, (int) opts.maxIdleConns);
         Assert.assertEquals(true, opts.keepAlive);
+        Assert.assertEquals("value", opts.extendsParameters.headers.get("key"));
     }
 }
