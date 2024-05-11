@@ -28,7 +28,10 @@ func Test_SetFunc(t *testing.T) {
 		SetReadTimeout(50).
 		SetSocks5NetWork("tcp").
 		SetSocks5Proxy("sock5proxy").
-		SetKeepAlive(false)
+		SetKeepAlive(false).
+		SetExtendsParameters(new(ExtendsParameters).SetHeaders(map[string]*string{
+			"key": tea.String("value"),
+		}))
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.Autoretry))
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.IgnoreSSL))
 	utils.AssertEqual(t, "key", tea.StringValue(runtime.Key))
@@ -47,6 +50,7 @@ func Test_SetFunc(t *testing.T) {
 	utils.AssertEqual(t, "tcp", tea.StringValue(runtime.Socks5NetWork))
 	utils.AssertEqual(t, "sock5proxy", tea.StringValue(runtime.Socks5Proxy))
 	utils.AssertEqual(t, false, tea.BoolValue(runtime.KeepAlive))
+	utils.AssertEqual(t, "value", tea.StringValue(runtime.ExtendsParameters.Headers["key"]))
 	runtime.GoString()
 }
 

@@ -137,6 +137,11 @@ describe('Tea Util', function () {
                 noProxy: 'noProxy',
                 maxIdleConns: 300,
                 keepAlive: true,
+                extendsParameters: {
+                    headers: {
+                        key: 'value',
+                    }
+                },
             }
         );
         assert.ok(opts.autoretry === false);
@@ -153,6 +158,7 @@ describe('Tea Util', function () {
         assert.ok(opts.httpsProxy === 'httpsProxy');
         assert.ok(opts.maxIdleConns === 300);
         assert.ok(opts.keepAlive === true);
+        assert.ok(opts.extendsParameters.headers['key'] === 'value');
     });
 
     it('stringifyMapValue', function () {

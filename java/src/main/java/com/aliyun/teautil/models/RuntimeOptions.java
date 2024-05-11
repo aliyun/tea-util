@@ -79,6 +79,12 @@ public class RuntimeOptions extends TeaModel {
     @NameInMap("keepAlive")
     public Boolean keepAlive;
 
+    /**
+     * <p>Extends Parameters</p>
+     */
+    @NameInMap("extendsParameters")
+    public ExtendsParameters extendsParameters;
+
     public static RuntimeOptions build(java.util.Map<String, ?> map) throws Exception {
         RuntimeOptions self = new RuntimeOptions();
         return TeaModel.build(map, self);
@@ -226,6 +232,14 @@ public class RuntimeOptions extends TeaModel {
     }
     public Boolean getKeepAlive() {
         return this.keepAlive;
+    }
+
+    public RuntimeOptions setExtendsParameters(ExtendsParameters extendsParameters) {
+        this.extendsParameters = extendsParameters;
+        return this;
+    }
+    public ExtendsParameters getExtendsParameters() {
+        return this.extendsParameters;
     }
 
 }

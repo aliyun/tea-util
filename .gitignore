@@ -21,6 +21,5 @@ java/bin/
 java/.classpath
 .vscode/
 cc/*.o
-*.sum
 python/**/__pycache__/
 cache/

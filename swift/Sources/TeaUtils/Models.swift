@@ -1,6 +1,36 @@
 import Foundation
 import Tea
 
+public class ExtendsParameters : Tea.TeaModel {
+    public var headers: [String: String]?
+
+    public override init() {
+        super.init()
+    }
+
+    public init(_ dict: [String: Any]) {
+        super.init()
+        self.fromMap(dict)
+    }
+
+    public override func validate() throws -> Void {
+    }
+
+    public override func toMap() -> [String : Any] {
+        var map = super.toMap()
+        if self.headers != nil {
+            map["headers"] = self.headers!
+        }
+        return map
+    }
+
+    public override func fromMap(_ dict: [String: Any]) -> Void {
+        if dict.keys.contains("headers") {
+            self.headers = dict["headers"] as! [String: String]
+        }
+    }
+}
+
 public class RuntimeOptions : Tea.TeaModel {
     public var autoretry: Bool?
 
@@ -38,6 +68,8 @@ public class RuntimeOptions : Tea.TeaModel {
 
     public var keepAlive: Bool?
 
+    public var extendsParameters: ExtendsParameters?
+
     public override init() {
         super.init()
     }
@@ -48,6 +80,7 @@ public class RuntimeOptions : Tea.TeaModel {
     }
 
     public override func validate() throws -> Void {
+        try self.extendsParameters?.validate()
     }
 
     public override func toMap() -> [String : Any] {
@@ -106,6 +139,9 @@ public class RuntimeOptions : Tea.TeaModel {
         if self.keepAlive != nil {
             map["keepAlive"] = self.keepAlive!
         }
+        if self.extendsParameters != nil {
+            map["extendsParameters"] = self.extendsParameters?.toMap()
+        }
         return map
     }
 
@@ -163,6 +199,11 @@ public class RuntimeOptions : Tea.TeaModel {
         }
         if dict.keys.contains("keepAlive") {
             self.keepAlive = dict["keepAlive"] as! Bool
+        }
+        if dict.keys.contains("extendsParameters") {
+            var model = ExtendsParameters()
+            model.fromMap(dict["extendsParameters"] as! [String: Any])
+            self.extendsParameters = model
         }
     }
 }

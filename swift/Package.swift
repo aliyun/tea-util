@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.5.1"),
-        .package(url: "https://github.com/aliyun/tea-swift.git", from: "1.0.0"),
+        .package(url: "https://github.com/aliyun/tea-swift.git", from: "1.0.2"),
     ],
     targets: [
         .target(

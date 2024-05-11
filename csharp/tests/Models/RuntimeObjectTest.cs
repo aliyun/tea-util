@@ -1,5 +1,6 @@
 ﻿using AlibabaCloud.TeaUtil.Models;
 
+using System.Collections.Generic;
 using Xunit;
 
 namespace tests.Models
@@ -29,6 +30,12 @@ namespace tests.Models
             runtime.Socks5Proxy = "socks5Proxy";
             runtime.KeepAlive = false;
 
+            ExtendsParameters extendsParameters = new ExtendsParameters();
+            extendsParameters.Headers = new Dictionary<string, string>{
+                {"key", "value"},
+            };
+            runtime.ExtendsParameters = extendsParameters;
+
             Assert.NotNull(runtime);
             Assert.True(runtime.Autoretry);
             Assert.Equal(1, runtime.BackoffPeriod);
@@ -48,6 +55,8 @@ namespace tests.Models
             Assert.Equal("socks5", runtime.Socks5NetWork);
             Assert.Equal("socks5Proxy", runtime.Socks5Proxy);
             Assert.False(runtime.KeepAlive);
+            Assert.NotNull(runtime.ExtendsParameters);
+            Assert.Equal("value", runtime.ExtendsParameters.Headers["key"]);
         }
     }
 }

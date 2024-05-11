@@ -1,5 +1,6 @@
 import unittest
 from alibabacloud_tea_util.models import RuntimeOptions
+from alibabacloud_tea_util.models import ExtendsParameters
 
 
 class TestClient(unittest.TestCase):
@@ -7,6 +8,12 @@ class TestClient(unittest.TestCase):
         option = RuntimeOptions()
         option.validate()
         self.assertEqual(None, option.autoretry)
+
+        extends_parameters = ExtendsParameters(
+            headers={'key': 'value'},
+        )
+        extends_parameters.validate()
+        self.assertIsNotNone(extends_parameters.headers)
 
         option = RuntimeOptions(
             autoretry=True,
@@ -26,7 +33,8 @@ class TestClient(unittest.TestCase):
             local_addr="test",
             socks_5proxy="test",
             socks_5net_work="test",
-            keep_alive=False
+            keep_alive=False,
+            extends_parameters=extends_parameters
         )
         self.assertEqual(True, option.autoretry)
         self.assertEqual(True, option.ignore_ssl)
@@ -46,6 +54,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', option.socks_5proxy)
         self.assertEqual('test', option.socks_5net_work)
         self.assertEqual(False, option.keep_alive)
+        self.assertEqual('value', option.extends_parameters.headers['key'])
 
     def test_to_map(self):
         option = RuntimeOptions(
@@ -66,7 +75,10 @@ class TestClient(unittest.TestCase):
             local_addr="test",
             socks_5proxy="test",
             socks_5net_work="test",
-            keep_alive=False
+            keep_alive=False,
+            extends_parameters=ExtendsParameters(
+                headers={'key': 'value'},
+            ),
         )
         result = option.to_map()
         self.assertEqual(True, result.get('autoretry'))
@@ -87,6 +99,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', result.get('socks5Proxy'))
         self.assertEqual('test', result.get('socks5NetWork'))
         self.assertEqual(False, result.get('keepAlive'))
+        self.assertEqual('value', result.get('extendsParameters').get('headers').get('key'))
 
     def test_from_map(self):
         option = RuntimeOptions()
@@ -108,7 +121,12 @@ class TestClient(unittest.TestCase):
             'localAddr': 'test',
             'socks5Proxy': 'test',
             'socks5NetWork': 'test',
-            'keepAlive': False
+            'keepAlive': False,
+            'extendsParameters': {
+                'headers': {
+                    'key': 'value',
+                },
+            },
         }
         option.from_map(dic)
         self.assertEqual(True, option.autoretry)
@@ -129,3 +147,4 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', option.socks_5proxy)
         self.assertEqual('test', option.socks_5net_work)
         self.assertEqual(False, option.keep_alive)
+        self.assertEqual('value', option.extends_parameters.headers['key'])
