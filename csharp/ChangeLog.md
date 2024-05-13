@@ -1,3 +1,6 @@
+### 2024-05-13 Version 0.1.18
+* Support extends parameters
+
 ### 2023-06-26 Version 0.1.17
 * Support static method `AssertAsInteger()`
 

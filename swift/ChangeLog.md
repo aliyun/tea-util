@@ -1,3 +1,6 @@
+### 2024-05-13 Version 1.0.5
+* Support extends parameters
+
 ### 2024-04-09 Version 1.0.4
 * Resolve InputStream data read as bytes.
 

@@ -1,3 +1,6 @@
+### 2024-05-13 Version 0.3.12
+* Support extends parameters
+
 ### 2023-07-24 Version: 0.3.11
 * Reduce the collision rate of method `get_nonce()`
 
