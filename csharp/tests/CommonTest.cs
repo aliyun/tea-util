@@ -317,6 +317,10 @@ namespace tests
         {
             Assert.NotNull(Common.GetUserAgent(null));
 
+            string ua = Common.GetUserAgent("").Trim();
+            Assert.StartsWith("AlibabaCloud (", ua);
+            Assert.EndsWith("TeaDSL/1", ua);
+
             Assert.Contains("test", Common.GetUserAgent("test"));
         }
 
