@@ -1,0 +1,38 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+defaults:
+  run:
+    shell: bash
+    working-directory: java
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # test against latest update of each major Java version, as well as specific updates of LTS versions:
+        # 20, 21还不支持，报错是Source option 7 is no longer supported. Use 8 or later.
+        java: [7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - name: Build with Maven
+      run: mvn test -B
+    - name: Upload code coverage report
+      uses: codecov/codecov-action@v4
+      with:
+        flags: java # optional
+        token: ${{ secrets.CODECOV_TOKEN }}

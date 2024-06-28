@@ -27,7 +27,7 @@ jobs:
         go-version: ${{ matrix.go }}
 
     - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Export Env
       run: export GO111MODULE=on
@@ -35,5 +35,8 @@ jobs:
       run: go mod tidy
     - name: Test
       run: go test -race -coverprofile=coverage.txt -covermode=atomic ./service/...
-    - name: CodeCov
-      run: bash <(curl -s https://codecov.io/bash) -cF golang
+    - name: Upload code coverage report
+      uses: codecov/codecov-action@v4
+      with:
+        flags: golang # optional
+        token: ${{ secrets.CODECOV_TOKEN }}
