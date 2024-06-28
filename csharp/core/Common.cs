@@ -182,7 +182,7 @@ namespace AlibabaCloud.TeaUtil
             return result.ToString();
         }
 
-        public static string ToJSONString(Object value)
+        public static string ToJSONString(object value)
         {
             if (value is string)
             {
@@ -458,15 +458,10 @@ namespace AlibabaCloud.TeaUtil
 
         internal static string GetDefaultUserAgent()
         {
-            string defaultUserAgent = string.Empty;
             string OSVersion = Environment.OSVersion.ToString();
             string ClientVersion = GetRuntimeRegexValue(RuntimeEnvironment.GetRuntimeDirectory());
             string CoreVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            defaultUserAgent = "Alibaba Cloud (" + OSVersion + ") ";
-            defaultUserAgent += ClientVersion;
-            defaultUserAgent += " Core/" + CoreVersion;
-            defaultUserAgent += " TeaDSL/1";
-            return defaultUserAgent;
+            return string.Format("AlibabaCloud ({0}) {1} Core/{2} TeaDSL/1", OSVersion, ClientVersion, CoreVersion);
         }
 
         internal static string GetRuntimeRegexValue(string value)
