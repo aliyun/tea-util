@@ -4,13 +4,13 @@ English | [简体中文](README-CN.md)
 
 ## Alibaba Cloud Tea Util
 
-[![Swift CI](https://github.com/aliyun/tea-util/actions/workflows/swift.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/swift.yml)
-[![C# CI](https://github.com/aliyun/tea-util/actions/workflows/testCSharp.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testCSharp.yml)
-[![Golang CI](https://github.com/aliyun/tea-util/actions/workflows/testGo.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testGo.yml)
-[![Java CI](https://github.com/aliyun/tea-util/actions/workflows/testJava.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testJava.yml)
-[![PHP CI](https://github.com/aliyun/tea-util/actions/workflows/testPHP.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testPHP.yml)
-[![Python CI](https://github.com/aliyun/tea-util/actions/workflows/testPython.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testPython.yml)
-[![TypeScript CI](https://github.com/aliyun/tea-util/actions/workflows/testTS.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testTS.yml)
+[![Swift CI](https://github.com/aliyun/tea-util/actions/workflows/test_swift.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/swift.yml)
+[![C# CI](https://github.com/aliyun/tea-util/actions/workflows/test_csharp.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testCSharp.yml)
+[![Golang CI](https://github.com/aliyun/tea-util/actions/workflows/test_go.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testGo.yml)
+[![Java CI](https://github.com/aliyun/tea-util/actions/workflows/test_java.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testJava.yml)
+[![PHP CI](https://github.com/aliyun/tea-util/actions/workflows/test_php.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testPHP.yml)
+[![Python CI](https://github.com/aliyun/tea-util/actions/workflows/test_python.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testPython.yml)
+[![TypeScript CI](https://github.com/aliyun/tea-util/actions/workflows/test_typescript.yml/badge.svg)](https://github.com/aliyun/tea-util/actions/workflows/testTS.yml)
 [![codecov](https://codecov.io/gh/aliyun/tea-util/branch/master/graph/badge.svg)](https://codecov.io/gh/aliyun/tea-util)
 
 ## Installation
