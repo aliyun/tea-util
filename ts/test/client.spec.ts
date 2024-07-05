@@ -140,6 +140,9 @@ describe('Tea Util', function () {
                 extendsParameters: {
                     headers: {
                         key: 'value',
+                    },
+                    queries: {
+                        key: 'value',
                     }
                 },
             }
@@ -159,6 +162,7 @@ describe('Tea Util', function () {
         assert.ok(opts.maxIdleConns === 300);
         assert.ok(opts.keepAlive === true);
         assert.ok(opts.extendsParameters.headers['key'] === 'value');
+        assert.ok(opts.extendsParameters.queries['key'] === 'value');
     });
 
     it('stringifyMapValue', function () {

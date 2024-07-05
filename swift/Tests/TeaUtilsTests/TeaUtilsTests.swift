@@ -463,6 +463,9 @@ final class ClientTests: XCTestCase {
                     "headers": [
                         "key": "value"
                     ],
+                    "queries": [
+                        "key": "value"
+                    ],
                 ],
             ]
         )
@@ -482,6 +485,7 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual(300, opts.maxIdleConns)
         XCTAssertEqual(true, opts.keepAlive)
         XCTAssertEqual("value", opts.extendsParameters!.headers!["key"])
+        XCTAssertEqual("value", opts.extendsParameters!.queries!["key"])
     }
 
 }

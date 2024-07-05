@@ -34,6 +34,9 @@ namespace tests.Models
             extendsParameters.Headers = new Dictionary<string, string>{
                 {"key", "value"},
             };
+            extendsParameters.Queries = new Dictionary<string, string>{
+                {"key", "value"},
+            };
             runtime.ExtendsParameters = extendsParameters;
 
             Assert.NotNull(runtime);
@@ -57,6 +60,7 @@ namespace tests.Models
             Assert.False(runtime.KeepAlive);
             Assert.NotNull(runtime.ExtendsParameters);
             Assert.Equal("value", runtime.ExtendsParameters.Headers["key"]);
+            Assert.Equal("value", runtime.ExtendsParameters.Queries["key"]);
         }
     }
 }
