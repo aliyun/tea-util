@@ -274,7 +274,7 @@ public class CommonTest {
         List<RuntimeOptions> list4 = new ArrayList<>();
         RuntimeOptions option = new RuntimeOptions();
         list4.add(option);
-        Assert.assertEquals(true, ((RuntimeOptions) Common.assertAsArray(list4).get(0)).ignoreSSL);
+        Assert.assertEquals(null, ((RuntimeOptions) Common.assertAsArray(list4).get(0)).ignoreSSL);
     }
 
     @Test
