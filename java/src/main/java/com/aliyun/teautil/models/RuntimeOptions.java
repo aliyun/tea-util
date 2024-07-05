@@ -13,7 +13,7 @@ public class RuntimeOptions extends TeaModel {
 
     // ignore SSL validation
     @NameInMap("ignoreSSL")
-    public Boolean ignoreSSL = true;
+    public Boolean ignoreSSL;
 
     // privite key for client certificate
     @NameInMap("key")
