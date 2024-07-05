@@ -28,8 +28,11 @@ public class RuntimeOptionsTest {
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("key", "value");
+        Map<String, String> queries = new HashMap<String, String>();
+        queries.put("key", "value");
         Map<String, Object> extendsParameters = new HashMap<String, Object>();
         extendsParameters.put("headers", headers);
+        extendsParameters.put("queries", queries);
         map.put("extendsParameters", extendsParameters);
 
         RuntimeOptions opts = RuntimeOptions.build(map);
@@ -49,5 +52,6 @@ public class RuntimeOptionsTest {
         Assert.assertEquals(300, (int) opts.maxIdleConns);
         Assert.assertEquals(true, opts.keepAlive);
         Assert.assertEquals("value", opts.extendsParameters.headers.get("key"));
+        Assert.assertEquals("value", opts.extendsParameters.queries.get("key"));
     }
 }

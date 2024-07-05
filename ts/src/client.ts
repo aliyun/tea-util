@@ -7,15 +7,18 @@ const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${pr
 
 export class ExtendsParameters extends $tea.Model {
   headers?: { [key: string]: string };
+  queries?: { [key: string]: string };
   static names(): { [key: string]: string } {
     return {
       headers: 'headers',
+      queries: 'queries',
     };
   }
 
   static types(): { [key: string]: any } {
     return {
       headers: { 'type': 'map', 'keyType': 'string', 'valueType': 'string' },
+      queries: { 'type': 'map', 'keyType': 'string', 'valueType': 'string' },
     };
   }
 

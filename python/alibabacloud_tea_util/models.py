@@ -8,8 +8,10 @@ class ExtendsParameters(TeaModel):
     def __init__(
         self,
         headers: Dict[str, str] = None,
+        queries: Dict[str, str] = None,
     ):
         self.headers = headers
+        self.queries = queries
 
     def validate(self):
         pass
@@ -22,12 +24,16 @@ class ExtendsParameters(TeaModel):
         result = dict()
         if self.headers is not None:
             result['headers'] = self.headers
+        if self.queries is not None:
+            result['queries'] = self.queries
         return result
 
     def from_map(self, m: dict = None):
         m = m or dict()
         if m.get('headers') is not None:
             self.headers = m.get('headers')
+        if m.get('queries') is not None:
+            self.queries = m.get('queries')
         return self
 
 
@@ -97,9 +103,14 @@ class RuntimeOptions(TeaModel):
         self.extends_parameters = extends_parameters
 
     def validate(self):
-        pass
+        if self.extends_parameters:
+            self.extends_parameters.validate()
 
     def to_map(self):
+        _map = super().to_map()
+        if _map is not None:
+            return _map
+
         result = dict()
         if self.autoretry is not None:
             result['autoretry'] = self.autoretry

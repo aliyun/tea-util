@@ -16,6 +16,10 @@ namespace AlibabaCloud.TeaUtil.Models
         [Validation(Required=false)]
         public Dictionary<string, string> Headers { get; set; }
 
+        [NameInMap("queries")]
+        [Validation(Required=false)]
+        public Dictionary<string, string> Queries { get; set; }
+
     }
 
 }

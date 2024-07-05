@@ -12,6 +12,9 @@ class ExtendsParameters extends Model {
         if (null !== $this->headers) {
             $res['headers'] = $this->headers;
         }
+        if (null !== $this->queries) {
+            $res['queries'] = $this->queries;
+        }
         return $res;
     }
     /**
@@ -23,8 +26,13 @@ class ExtendsParameters extends Model {
         if(isset($map['headers'])){
             $model->headers = $map['headers'];
         }
+        if(isset($map['queries'])){
+            $model->queries = $map['queries'];
+        }
         return $model;
     }
     public $headers;
+
+    public $queries;
 
 }

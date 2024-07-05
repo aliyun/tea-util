@@ -4,6 +4,8 @@ import Tea
 public class ExtendsParameters : Tea.TeaModel {
     public var headers: [String: String]?
 
+    public var queries: [String: String]?
+
     public override init() {
         super.init()
     }
@@ -21,12 +23,18 @@ public class ExtendsParameters : Tea.TeaModel {
         if self.headers != nil {
             map["headers"] = self.headers!
         }
+        if self.queries != nil {
+            map["queries"] = self.queries!
+        }
         return map
     }
 
     public override func fromMap(_ dict: [String: Any]) -> Void {
         if dict.keys.contains("headers") {
             self.headers = dict["headers"] as! [String: String]
+        }
+        if dict.keys.contains("queries") {
+            self.queries = dict["queries"] as! [String: String]
         }
     }
 }

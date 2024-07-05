@@ -30,6 +30,7 @@ func Test_SetFunc(t *testing.T) {
 		SetSocks5Proxy("sock5proxy").
 		SetKeepAlive(false).
 		SetExtendsParameters(new(ExtendsParameters).SetHeaders(map[string]*string{
+			"key": tea.String("value")}).SetQueries(map[string]*string{
 			"key": tea.String("value"),
 		}))
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.Autoretry))
@@ -51,6 +52,7 @@ func Test_SetFunc(t *testing.T) {
 	utils.AssertEqual(t, "sock5proxy", tea.StringValue(runtime.Socks5Proxy))
 	utils.AssertEqual(t, false, tea.BoolValue(runtime.KeepAlive))
 	utils.AssertEqual(t, "value", tea.StringValue(runtime.ExtendsParameters.Headers["key"]))
+	utils.AssertEqual(t, "value", tea.StringValue(runtime.ExtendsParameters.Queries["key"]))
 	runtime.GoString()
 }
 

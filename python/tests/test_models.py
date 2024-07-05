@@ -11,6 +11,7 @@ class TestClient(unittest.TestCase):
 
         extends_parameters = ExtendsParameters(
             headers={'key': 'value'},
+            queries={'key': 'value'},
         )
         extends_parameters.validate()
         self.assertIsNotNone(extends_parameters.headers)
@@ -55,6 +56,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', option.socks_5net_work)
         self.assertEqual(False, option.keep_alive)
         self.assertEqual('value', option.extends_parameters.headers['key'])
+        self.assertEqual('value', option.extends_parameters.queries['key'])
 
     def test_to_map(self):
         option = RuntimeOptions(
@@ -78,6 +80,7 @@ class TestClient(unittest.TestCase):
             keep_alive=False,
             extends_parameters=ExtendsParameters(
                 headers={'key': 'value'},
+                queries={'key': 'value'},
             ),
         )
         result = option.to_map()
@@ -100,6 +103,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', result.get('socks5NetWork'))
         self.assertEqual(False, result.get('keepAlive'))
         self.assertEqual('value', result.get('extendsParameters').get('headers').get('key'))
+        self.assertEqual('value', result.get('extendsParameters').get('queries').get('key'))
 
     def test_from_map(self):
         option = RuntimeOptions()
@@ -126,6 +130,9 @@ class TestClient(unittest.TestCase):
                 'headers': {
                     'key': 'value',
                 },
+                'queries': {
+                    'key': 'value',
+                },
             },
         }
         option.from_map(dic)
@@ -148,3 +155,4 @@ class TestClient(unittest.TestCase):
         self.assertEqual('test', option.socks_5net_work)
         self.assertEqual(False, option.keep_alive)
         self.assertEqual('value', option.extends_parameters.headers['key'])
+        self.assertEqual('value', option.extends_parameters.queries['key'])

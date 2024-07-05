@@ -419,6 +419,7 @@ final class UtilsTest extends TestCase
             "keepAlive" => true,
             "extendsParameters" => new ExtendsParameters([
                 "headers" => ['key' => 'value'],
+                "queries" => ['key' => 'value'],
             ]),
         ]);
         $this->assertEquals(false, $opts->autoretry);
@@ -437,6 +438,7 @@ final class UtilsTest extends TestCase
         $this->assertEquals(300, $opts->maxIdleConns);
         $this->assertEquals(true, $opts->keepAlive);
         $this->assertEquals('value', $opts->extendsParameters->headers['key']);
+        $this->assertEquals('value', $opts->extendsParameters->queries['key']);
     }
 
     private function convert($body, &$content)
