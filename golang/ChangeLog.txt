@@ -1,3 +1,9 @@
+2024-07-08 Version v2.0.6
+- Support extends query parameters.
+
+2024-05-13 Version v2.0.5
+- Support extends parameters.
+
 2023-07-24 Version: v2.0.4
 - Reduce the collision rate of method `GetNonce()`
 

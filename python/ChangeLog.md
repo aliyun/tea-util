@@ -1,5 +1,8 @@
+### 2024-07-08 Version 0.3.13
+* Support extends query parameters.
+
 ### 2024-05-13 Version 0.3.12
-* Support extends parameters
+* Support extends parameters.
 
 ### 2023-07-24 Version: 0.3.11
 * Reduce the collision rate of method `get_nonce()`

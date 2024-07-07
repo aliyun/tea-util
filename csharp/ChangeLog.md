@@ -1,3 +1,6 @@
+### 2024-07-08 Version 0.1.19
+* Support extends query parameters
+
 ### 2024-05-13 Version 0.1.18
 * Support extends parameters
 
