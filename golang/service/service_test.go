@@ -1,7 +1,10 @@
 package service
 
 import (
+	"fmt"
 	"io/ioutil"
+	"net"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -124,6 +127,45 @@ func Test_ReadAsJSON(t *testing.T) {
 	res, err = AssertAsMap(result)
 	utils.AssertNil(t, err)
 	utils.AssertEqual(t, "test", res["cleint"])
+}
+
+func Test_ReadAsSSE(t *testing.T) {
+	ln, _ := net.Listen("tcp", ":0")
+	port := ln.Addr().(*net.TCPAddr).Port
+	url := fmt.Sprintf("http://127.0.0.1:%d", port)
+
+	server := http.Server{
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "text/event-stream")
+			w.Header().Set("Connection", "keep-alive")
+			w.WriteHeader(http.StatusOK)
+			flusher, _ := w.(http.Flusher)
+			for i := 0; i < 5; i++ {
+				time.Sleep(1 * time.Second)
+				w.Write([]byte("data: {count:" + fmt.Sprint(i) + "}\nevent: flow\nid: sse-test\nretry: 3\n:heartbeat\n\n"))
+				flusher.Flush()
+			}
+		}),
+	}
+
+	go func() {
+		defer ln.Close()
+		server.Serve(ln)
+	}()
+
+	defer server.Close()
+
+	response, err := http.Get(url)
+	utils.AssertNil(t, err)
+	events, _ := ReadAsSSE(response.Body)
+	i := 0
+	for event := range events {
+		utils.AssertEqual(t, "sse-test", tea.StringValue(event.ID))
+		utils.AssertEqual(t, "flow", tea.StringValue(event.Event))
+		utils.AssertEqual(t, "{count:"+fmt.Sprint(i)+"}", tea.StringValue(event.Data))
+		utils.AssertEqual(t, 3, tea.IntValue(event.Retry))
+		i++
+	}
 }
 
 func Test_GetNonce(t *testing.T) {
