@@ -1,95 +1,12 @@
 import { Readable } from 'stream';
+import * as $dara from '@darabonba/typescript';
 import * as $tea from '@alicloud/tea-typescript';
 import * as kitx from 'kitx';
 import querystring from 'querystring';
 import { platform, arch } from 'os';
-const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`;
+const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/2`;
 
-export class ExtendsParameters extends $tea.Model {
-  headers?: { [key: string]: string };
-  queries?: { [key: string]: string };
-  static names(): { [key: string]: string } {
-    return {
-      headers: 'headers',
-      queries: 'queries',
-    };
-  }
-
-  static types(): { [key: string]: any } {
-    return {
-      headers: { 'type': 'map', 'keyType': 'string', 'valueType': 'string' },
-      queries: { 'type': 'map', 'keyType': 'string', 'valueType': 'string' },
-    };
-  }
-
-  constructor(map?: { [key: string]: any }) {
-    super(map);
-  }
-}
-
-export class RuntimeOptions extends $tea.Model {
-  autoretry?: boolean;
-  ignoreSSL?: boolean;
-  key?: string;
-  cert?: string;
-  ca?: string;
-  maxAttempts?: number;
-  backoffPolicy?: string;
-  backoffPeriod?: number;
-  readTimeout?: number;
-  connectTimeout?: number;
-  httpProxy?: string;
-  httpsProxy?: string;
-  noProxy?: string;
-  maxIdleConns?: number;
-  keepAlive?: boolean;
-  extendsParameters?: ExtendsParameters;
-  static names(): { [key: string]: string } {
-    return {
-      autoretry: 'autoretry',
-      ignoreSSL: 'ignoreSSL',
-      key: 'key',
-      cert: 'cert',
-      ca: 'ca',
-      maxAttempts: 'max_attempts',
-      backoffPolicy: 'backoff_policy',
-      backoffPeriod: 'backoff_period',
-      readTimeout: 'readTimeout',
-      connectTimeout: 'connectTimeout',
-      httpProxy: 'httpProxy',
-      httpsProxy: 'httpsProxy',
-      noProxy: 'noProxy',
-      maxIdleConns: 'maxIdleConns',
-      keepAlive: 'keepAlive',
-      extendsParameters: 'extendsParameters',
-    };
-  }
-
-  static types(): { [key: string]: any } {
-    return {
-      autoretry: 'boolean',
-      ignoreSSL: 'boolean',
-      key: 'string',
-      cert: 'string',
-      ca: 'string',
-      maxAttempts: 'number',
-      backoffPolicy: 'string',
-      backoffPeriod: 'number',
-      readTimeout: 'number',
-      connectTimeout: 'number',
-      httpProxy: 'string',
-      httpsProxy: 'string',
-      noProxy: 'string',
-      maxIdleConns: 'number',
-      keepAlive: 'boolean',
-      extendsParameters: ExtendsParameters,
-    };
-  }
-
-  constructor(map?: { [key: string]: any }) {
-    super(map);
-  }
-}
+export { ExtendsParameters, RuntimeOptions } from '@darabonba/typescript';
 
 function read(readable: Readable): Promise<Buffer> {
   return new Promise((resolve, reject) => {
@@ -303,7 +220,7 @@ export default class Client {
   }
 
   static toMap(inputModel: $tea.Model): { [key: string]: any } {
-    return $tea.toMap(inputModel);
+    return $dara.toMap(inputModel);
   }
 
   static async sleep(millisecond: number): Promise<void> {
@@ -323,7 +240,7 @@ export default class Client {
       if (!model) {
         return;
       }
-      ret.push($tea.toMap(model));
+      ret.push($dara.toMap(model));
     })
     return ret;
   }

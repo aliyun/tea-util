@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@alicloud/tea-typescript": "^1.5.1",
+    "@darabonba/typescript": "^1.0.0",
     "kitx": "^2.0.0"
   },
   "files": [
