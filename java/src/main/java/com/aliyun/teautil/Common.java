@@ -5,6 +5,7 @@ import com.aliyun.tea.utils.StringUtils;
 import com.aliyun.teautil.models.TeaUtilException;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.jayway.jsonpath.JsonPath;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -73,6 +74,50 @@ public class Common {
         return jsonElement.isJsonArray() ? gson.fromJson(json, List.class) :
                 gson.fromJson(json, new TypeToken<Map<String, Object>>() {
                 }.getType());
+    }
+
+    public static Map<String, Object> parseToMap(Object o) {
+        if (null == o) {
+            return null;
+        }
+        return (Map<String, Object>) TeaModel.parseObject(o);
+    }
+
+    public static <T> T readPath(Object json, String path) {
+        String jsonStr = toJSONString(parseToMap(json));
+        Object result = JsonPath.read(jsonStr, path);
+        return (T) convertNumber(result);
+    }
+
+
+    private static Object convertNumber(Object input) {
+        if (input instanceof Integer) {
+            return Long.valueOf((Integer) input);
+        } else if (input instanceof List) {
+            List<?> list = (List<?>) input;
+            return handleList(list);
+        } else if (input instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) input;
+            return handleMap(map);
+        }
+        return input;
+    }
+
+    private static List<?> handleList(List<?> list) {
+        List<Object> longList = new ArrayList<>();
+        for (Object item : list) {
+            longList.add(convertNumber(item));
+        }
+        return longList;
+    }
+
+    private static Map<String, ?> handleMap(Map<?, ?> map) {
+        Map<String, Object> longMap = new LinkedHashMap<>();
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            String key = (String) entry.getKey();
+            longMap.put(key, convertNumber(entry.getValue()));
+        }
+        return longMap;
     }
 
     /**

@@ -50,6 +50,14 @@ static function toString(val: bytes): string;
 static function parseJSON(val: string): any;
 
 /**
+ * Give a json object and a path, read value with the path
+ * @param json The json object
+ * @param path The path string
+ * @return value of json object with the path
+ */
+static function readPath(json: any, path: string): any;
+
+/**
  * Read data from a readable stream, and compose it to a bytes
  * @param stream the readable stream
  * @return the bytes result
