@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AlibabaCloud.TeaUtil;
@@ -483,6 +484,182 @@ namespace tests
 
             Assert.Throws<ArgumentException>(() => { Common.AssertAsArray("test"); });
         }
+        
+        [Fact]
+        public void Test_ParseToMap()
+        {
+            Assert.Null(Common.ParseToMap(null));
+
+            var context = new Context
+            {
+                Str = "test",
+                ContextInteger = 123,
+                ContextLong = 123L,
+                ContextDouble = 1.123d,
+                ContextFloat = 3.456f,
+                ContextListLong = new List<long?> { 123L, 456L },
+                ListList = new List<List<int?>>
+                {
+                    new List<int?> { 789, 123 },
+                    new List<int?> { 8, 9 }
+                },
+                IntegerListMap = new Dictionary<string, List<int?>>
+                {
+                    { "integerList", new List<int?> { 123, 456 } }
+                }
+            };
+
+            var dicModel = Common.ParseToMap(context);
+
+            Assert.Equal("test", dicModel["testStr"]);
+            Assert.Equal(123, ((List<object>)((Dictionary<string, object>)dicModel["integerListMap"])["integerList"])[0]);
+            Assert.Equal(new List<int?> { 789, 123 }, ((List<object>)dicModel["listList"])[0]);
+
+            Dictionary<string, object> dic = new Dictionary<string, object>
+            {
+                { "model", context }
+            };
+
+            var dicMap = Common.ParseToMap(dic);
+
+            Assert.Equal(dicModel, dicMap["model"]);
+        }
+        
+        [Fact]
+        public void Test_ReadPath()
+        {
+            var context = new Context
+            {
+                Str = "test",
+                TestBool = true,
+                ContextInteger = 123,
+                ContextLong = 123L,
+                ContextDouble = 1.123d,
+                ContextFloat = 3.456f,
+                ContextListLong = new List<long?> { 123L, 456L },
+                ListList = new List<List<int?>>
+                {
+                    new List<int?> { 789, 123 },
+                    new List<int?> { 8, 9 }
+                },
+                IntegerListMap = new Dictionary<string, List<int?>>
+                {
+                    { "integerList", new List<int?> { 123, 456 } }
+                }
+            };
+
+            Assert.Null(Common.ReadPath(context, "$.notExist"));
+            Assert.True(Common.ReadPath(context, "$.testBool") is bool);
+            Assert.True(Common.ReadPath(context, "$.listList") is List<object>);
+            Assert.True(Common.ReadPath(context, "$.contextInteger") is long);
+            Assert.True(Common.ReadPath(context, "$.contextLong") is long);
+            Assert.True(Common.ReadPath(context, "$.contextDouble") is double);
+            Assert.True(Common.ReadPath(context, "$.contextFloat") is double);
+            Assert.True(Common.ReadPath(context, "$.contextListLong") is List<object>);
+            Assert.True(Common.ReadPath(context, "$.integerListMap") is Dictionary<string, object>);
+
+            Assert.Equal(true, Common.ReadPath(context, "$.testBool"));
+            Assert.Equal("test", Common.ReadPath(context, "$.testStr"));
+            Assert.Equal(123L, Common.ReadPath(context, "$.contextLong"));
+            var listLong = Common.ReadPath(context, "$.contextListLong") as List<object>;
+            Assert.Equal(123L, listLong[0]);
+
+            var listList = Common.ReadPath(context, "$.listList") as List<object>;
+            Assert.Equal(789L, (listList[0] as List<object>)[0]);
+
+            var map = Common.ReadPath(context, "$.integerListMap") as Dictionary<string, object>;
+            Assert.Equal(123L, (map["integerList"] as List<object>)[0]);
+
+            var realListList = new List<List<int?>>();
+            foreach (var itemList in listList)
+            {
+                var intList = itemList as List<object>;
+                var nullableIntList = new List<int?>();
+                if (intList != null)
+                {
+                    foreach (var item in intList)
+                    {
+                        var intValue = (int?)(item as long?);
+                        nullableIntList.Add(intValue);
+                    }
+                }
+
+                realListList.Add(nullableIntList);
+            }
+
+
+            var realIntegerListMap = new Dictionary<string, List<int?>>();
+            foreach (var kvp in map)
+            {
+                string key = kvp.Key;
+                object value = kvp.Value;
+
+                var intList = value as List<object>;
+                var nullableIntList = new List<int?>();
+                if (intList != null)
+                {
+                    foreach (var item in intList)
+                    {
+                        nullableIntList.Add((int?)(item as long?));
+                    }
+                }
+                realIntegerListMap[key] = nullableIntList;
+            }
+            var context1 = new Context
+            {
+                ContextLong = Common.ReadPath(context, "$.contextLong") as long?,
+                ContextInteger = (int?)(Common.ReadPath(context, "$.contextInteger") as long?),
+                ContextFloat = (float?)(Common.ReadPath(context, "$.contextFloat") as double?),
+                ContextDouble = Common.ReadPath(context, "$.contextDouble") as double?,
+                ContextListLong = (Common.ReadPath(context, "$.contextListLong") as List<object>)
+                    .Select(item => item is long longValue ? longValue : (long?)null)
+                    .ToList(),
+                ListList = realListList,
+                IntegerListMap = realIntegerListMap
+            };
+
+            Assert.Equal(123L, context1.ContextLong);
+            Assert.Equal(123, context1.ContextInteger);
+            Assert.Equal(3.456f, context1.ContextFloat);
+            Assert.Equal(1.123d, context1.ContextDouble);
+            Assert.Equal(new List<long?> { 123L, 456L }, context1.ContextListLong);
+            Assert.Equal(new List<List<int?>>
+            {
+                new List<int?> { 789, 123 },
+                new List<int?> { 8, 9 }
+            }, context1.ListList);
+            Assert.Equal(123, (context1.IntegerListMap["integerList"] as List<int?>)[0]);
+        }
+    }
+    
+    public class Context : TeaModel
+    {
+        [NameInMap("testStr")] 
+        public string Str { get; set; }
+        
+        [NameInMap("testBool")] 
+        public bool? TestBool { get; set; }
+
+        [NameInMap("contextInteger")] 
+        public int? ContextInteger { get; set; }
+
+        [NameInMap("contextLong")] 
+        public long? ContextLong { get; set; }
+
+        [NameInMap("contextListLong")] 
+        public List<long?> ContextListLong { get; set; }
+
+        [NameInMap("listList")] 
+        public List<List<int?>> ListList { get; set; }
+
+        [NameInMap("contextDouble")] 
+        public double? ContextDouble { get; set; }
+
+        [NameInMap("contextFloat")] 
+        public float? ContextFloat { get; set; }
+
+        [NameInMap("integerListMap")] 
+        public Dictionary<string, List<int?>> IntegerListMap { get; set; }
     }
 
     public class TestRegModel : TeaModel
