@@ -190,6 +190,85 @@ namespace AlibabaCloud.TeaUtil
             }
             return JsonConvert.SerializeObject(value);
         }
+        
+        /**
+         * Transform input as map.
+         */
+        public static Dictionary<string, object> ParseToMap(object input)
+        {
+            if (input == null)
+            {
+                return null;
+            }
+
+            Type type = input.GetType();
+            var map = (Dictionary<string, object>)TeaModelExtensions.ToMapFactory(type, input);
+
+            return map;
+        }
+        
+        public static object ReadPath(object obj, string path)
+        {
+            var jsonStr = ToJSONString(ParseToMap(obj));
+            var result = JObject.Parse(jsonStr).SelectToken(path);
+            return ConvertNumber(result);
+        }
+
+        private static object ConvertNumber(object input)
+        {
+            if (input == null) return null;
+
+            var token = input as JToken;
+            if (token != null)
+            {
+                if (token.Type == JTokenType.Integer)
+                {
+                    return token.ToObject<long>();
+                }
+                if (token.Type == JTokenType.Float)
+                {
+                    return token.ToObject<double>();
+                }
+                if (token.Type == JTokenType.String)
+                {
+                    return token.ToString();
+                }
+                if (token.Type == JTokenType.Array)
+                {
+                    return HandleList(token.Children());
+                }
+                if (token.Type == JTokenType.Object)
+                {
+                    return HandleMap(token.ToObject<Dictionary<string, object>>());
+                }
+                if (token.Type == JTokenType.Boolean)
+                {
+                    return token.ToObject<bool>();
+                }
+            }
+
+            return input; 
+        }
+        
+        private static object HandleList(IEnumerable<JToken> list)
+        {
+            var convertedList = new List<object>();
+            foreach (var item in list)
+            {
+                convertedList.Add(ConvertNumber(item));
+            }
+            return convertedList;
+        }
+
+        private static object HandleMap(IDictionary<string, object> map)
+        {
+            var convertedMap = new Dictionary<string, object>();
+            foreach (var entry in map)
+            {
+                convertedMap[entry.Key] = ConvertNumber(entry.Value);
+            }
+            return convertedMap;
+        }
 
         public static bool Empty(string val)
         {

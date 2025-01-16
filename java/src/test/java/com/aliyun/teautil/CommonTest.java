@@ -1,5 +1,6 @@
 package com.aliyun.teautil;
 
+import com.aliyun.tea.NameInMap;
 import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.TeaRequest;
 import com.aliyun.teautil.models.RuntimeOptions;
@@ -437,5 +438,209 @@ public class CommonTest {
 
         InputStream inputStream = new ByteArrayInputStream("test".getBytes("UTF-8"));
         Assert.assertEquals(inputStream, Common.assertAsReadable(inputStream));
+    }
+
+    @Test
+    public void stringifyTest() {
+        Context context = new Context();
+        context.setTestBool(true);
+        context.setContextInteger(123);
+        context.setContextLong(123L);
+        context.setContextDouble(1.123);
+        context.setContextFloat(3.456f);
+        context.setContextListLong(Arrays.asList(123L, 456L));
+        Map<String, List<Integer>> integerListMap = new HashMap<>();
+        List<Integer> integerList = Arrays.asList(123, 456);
+        integerListMap.put("integerList", integerList);
+        context.setIntegerListMap(integerListMap);
+
+        List<Integer> integerList1 = Arrays.asList(789, 123);
+        List<List<Integer>> listList = Arrays.asList(integerList, integerList1);
+        context.setContextListList(listList);
+
+        String str = Common.toJSONString(context);
+        Assert.assertEquals("{\"testBool\":true,\"contextInteger\":123,\"contextLong\":123,\"contextListLong\":[123,456],\"listList\":[[123,456],[789,123]],\"contextDouble\":1.123,\"contextFloat\":3.456,\"integerListMap\":{\"integerList\":[123,456]}}", str);
+    }
+
+    @Test
+    public void parseJSONTest() {
+        String context = "{\"contextHtml\": \"<b>world</b>\" ,\"contextInteger\":123,\"contextLong\":123,\"contextListLong\":[123,456],\"listList\":[[123,456],[789,123]],\"contextDouble\":1.123,\"contextFloat\":3.456,\"integerListMap\":{\"integerList\":[123,456]}}";
+        Map<String, Object> res = (Map<String, Object>) Common.parseJSON(context);
+        Assert.assertEquals("<b>world</b>", res.get("contextHtml"));
+        Assert.assertEquals(123L, res.get("contextInteger"));
+        Assert.assertEquals(3.456d, res.get("contextFloat"));
+        Assert.assertEquals(Arrays.asList(123L, 456L), res.get("contextListLong"));
+    }
+
+    @Test
+    public void parseToMapTest() {
+        Assert.assertNull(Common.parseToMap(null));
+        Context context = new Context();
+        context.setStr("test");
+        context.setContextInteger(123);
+        context.setContextLong(123L);
+        context.setContextDouble(1.123);
+        context.setContextFloat(3.456f);
+        context.setContextListLong(Arrays.asList(123L, 456L));
+        Map<String, List<Integer>> integerListMap = new HashMap<>();
+        List<Integer> integerList = Arrays.asList(123, 456);
+        integerListMap.put("integerList", integerList);
+        context.setIntegerListMap(integerListMap);
+
+        List<Integer> integerList1 = Arrays.asList(789, 123);
+        List<List<Integer>> listList = Arrays.asList(integerList, integerList1);
+        context.setContextListList(listList);
+
+        Map<String, Object> result = Common.parseToMap(context);
+        Assert.assertEquals("test", result.get("testStr"));
+        Assert.assertEquals(123, result.get("contextInteger"));
+        int i = (int)((List)((Map)result.get("integerListMap")).get("integerList")).get(0);
+        Assert.assertEquals(123, i);
+
+        Map<String, Object> dic = new HashMap<>();
+        dic.put("model", context);
+        Map<String, Object> res = Common.parseToMap(dic);
+        Assert.assertEquals(result, res.get("model"));
+    }
+
+    @Test
+    public void readPathTest() {
+        Context context = new Context();
+        context.setTestBool(true);
+        context.setContextInteger(123);
+        context.setContextLong(123L);
+        context.setContextDouble(1.123);
+        context.setContextFloat(3.456f);
+        context.setContextListLong(Arrays.asList(123L, 456L));
+        Map<String, List<Integer>> integerListMap = new HashMap<>();
+        List<Integer> integerList = Arrays.asList(123, 456);
+        integerListMap.put("integerList", integerList);
+        context.setIntegerListMap(integerListMap);
+
+        List<Integer> integerList1 = Arrays.asList(789, 123);
+        List<List<Integer>> listList = Arrays.asList(integerList, integerList1);
+        context.setContextListList(listList);
+
+        Assert.assertTrue(Common.readPath(context, "$.testBool"));
+        Assert.assertTrue(Common.readPath(context, "$.listList") instanceof List);
+        Assert.assertTrue(Common.readPath(context, "$.contextInteger") instanceof Long);
+        Assert.assertTrue(Common.readPath(context, "$.contextLong") instanceof Long);
+        Assert.assertTrue(Common.readPath(context, "$.contextDouble") instanceof Double);
+        Assert.assertTrue(Common.readPath(context, "$.contextFloat") instanceof Double);
+        Assert.assertTrue(Common.readPath(context, "$.contextListLong") instanceof List);
+        Assert.assertTrue(Common.readPath(context, "$.integerListMap") instanceof Map);
+        List<Long> list = Common.readPath(context, "$.contextListLong");
+        Assert.assertEquals(123L, list.get(0).longValue());
+
+        List<List<Long>> listList1 = Common.readPath(context, "$.listList");
+        Assert.assertEquals(123L, listList1.get(0).get(0).longValue());
+
+        Map<String, List<Long>> map = Common.readPath(context, "$.integerListMap");
+        Assert.assertEquals(123L, map.get("integerList").get(0).longValue());
+
+
+        Context context1 = new Context();
+        context1.setContextListLong(Common.readPath(context, "$.contextListLong"));
+        context1.setIntegerListMap(Common.readPath(context, "$.integerListMap"));
+        context1.setContextLong(Common.readPath(context, "$.contextLong"));
+        context1.setContextDouble(Common.readPath(context, "$.contextDouble"));
+        context1.setContextInteger(((Long) Common.readPath(context, "$.contextInteger")).intValue());
+        context1.setContextFloat(((Double) Common.readPath(context, "$.contextFloat")).floatValue());
+    }
+
+    public class Context extends TeaModel{
+        @NameInMap("testStr")
+        public String str;
+        public boolean testBool;
+
+        public Integer contextInteger;
+        public Long contextLong;
+        public List<Long> contextListLong;
+        public List<List<Integer>> listList;
+        public Double contextDouble;
+        public Float contextFloat;
+
+        public Map<String, List<Integer>> integerListMap;
+
+        public Context setStr(String str) {
+            this.str = str;
+            return this;
+        }
+
+        public String getStr() {
+            return this.str;
+        }
+
+        public Context setTestBool(boolean testBool) {
+            this.testBool = testBool;
+            return this;
+        }
+
+        public boolean getTestBool() {
+            return this.testBool;
+        }
+
+        public Context setContextInteger(Integer contextInteger) {
+            this.contextInteger = contextInteger;
+            return this;
+        }
+
+        public Integer getContextInteger() {
+            return this.contextInteger;
+        }
+
+        public Context setContextLong(Long contextLong) {
+            this.contextLong = contextLong;
+            return this;
+        }
+
+        public Long getContextLong() {
+            return this.contextLong;
+        }
+
+        public Context setContextListLong(List<Long> contextListLong) {
+            this.contextListLong = contextListLong;
+            return this;
+        }
+
+        public List<Long> getContextListLong() {
+            return this.contextListLong;
+        }
+
+        public Context setContextListList(List<List<Integer>> listList) {
+            this.listList = listList;
+            return this;
+        }
+
+        public List<List<Integer>> getContextListList() {
+            return this.listList;
+        }
+
+        public Context setContextDouble(Double contextDouble) {
+            this.contextDouble = contextDouble;
+            return this;
+        }
+
+        public Double getContextDouble() {
+            return this.contextDouble;
+        }
+
+        public Context setContextFloat(Float contextFloat) {
+            this.contextFloat = contextFloat;
+            return this;
+        }
+
+        public Float getContextFloat() {
+            return this.contextFloat;
+        }
+
+        public Context setIntegerListMap(Map<String, List<Integer>> integerListMap) {
+            this.integerListMap = integerListMap;
+            return this;
+        }
+
+        public Map<String, List<Integer>> getIntegerListMap() {
+            return this.integerListMap;
+        }
     }
 }
