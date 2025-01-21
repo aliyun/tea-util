@@ -6,6 +6,50 @@ import assert from 'assert';
 import 'mocha';
 import { platform, arch } from 'os';
 
+class Context extends $tea.Model {
+    str: string;
+    testBool: boolean;
+    contextInteger: number;
+    contextLong: number;
+    contextFloat: number;
+    contextDouble: number;
+    contextListLong: number[];
+    listList: number[][];
+    integerListMap: { [key: string]: number[] };
+
+    static names(): { [key: string]: string } {
+        return {
+            str: 'testStr',
+            testBool: 'testBool',
+            contextInteger: 'contextInteger',
+            contextLong: 'contextLong',
+            contextFloat: 'contextFloat',
+            contextDouble: 'contextDouble',
+            contextListLong: 'contextListLong',
+            listList: 'listList',
+            integerListMap: 'integerListMap',
+        };
+    }
+
+    static types(): { [key: string]: any } {
+        return {
+            str: 'string',
+            testBool: 'boolean',
+            contextInteger: 'number',
+            contextLong: 'number',
+            contextFloat: 'number',
+            contextDouble: 'number',
+            contextListLong: { 'type': 'array', 'itemType': 'number' },
+            listList: { 'type': 'array', 'itemType': { 'type': 'array', 'itemType': 'number' } },
+            integerListMap: { 'type': 'map', 'keyType': 'string', 'valueType': { 'type': 'array', 'itemType': 'number' } },
+        };
+    }
+
+    constructor(map?: { [key: string]: any }) {
+        super(map);
+    }
+}
+
 class MyReadable extends Readable {
     value: Buffer
 
@@ -39,6 +83,35 @@ describe('Tea Util', function () {
         assert.deepStrictEqual(Client.toJSONString(true), 'true');
         assert.deepStrictEqual(Client.toJSONString(null), 'null');
         assert.deepStrictEqual(Client.toJSONString({ 'str': 'test', 'number': 1, 'bool': false, 'null': null }), '{"str":"test","number":1,"bool":false,"null":null}');
+    });
+
+    it('parseJSON should ok', function () {
+        assert.deepStrictEqual(Client.parseJSON('{}'), {});
+        assert.deepStrictEqual(Client.parseJSON('{"str":"test","number":1,"bool":false,"null":null}'), { 'str': 'test', 'number': 1, 'bool': false, 'null': null });
+        assert.deepStrictEqual(Client.parseJSON('[]'), []);
+        assert.deepStrictEqual(Client.parseJSON('1'), 1);
+        assert.deepStrictEqual(Client.parseJSON('true'), true);
+        assert.deepStrictEqual(Client.parseJSON('null'), null);
+    });
+
+    it('readPath should ok', function () {
+        const context: Context = new Context({
+            str: 'test',
+            testBool: true,
+            contextInteger: 123,
+            contextLong: 123,
+            contextFloat: 3.456,
+            contextDouble: 1.123,
+            contextListLong: [123, 456],
+            listList: [[123, 456], [789, 123]],
+            integerListMap: {
+                'integerList': [123, 456],
+            },
+        });
+
+        assert.deepStrictEqual(Client.readPath(context, '$.testStr'), 'test');
+        assert.deepStrictEqual(Client.readPath(context, '$.listList[0]'), [123, 456]);
+        assert.deepStrictEqual(Client.readPath(context, '$.integerListMap'), { integerList: [123, 456] });
     });
 
     it('defaultString should ok', function () {
