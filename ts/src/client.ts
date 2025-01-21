@@ -3,6 +3,7 @@ import * as $tea from '@alicloud/tea-typescript';
 import * as kitx from 'kitx';
 import querystring from 'querystring';
 import { platform, arch } from 'os';
+import * as jp from 'jsonpath';
 const DEFAULT_USER_AGENT = `AlibabaCloud (${platform()}; ${arch()}) Node.js/${process.version} Core/1.0.1 TeaDSL/1`;
 
 export class ExtendsParameters extends $tea.Model {
@@ -125,6 +126,47 @@ function read(readable: Readable): Promise<Buffer> {
   });
 }
 
+function parseToMap(input: any): { [key: string]: any } {
+  return toMap(input);
+}
+
+function isObjectOrArray(t: any): boolean {
+  return Array.isArray(t) || (t instanceof Object && typeof t !== 'function');
+}
+
+function toMap(input: any) {
+  if (!isObjectOrArray(input)) {
+    return null;
+  } else if (input instanceof $tea.Model) {
+    return $tea.toMap(input);
+  } else if (input && input.toMap && typeof input.toMap === 'function') {
+    // 解决跨版本 Model 不互认的问题
+    return input.toMap();
+  } else if (Array.isArray(input)) {
+    const result = [];
+    input.forEach((value) => {
+      if (isObjectOrArray(value)) {
+        result.push(toMap(value));
+      } else {
+        result.push(value);
+      }
+    });
+
+    return result;
+  } else if (input instanceof Object) {
+    const result = {};
+    Object.entries(input).forEach(([key, value]) => {
+      if (isObjectOrArray(value)) {
+        result[key] = toMap(value);
+      } else {
+        result[key] = value;
+      }
+    });
+
+    return result;
+  }
+}
+
 export default class Client {
 
   static toString(buff: Buffer): string {
@@ -133,6 +175,10 @@ export default class Client {
 
   static parseJSON(text: string): any {
     return JSON.parse(text);
+  }
+
+  static readPath(obj: Object, path: string) {
+    return jp.query(parseToMap(obj), path);
   }
 
   static async readAsBytes(stream: Readable): Promise<Buffer> {

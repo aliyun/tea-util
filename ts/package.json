@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@alicloud/tea-typescript": "^1.5.1",
+    "@types/jsonpath": "^0.2.4",
+    "jsonpath": "^1.1.1",
     "kitx": "^2.0.0"
   },
   "files": [
