@@ -23,7 +23,9 @@
   "dependencies": {
     "@alicloud/tea-typescript": "^1.5.1",
     "@darabonba/typescript": "^1.0.0",
-    "kitx": "^2.0.0"
+    "kitx": "^2.0.0",
+    "@types/jsonpath": "^0.2.4",
+    "jsonpath": "^1.1.1"
   },
   "files": [
     "dist",
