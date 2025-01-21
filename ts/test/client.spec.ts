@@ -41,6 +41,33 @@ describe('Tea Util', function () {
         assert.deepStrictEqual(Client.toJSONString({ 'str': 'test', 'number': 1, 'bool': false, 'null': null }), '{"str":"test","number":1,"bool":false,"null":null}');
     });
 
+    it('parseJSON should ok', function () {
+        assert.deepStrictEqual(Client.parseJSON('{}'), {});
+        assert.deepStrictEqual(Client.parseJSON('{"str":"test","number":1,"bool":false,"null":null}'), { 'str': 'test', 'number': 1, 'bool': false, 'null': null });
+        assert.deepStrictEqual(Client.parseJSON('[]'), []);
+        assert.deepStrictEqual(Client.parseJSON('1'), 1);
+        assert.deepStrictEqual(Client.parseJSON('true'), true);
+        assert.deepStrictEqual(Client.parseJSON('null'), null);
+    });
+
+    it('readPath should ok', function () {
+        const context: Context = new Context({
+            str: 'test',
+            testBool: true,
+            contextInteger: 123,
+            contextLong: 123,
+            contextFloat: 3.456,
+            contextDouble: 1.123,
+            contextListLong: [123, 456],
+            listList: [[123, 456], [789, 123]],
+            integerListMap: {
+                'integerList': [123, 456],
+            },
+        });
+
+        assert.deepStrictEqual(Client.readPath(context, 'testStr'), 'test');
+    });
+
     it('defaultString should ok', function () {
         assert.deepStrictEqual(Client.defaultString('', 'default'), 'default');
         assert.deepStrictEqual(Client.defaultString('input', 'default'), 'input');
