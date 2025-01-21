@@ -267,7 +267,7 @@ class Utils
      *
      * @return bool if unset, return true
      */
-    public static function isUnset(&$value = null)
+    public static function isUnset($value = null)
     {
         return !isset($value) || null === $value;
     }
