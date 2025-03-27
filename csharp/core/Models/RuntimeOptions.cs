@@ -2,7 +2,7 @@
 
 namespace AlibabaCloud.TeaUtil.Models
 {
-    public class RuntimeOptions : TeaModel
+    public class RuntimeOptions : Darabonba.Models.RuntimeOptions
     {
         [NameInMap("autoretry")]
         [Validation(Required = false)]
