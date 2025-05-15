@@ -18,7 +18,7 @@ Pod::Spec.new do |spec|
   spec.tvos.deployment_target    = '13.0'
 
   spec.dependency 'CryptoSwift',  '~> 1.5.1'
-  spec.dependency 'Tea',  '~> 1.0.2'
+  spec.dependency 'Tea',  '~> 1.0.3'
   spec.swift_version = '5.6'
 
 end

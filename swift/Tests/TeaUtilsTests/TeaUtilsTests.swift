@@ -30,12 +30,13 @@ class TestModel: TeaModel {
         return map
     }
     
-    public override func fromMap(_ dict: [String: Any]) -> Void {
-        if dict.keys.contains("num") {
-            self.num = dict["num"] as! Int
+    public override func fromMap(_ dict: [String: Any?]?) -> Void {
+        guard let dict else { return }
+        if let value = dict["num"] as? Int {
+            self.num = value
         }
-        if dict.keys.contains("str") {
-            self.str = dict["str"] as! String
+        if let value = dict["str"] as? String {
+            self.str = value
         }
     }
 }
@@ -67,12 +68,13 @@ class TestModel2: TeaModel {
         return map
     }
     
-    public override func fromMap(_ dict: [String: Any]) -> Void {
-        if dict.keys.contains("num") {
-            self.num = dict["num"] as! Int
+    public override func fromMap(_ dict: [String: Any?]?) -> Void {
+        guard let dict else { return }
+        if let value = dict["num"] as? Int {
+            self.num = value
         }
-        if dict.keys.contains("str") {
-            self.str = dict["str"] as! String
+        if let value = dict["str"] as? String {
+            self.str = value
         }
     }
 }
