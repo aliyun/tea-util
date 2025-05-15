@@ -29,12 +29,13 @@ public class ExtendsParameters : Tea.TeaModel {
         return map
     }
 
-    public override func fromMap(_ dict: [String: Any]) -> Void {
-        if dict.keys.contains("headers") {
-            self.headers = dict["headers"] as! [String: String]
+    public override func fromMap(_ dict: [String: Any?]?) -> Void {
+        guard let dict else { return }
+        if let value = dict["headers"] as? [String: String] {
+            self.headers = value
         }
-        if dict.keys.contains("queries") {
-            self.queries = dict["queries"] as! [String: String]
+        if let value = dict["queries"] as? [String: String] {
+            self.queries = value
         }
     }
 }
@@ -153,64 +154,65 @@ public class RuntimeOptions : Tea.TeaModel {
         return map
     }
 
-    public override func fromMap(_ dict: [String: Any]) -> Void {
-        if dict.keys.contains("autoretry") {
-            self.autoretry = dict["autoretry"] as! Bool
+    public override func fromMap(_ dict: [String: Any?]?) -> Void {
+        guard let dict else { return }
+        if let value = dict["autoretry"] as? Bool {
+            self.autoretry = value
         }
-        if dict.keys.contains("ignoreSSL") {
-            self.ignoreSSL = dict["ignoreSSL"] as! Bool
+        if let value = dict["ignoreSSL"] as? Bool {
+            self.ignoreSSL = value
         }
-        if dict.keys.contains("key") {
-            self.key = dict["key"] as! String
+        if let value = dict["key"] as? String {
+            self.key = value
         }
-        if dict.keys.contains("cert") {
-            self.cert = dict["cert"] as! String
+        if let value = dict["cert"] as? String {
+            self.cert = value
         }
-        if dict.keys.contains("ca") {
-            self.ca = dict["ca"] as! String
+        if let value = dict["ca"] as? String {
+            self.ca = value
         }
-        if dict.keys.contains("max_attempts") {
-            self.maxAttempts = dict["max_attempts"] as! Int
+        if let value = dict["max_attempts"] as? Int {
+            self.maxAttempts = value
         }
-        if dict.keys.contains("backoff_policy") {
-            self.backoffPolicy = dict["backoff_policy"] as! String
+        if let value = dict["backoff_policy"] as? String {
+            self.backoffPolicy = value
         }
-        if dict.keys.contains("backoff_period") {
-            self.backoffPeriod = dict["backoff_period"] as! Int
+        if let value = dict["backoff_period"] as? Int {
+            self.backoffPeriod = value
         }
-        if dict.keys.contains("readTimeout") {
-            self.readTimeout = dict["readTimeout"] as! Int
+        if let value = dict["readTimeout"] as? Int {
+            self.readTimeout = value
         }
-        if dict.keys.contains("connectTimeout") {
-            self.connectTimeout = dict["connectTimeout"] as! Int
+        if let value = dict["connectTimeout"] as? Int {
+            self.connectTimeout = value
         }
-        if dict.keys.contains("httpProxy") {
-            self.httpProxy = dict["httpProxy"] as! String
+        if let value = dict["httpProxy"] as? String {
+            self.httpProxy = value
         }
-        if dict.keys.contains("httpsProxy") {
-            self.httpsProxy = dict["httpsProxy"] as! String
+        if let value = dict["httpsProxy"] as? String {
+            self.httpsProxy = value
         }
-        if dict.keys.contains("noProxy") {
-            self.noProxy = dict["noProxy"] as! String
+        if let value = dict["noProxy"] as? String {
+            self.noProxy = value
         }
-        if dict.keys.contains("maxIdleConns") {
-            self.maxIdleConns = dict["maxIdleConns"] as! Int
+        if let value = dict["maxIdleConns"] as? Int {
+            self.maxIdleConns = value
         }
-        if dict.keys.contains("localAddr") {
-            self.localAddr = dict["localAddr"] as! String
+        if let value = dict["localAddr"] as? String {
+            self.localAddr = value
         }
-        if dict.keys.contains("socks5Proxy") {
-            self.socks5Proxy = dict["socks5Proxy"] as! String
+        if let value = dict["socks5Proxy"] as? String {
+            self.socks5Proxy = value
         }
-        if dict.keys.contains("socks5NetWork") {
-            self.socks5NetWork = dict["socks5NetWork"] as! String
+        if let value = dict["socks5NetWork"] as? String {
+            self.socks5NetWork = value
         }
-        if dict.keys.contains("keepAlive") {
-            self.keepAlive = dict["keepAlive"] as! Bool
+        if let value = dict["keepAlive"] as? Bool {
+            self.keepAlive = value
         }
-        if dict.keys.contains("extendsParameters") {
+        if let value = dict["extendsParameters"] as? [String: Any?] {
             var model = ExtendsParameters()
-            model.fromMap(dict["extendsParameters"] as! [String: Any])
+            model.fromMap(value)
             self.extendsParameters = model
         }
     }
