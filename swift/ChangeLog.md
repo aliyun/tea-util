@@ -1,3 +1,6 @@
+### 2025-05-15 Version 1.0.7
+* Codegen model.
+
 ### 2024-07-08 Version 1.0.6
 * Support extends query parameters.
 
