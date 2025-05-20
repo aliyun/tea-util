@@ -9,6 +9,8 @@ use Psr\Http\Message\StreamInterface;
 class Utils
 {
     private static $defaultUserAgent = '';
+    private static $processStartTime = intval(microtime(true) * 1000);
+    private static $seqId = 0;
 
     /**
      * Convert a string(utf8) to bytes.
@@ -111,7 +113,15 @@ class Utils
      */
     public static function getNonce()
     {
-        return md5(uniqid() . uniqid(md5(microtime(true)), true));
+        $processId = getmypid();
+        $currentTime = intval(microtime(true) * 1000);
+        $seq = self::$seqId;
+        self::$seqId += 1;
+        $randNum = random_int(0, PHP_INT_MAX);
+        $msg = sprintf("%d-%d-%d-%d-%d", self::$processStartTime, $processId, $currentTime, $randNum);
+        $md5 = md5($msg);
+        return $md5;
+        // return md5(uniqid() . uniqid(md5(microtime(true)), true));
     }
 
     /**
