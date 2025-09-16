@@ -49,6 +49,7 @@ func (s *ExtendsParameters) SetQueries(v map[string]*string) *ExtendsParameters 
 }
 
 type RuntimeOptions struct {
+	IdleTimeout       *int               `json:"idleTimeout" xml:"idleTimeout"`
 	Autoretry         *bool              `json:"autoretry" xml:"autoretry"`
 	IgnoreSSL         *bool              `json:"ignoreSSL" xml:"ignoreSSL"`
 	Key               *string            `json:"key,omitempty" xml:"key,omitempty"`
@@ -175,6 +176,10 @@ func (s *RuntimeOptions) SetConnectTimeout(v int) *RuntimeOptions {
 	return s
 }
 
+func (s *RuntimeOptions) SetIdleTimeout(v int) *RuntimeOptions {
+	s.IdleTimeout = &v
+	return s
+}
 func (s *RuntimeOptions) SetHttpProxy(v string) *RuntimeOptions {
 	s.HttpProxy = &v
 	return s

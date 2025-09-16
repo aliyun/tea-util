@@ -29,6 +29,7 @@ func Test_SetFunc(t *testing.T) {
 		SetMaxIdleConns(5).
 		SetNoProxy("noproxy").
 		SetReadTimeout(50).
+		SetIdleTimeout(100).
 		SetSocks5NetWork("tcp").
 		SetSocks5Proxy("sock5proxy").
 		SetKeepAlive(false).
@@ -44,6 +45,7 @@ func Test_SetFunc(t *testing.T) {
 	utils.AssertEqual(t, 10, tea.IntValue(runtime.BackoffPeriod))
 	utils.AssertEqual(t, 100, tea.IntValue(runtime.ConnectTimeout))
 	utils.AssertEqual(t, 50, tea.IntValue(runtime.ReadTimeout))
+	utils.AssertEqual(t, 100, tea.IntValue(runtime.IdleTimeout))
 	utils.AssertEqual(t, 3, tea.IntValue(runtime.MaxAttempts))
 	utils.AssertEqual(t, 5, tea.IntValue(runtime.MaxIdleConns))
 	utils.AssertEqual(t, "no", tea.StringValue(runtime.BackoffPolicy))
