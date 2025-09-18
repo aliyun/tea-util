@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/mocha": "^7.0.1",
     "@types/node": "^12.12.26",
+    "@types/jsonpath": "^0.2.4",
     "mocha": "^7.0.1",
     "nyc": "^15.0.0",
     "source-map-support": "^0.5.16",
@@ -23,7 +24,8 @@
   "dependencies": {
     "@alicloud/tea-typescript": "^1.5.1",
     "@darabonba/typescript": "^1.0.0",
-    "kitx": "^2.0.0"
+    "kitx": "^2.0.0",
+    "jsonpath": "^1.1.1"
   },
   "files": [
     "dist",
