@@ -470,6 +470,7 @@ public class CommonTest {
         Assert.assertEquals(123L, res.get("contextInteger"));
         Assert.assertEquals(3.456d, res.get("contextFloat"));
         Assert.assertEquals(Arrays.asList(123L, 456L), res.get("contextListLong"));
+        Assert.assertTrue(res.get("integerListMap") instanceof Map);
     }
 
     @Test
