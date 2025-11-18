@@ -255,6 +255,15 @@ export default class Client {
     }
     throw new Error(`The value is not a readable`);
   }
+
+  /**
+   * Get hostname of current machine
+   * @return the string value
+   */
+  static getHostName(): string {
+    const os = require('os');
+    return os.hostname();
+  }
 }
 
 

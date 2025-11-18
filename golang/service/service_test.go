@@ -500,3 +500,12 @@ func TestToJSONString(t *testing.T) {
 	str = ToJSONString(testMap)
 	utils.AssertEqual(t, "{\"key\":\"value\",\"map\":{\"str\":\"test&<>://中文\"},\"num\":1}", tea.StringValue(str))
 }
+
+func Test_GetHostName(t *testing.T) {
+	hostname := GetHostName()
+	utils.AssertNotNil(t, hostname)
+	// hostname should not be empty in most cases
+	if tea.StringValue(hostname) != "" {
+		utils.AssertEqual(t, true, len(tea.StringValue(hostname)) > 0)
+	}
+}

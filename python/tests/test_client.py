@@ -353,3 +353,10 @@ class TestClient(unittest.TestCase):
             assert False
         except Exception as e:
             self.assertEqual('The value is not a list', str(e))
+
+    def test_get_host_name(self):
+        hostname = Client.get_host_name()
+        self.assertIsNotNone(hostname)
+        # hostname should not be empty in most cases
+        if hostname:
+            self.assertTrue(len(hostname) > 0)

@@ -328,4 +328,8 @@ public class Client {
         }
         throw TeaError("value is not a InputStream")
     }
+
+    public static func getHostName() -> String {
+        return ProcessInfo.processInfo.hostName
+    }
 }

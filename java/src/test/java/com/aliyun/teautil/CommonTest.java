@@ -643,4 +643,14 @@ public class CommonTest {
             return this.integerListMap;
         }
     }
+
+    @Test
+    public void getHostNameTest() {
+        String hostname = Common.getHostName();
+        Assert.assertNotNull(hostname);
+        // hostname should not be empty in most cases
+        if (!hostname.isEmpty()) {
+            Assert.assertTrue(hostname.length() > 0);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -533,6 +533,22 @@ namespace AlibabaCloud.TeaUtil
             }
 
             throw new ArgumentException("The value is not Stream");
+        }
+
+        /// <summary>
+        /// Get hostname of current machine
+        /// </summary>
+        /// <returns>the string value</returns>
+        public static string GetHostName()
+        {
+            try
+            {
+                return System.Net.Dns.GetHostName();
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         internal static string GetDefaultUserAgent()

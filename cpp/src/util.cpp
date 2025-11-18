@@ -9,6 +9,7 @@
 #include <darabonba/util.hpp>
 #include <iostream>
 #include <map>
+#include <unistd.h>
 
 using namespace std;
 
@@ -69,4 +70,12 @@ Darabonba_Util::Client::toMap(const shared_ptr<Darabonba::Model> &in) {
 void Darabonba_Util::Client::sleep(const shared_ptr<int> &millisecond) {
   int m = !millisecond ? 0 : *millisecond;
   boost::this_thread::sleep_for(boost::chrono::milliseconds(m));
+}
+
+string Darabonba_Util::Client::getHostName() {
+  char hostname[256];
+  if (gethostname(hostname, sizeof(hostname)) == 0) {
+    return string(hostname);
+  }
+  return "";
 }

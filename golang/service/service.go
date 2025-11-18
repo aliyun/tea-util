@@ -13,6 +13,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"reflect"
 	"runtime"
 	"strconv"
@@ -632,4 +633,12 @@ func ReadAsSSE(body io.ReadCloser) (<-chan SSEEvent, <-chan error) {
 		}
 	}()
 	return eventChannel, errorChannel
+}
+
+func GetHostName() *string {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return tea.String("")
+	}
+	return tea.String(hostname)
 }

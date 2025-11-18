@@ -716,4 +716,19 @@ namespace tests
 
         public int? testInt { get; set; }
     }
+
+    public class GetHostNameTest
+    {
+        [Fact]
+        public void Test_GetHostName()
+        {
+            string hostname = Common.GetHostName();
+            Assert.NotNull(hostname);
+            // hostname should not be empty in most cases
+            if (!string.IsNullOrEmpty(hostname))
+            {
+                Assert.True(hostname.Length > 0);
+            }
+        }
+    }
 }

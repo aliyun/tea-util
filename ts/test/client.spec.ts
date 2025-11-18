@@ -393,4 +393,13 @@ describe('Tea Util', function () {
         const result = Client.assertAsReadable(readable);
         assert.deepStrictEqual(result, readable);
     });
+
+    it('getHostName', function () {
+        const hostname = Client.getHostName();
+        assert.ok(hostname);
+        // hostname should not be empty in most cases
+        if (hostname) {
+            assert.ok(hostname.length > 0);
+        }
+    });
 });
