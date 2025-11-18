@@ -208,6 +208,8 @@ public:
 
   static bool is5xx(const shared_ptr<int> &code);
 
+  static string getHostName();
+
   Client(){};
   ~Client(){};
 };

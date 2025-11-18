@@ -597,5 +597,18 @@ public class Common {
             return null;
         }
     }
+
+    /**
+     * Get hostname of current machine
+     *
+     * @return the string value
+     */
+    public static String getHostName() {
+        try {
+            return java.net.InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }
 

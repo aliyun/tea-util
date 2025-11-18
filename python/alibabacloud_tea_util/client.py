@@ -516,3 +516,15 @@ class Client:
         if not isinstance(value, list):
             raise ValueError('The value is not a list')
         return value
+
+    @staticmethod
+    def get_host_name() -> str:
+        """
+        Get hostname of current machine
+        @return: the string value
+        """
+        import socket
+        try:
+            return socket.gethostname()
+        except Exception:
+            return ''
