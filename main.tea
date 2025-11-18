@@ -211,6 +211,12 @@ static function assertAsArray(value: any)throws : [ any ];
 static function getUserAgent(userAgent: string): string;
 
 /**
+ * Get hostname of current machine
+ * @return the string value
+ */
+static function getHostName(): string;
+
+/**
  * If the code between 200 and 300, return true, or return false
  * @return boolean
  */
