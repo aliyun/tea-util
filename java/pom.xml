@@ -48,9 +48,9 @@
     </distributionManagement>
 
     <scm>
-        <connection></connection>
-        <developerConnection></developerConnection>
-        <url></url>
+        <connection>scm:git:git://github.com/aliyun/tea-util.git</connection>
+        <developerConnection>scm:git:git@github.com:aliyun/tea-util.git</developerConnection>
+        <url>https://github.com/aliyun/tea-util</url>
     </scm>
 
     <dependencies>
