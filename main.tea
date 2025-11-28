@@ -29,6 +29,14 @@ model RuntimeOptions {
   socks5NetWork?: string(description='SOCKS5 netWork', name='socks5NetWork'),
   keepAlive?: boolean(description='whether to enable keep-alive', name='keepAlive'),
   extendsParameters?: ExtendsParameters(description='Extends Parameters'),
+  webSocketPingInterval?: integer(description='', name='webSocketPingInterval'),
+  webSocketPongTimeout?: integer(description='', name='webSocketPongTimeout'),
+  webSocketEnableReconnect?: boolean(description='', name='webSocketEnableReconnect'),
+  webSocketReconnectInterval?: integer(description='', name='webSocketReconnectInterval'),
+  webSocketMaxReconnectTimes?: integer(description='', name='webSocketMaxReconnectTimes'),
+  webSocketWriteTimeout?: integer(description='', name='webSocketWriteTimeout'),
+  webSocketHandshakeTimeout?: integer(description='', name='webSocketHandshakeTimeout'),
+  webSocketHandler?: any(description='', name='webSocketHandler'),
 }
 
 /**
