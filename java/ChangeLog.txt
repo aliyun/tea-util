@@ -1,3 +1,12 @@
+2025-12-18 Version 0.2.26
+- Support domain in RuntimeOptions
+
+2025-11-19 Version 0.2.25
+- Add scm
+
+2025-11-19 Version 0.2.24
+- Support json readpath function
+
 2024-07-08 Version 0.2.23
 - Support extends query parameters
 
