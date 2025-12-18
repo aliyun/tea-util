@@ -84,6 +84,12 @@ public class RuntimeOptions extends TeaModel {
      */
     @NameInMap("extendsParameters")
     public ExtendsParameters extendsParameters;
+    
+    /**
+     * <p>Domain</p>
+     */
+    @NameInMap("domain")
+    public String domain;
 
     public static RuntimeOptions build(java.util.Map<String, ?> map) throws Exception {
         RuntimeOptions self = new RuntimeOptions();
@@ -242,4 +248,12 @@ public class RuntimeOptions extends TeaModel {
         return this.extendsParameters;
     }
 
+    public RuntimeOptions setDomain(String domain) {
+        this.domain = domain;
+        return this;
+    }
+    
+    public String getDomain() { 
+        return this.domain; 
+    }
 }
