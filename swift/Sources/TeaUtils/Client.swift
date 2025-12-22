@@ -4,6 +4,9 @@ import Tea
 
 
 public class Client {
+    private static var processStartTime = Int64(Date().timeIntervalSince1970 * 1000)
+    private static var seqId: Int64 = 0
+
     public static func toBytes(_ str: String?) -> [UInt8] {
         str?.toBytes() ?? []
     }
@@ -77,9 +80,18 @@ public class Client {
     }
 
     public static func getNonce() -> String {
-        let timestamp: TimeInterval = Date().toTimestamp()
-        let timestampStr: String = String(timestamp)
-        return (timestampStr + UUID().uuidString).md5()
+        let threadId = UInt64(Thread.current.threadIdentifier)
+        let currentTime = Int(Date().timeIntervalSince1970 * 1000)
+        let seq = seqId
+        seqId += 1
+        let randNum = UInt64.random(in: 0...UInt64.max)
+        let msg = "\(processStartTime)-\(threadId)-\(currentTime)-\(seq)-\(randNum)"
+        let md5 = Insecure.MD5.hash(data: msg.data(using: .utf8)!)
+        return md5.map { String(format: "%02hhx", $0) }.joined()
+
+        // let timestamp: TimeInterval = Date().toTimestamp()
+        // let timestampStr: String = String(timestamp)
+        // return (timestampStr + UUID().uuidString).md5()
     }
 
     public static func getDateUTCString() -> String {
