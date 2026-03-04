@@ -91,12 +91,6 @@ static async function readAsJSON(stream: readable): any {
   return parseJSON(readAsString(stream));
 }
 
-/**
- * Read data from a readable stream, and parse it by event iterator format
- * @param stream the readable stream
- * @return the parsed result
- */
-static async function readAsSSE(stream: readable): asyncIterator[object];
 
 /**
  * Generate a nonce string
