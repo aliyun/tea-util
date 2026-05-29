@@ -90,6 +90,14 @@ public class RuntimeOptions extends TeaModel {
      */
     @NameInMap("domain")
     public String domain;
+    
+    
+    /**
+     * <p>When set to true, the client returns HTTP error responses instead of throwing exceptions. This is only for observing error response headers and body. 
+     * Retries will not be triggered for the error response.</p>
+     */
+    @NameInMap("returnErrorResponse")
+    public Boolean returnErrorResponse;
 
     public static RuntimeOptions build(java.util.Map<String, ?> map) throws Exception {
         RuntimeOptions self = new RuntimeOptions();
@@ -255,5 +263,14 @@ public class RuntimeOptions extends TeaModel {
     
     public String getDomain() { 
         return this.domain; 
+    }
+    
+    public RuntimeOptions setReturnErrorResponse(Boolean returnErrorResponse) {
+        this.returnErrorResponse = returnErrorResponse;
+        return this;
+    }
+    
+     public Boolean getReturnErrorResponse() { 
+        return this.returnErrorResponse; 
     }
 }

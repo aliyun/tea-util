@@ -26,6 +26,7 @@ public class RuntimeOptionsTest {
         map.put("maxIdleConns", 300);
         map.put("keepAlive", true);
         map.put("domain", "xx.xx.xx.xx");
+        map.put("returnErrorResponse", true);
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("key", "value");
@@ -40,9 +41,12 @@ public class RuntimeOptionsTest {
         Assert.assertEquals(false, opts.autoretry);
         Assert.assertEquals(false, opts.ignoreSSL);
         Assert.assertEquals("xx.xx.xx.xx", opts.domain);
+        Assert.assertTrue(opts.returnErrorResponse);
         
         opts.setDomain("test.domain.com");
         Assert.assertEquals("test.domain.com", opts.getDomain());
+        opts.setReturnErrorResponse(false);
+        Assert.assertEquals(false, opts.getReturnErrorResponse());
         Assert.assertEquals("key", opts.key);
         Assert.assertEquals("cert", opts.cert);
         Assert.assertEquals("ca", opts.ca);
