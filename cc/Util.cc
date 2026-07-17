@@ -9,8 +9,8 @@
 #include <unordered_map>
 #include <sstream>
 #include <string>
+#include <cstdio>
 #include <ctime>
-#include <iomanip>
 #include "Util.h"
 
 using namespace std;
@@ -43,10 +43,17 @@ string Client::toString(char * buff) {
 //   }
 
 string Client::getDateUTCString() {
+    // English weekday/month names — put_time %a/%b follow LC_TIME and break RFC1123.
+    static const char *kWeekdays[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    static const char *kMonths[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     time_t t = time(nullptr);
-    stringstream date;
-    date << put_time(gmtime(&t), "%a, %d %b %Y %T GMT");
-    return date.str();
+    struct tm *gmt = gmtime(&t);
+    char buf[80];
+    snprintf(buf, sizeof buf, "%s, %02d %s %04d %02d:%02d:%02d GMT",
+             kWeekdays[gmt->tm_wday], gmt->tm_mday, kMonths[gmt->tm_mon],
+             gmt->tm_year + 1900, gmt->tm_hour, gmt->tm_min, gmt->tm_sec);
+    return string(buf);
 }
 
 //   static defaultString(real: string, defaultValue: string): string {
