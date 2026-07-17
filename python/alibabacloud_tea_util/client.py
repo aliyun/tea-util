@@ -7,7 +7,7 @@ import threading
 import random
 import hashlib
 
-from datetime import datetime
+from email.utils import formatdate
 from urllib.parse import urlencode
 from io import BytesIO
 
@@ -181,9 +181,10 @@ class Client:
     def get_date_utcstring() -> str:
         """
         Get an UTC format string by current date, e.g. 'Thu, 06 Feb 2020 07:32:54 GMT'
+        Always English (RFC 1123), independent of system locale.
         @return: the UTC format string
         """
-        return datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
+        return formatdate(usegmt=True)
 
     @staticmethod
     def default_string(

@@ -1,3 +1,6 @@
+### 2026-07-17 Version 0.3.15
+* Fix `get_date_utcstring` to emit English RFC1123 Date regardless of system locale.
+
 ### 2024-07-08 Version 0.3.13
 * Support extends query parameters.
 

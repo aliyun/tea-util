@@ -4,6 +4,7 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
+#include <cstdio>
 #include <ctime>
 #include <darabonba/core.hpp>
 #include <darabonba/util.hpp>
@@ -19,9 +20,16 @@ string Darabonba_Util::Client::getNonce() {
 }
 
 string Darabonba_Util::Client::getDateUTCString() {
+  // English weekday/month names — std::strftime %a/%b follow LC_TIME and break RFC1123.
+  static const char *kWeekdays[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+  static const char *kMonths[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
   char buf[80];
   time_t t = time(nullptr);
-  std::strftime(buf, sizeof buf, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&t));
+  struct tm *gmt = gmtime(&t);
+  std::snprintf(buf, sizeof buf, "%s, %02d %s %04d %02d:%02d:%02d GMT",
+                kWeekdays[gmt->tm_wday], gmt->tm_mday, kMonths[gmt->tm_mon],
+                gmt->tm_year + 1900, gmt->tm_hour, gmt->tm_min, gmt->tm_sec);
   return buf;
 }
 

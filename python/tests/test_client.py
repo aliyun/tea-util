@@ -76,7 +76,31 @@ class TestClient(unittest.TestCase):
         self.assertIsNotNone(Client.get_nonce())
 
     def test_get_date_utc_string(self):
-        self.assertIn('GMT', Client.get_date_utcstring())
+        import locale
+        import re
+        pattern = re.compile(
+            r'^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), '
+            r'\d{2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) '
+            r'\d{4} \d{2}:\d{2}:\d{2} GMT$'
+        )
+        self.assertRegex(Client.get_date_utcstring(), pattern)
+
+        # Must stay English under non-C locales (strftime %a/%b would localize).
+        old_locale = locale.setlocale(locale.LC_TIME)
+        try:
+            for candidate in ('zh_CN.UTF-8', 'zh_CN.utf8', 'zh_CN', 'de_DE.UTF-8', 'de_DE'):
+                try:
+                    locale.setlocale(locale.LC_TIME, candidate)
+                    break
+                except locale.Error:
+                    continue
+            else:
+                self.skipTest('no non-English LC_TIME locale available')
+            date_str = Client.get_date_utcstring()
+            self.assertRegex(date_str, pattern)
+            self.assertNotRegex(date_str, r'[\u4e00-\u9fff]')
+        finally:
+            locale.setlocale(locale.LC_TIME, old_locale)
 
     def test_default_string(self):
         self.assertEqual("", Client.default_string("", "default"))
