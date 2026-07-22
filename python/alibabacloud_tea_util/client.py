@@ -101,7 +101,7 @@ class Client:
         elif isinstance(stream, str):
             return bytes(stream, encoding='utf-8')
         else:
-            return await stream.read()
+            return stream.read()
 
     @staticmethod
     async def read_as_string_async(stream) -> str:
