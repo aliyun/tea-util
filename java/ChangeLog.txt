@@ -1,3 +1,7 @@
+2026-09-18 Version 0.2.28
+- Upgrade com.jayway.jsonpath:json-path 2.9.0 → 2.10.0 (brings json-smart 2.6.0, fixes CVE-2024-57699)
+- Not upgrading to json-path 3.0.0: it requires Java 17; tea-util remains Java 8
+
 2026-05-29 Version 0.2.27
 - Support returnErrorResponse in RuntimeOptions
 
