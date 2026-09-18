@@ -1,3 +1,6 @@
+2026-09-18 Version 0.2.28
+- Pin net.minidev:json-smart to 2.5.2 (CVE-2024-57699; overrides json-path:2.9.0 transitive 2.5.0)
+
 2026-05-29 Version 0.2.27
 - Support returnErrorResponse in RuntimeOptions
 
