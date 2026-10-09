@@ -99,6 +99,12 @@ public class RuntimeOptions extends TeaModel {
     @NameInMap("returnErrorResponse")
     public Boolean returnErrorResponse;
 
+    /**
+     * <p>Only use IPv4 to connect, AAAA records are ignored</p>
+     */
+    @NameInMap("ipv4Only")
+    public Boolean ipv4Only;
+
     public static RuntimeOptions build(java.util.Map<String, ?> map) throws Exception {
         RuntimeOptions self = new RuntimeOptions();
         return TeaModel.build(map, self);
@@ -272,5 +278,14 @@ public class RuntimeOptions extends TeaModel {
     
      public Boolean getReturnErrorResponse() { 
         return this.returnErrorResponse; 
+    }
+
+    public RuntimeOptions setIpv4Only(Boolean ipv4Only) {
+        this.ipv4Only = ipv4Only;
+        return this;
+    }
+
+    public Boolean getIpv4Only() {
+        return this.ipv4Only;
     }
 }

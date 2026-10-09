@@ -39,6 +39,7 @@ model RuntimeOptions {
   webSocketWriteTimeout?: integer(description='', name='webSocketWriteTimeout'),
   webSocketHandshakeTimeout?: integer(description='', name='webSocketHandshakeTimeout'),
   webSocketHandler?: any(description='', name='webSocketHandler'),
+  ipv4Only?: boolean(description='only use IPv4 to connect, AAAA records are ignored', name='ipv4Only'),
 }
 
 /**

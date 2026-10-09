@@ -27,6 +27,7 @@ public class RuntimeOptionsTest {
         map.put("keepAlive", true);
         map.put("domain", "xx.xx.xx.xx");
         map.put("returnErrorResponse", true);
+        map.put("ipv4Only", true);
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("key", "value");
@@ -42,6 +43,10 @@ public class RuntimeOptionsTest {
         Assert.assertEquals(false, opts.ignoreSSL);
         Assert.assertEquals("xx.xx.xx.xx", opts.domain);
         Assert.assertTrue(opts.returnErrorResponse);
+        Assert.assertTrue(opts.ipv4Only);
+        Assert.assertEquals(true, opts.toMap().get("ipv4Only"));
+        opts.setIpv4Only(false);
+        Assert.assertEquals(false, opts.getIpv4Only());
         
         opts.setDomain("test.domain.com");
         Assert.assertEquals("test.domain.com", opts.getDomain());
