@@ -447,12 +447,13 @@ final class ClientTests: XCTestCase {
 
     @MainActor
     func testAsyncSleepReleasesExecutorAndCanBeCancelled() async throws {
-        let started = expectation(description: "sleep started")
-        let sleeper = Task { @MainActor in
-            started.fulfill()
-            try await Client.sleepAsync(1000)
+        var sleeper: Task<Void, Error>!
+        await withCheckedContinuation { (started: CheckedContinuation<Void, Never>) in
+            sleeper = Task { @MainActor in
+                started.resume()
+                try await Client.sleepAsync(1000)
+            }
         }
-        await fulfillment(of: [started], timeout: 2)
         sleeper.cancel()
         do {
             try await sleeper.value
