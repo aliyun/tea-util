@@ -431,6 +431,36 @@ final class ClientTests: XCTestCase {
         XCTAssertTrue(1 < diff && diff < 3)
     }
 
+    func testAsyncSleepUsesMilliseconds() async throws {
+        let start = Date()
+        try await Client.sleepAsync(50)
+        XCTAssertGreaterThanOrEqual(Date().timeIntervalSince(start), 0.05)
+        try await Client.sleepAsync(nil)
+        try await Client.sleepAsync(0)
+        try await Client.sleepAsync(-1)
+        do {
+            try await Client.sleepAsync(Int.max)
+            XCTFail("Expected an error for a duration that overflows nanoseconds")
+        } catch is TeaError {
+        }
+    }
+
+    @MainActor
+    func testAsyncSleepReleasesExecutorAndCanBeCancelled() async throws {
+        let started = expectation(description: "sleep started")
+        let sleeper = Task { @MainActor in
+            started.fulfill()
+            try await Client.sleepAsync(1000)
+        }
+        await fulfillment(of: [started], timeout: 2)
+        sleeper.cancel()
+        do {
+            try await sleeper.value
+            XCTFail("Sleep blocked the executor or ignored cancellation")
+        } catch is CancellationError {
+        }
+    }
+
     func testToArray() {
         var array = [TeaModel]()
         array.append(TestModel())
