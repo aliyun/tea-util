@@ -310,6 +310,13 @@ public class Client {
         }
     }
 
+    public static func sleepAsync(_ millisecond: Int?) async throws {
+        guard let millisecond = millisecond, millisecond > 0 else { return }
+        let (nanoseconds, overflow) = UInt64(millisecond).multipliedReportingOverflow(by: 1_000_000)
+        guard !overflow else { throw TeaError("sleep duration is too large") }
+        try await Task.sleep(nanoseconds: nanoseconds)
+    }
+
     public static func toArray(_ input: Any?) -> [[String: Any]] {
         var array: [[String: Any]] = []
         if input != nil {
