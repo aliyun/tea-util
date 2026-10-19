@@ -29,37 +29,34 @@ jobs:
     - name: Run tests
       run: swift test -v
 
-  build-macos-latest:
-    name: Swift ${{ matrix.swift }} on macos-latest
+  # macos-latest is macOS 26 / Xcode 26, whose SDK is built with Swift 6.3.
+  # A downloaded Swift 5.9–6.1 toolchain cannot import that SDK. Use the
+  # Xcode that matches each image instead of swift-actions/setup-swift.
+  build-macos-15:
+    name: Xcode ${{ matrix.xcode }} on macos-15
     strategy:
       matrix:
-        swift: ["5.9", "5.10", "6.1"]
+        xcode: ["16.0", "16.4"]
       fail-fast: false
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
-    - uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: ${{ matrix.swift }}
     - uses: actions/checkout@v4
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
     - name: Verify Xcode Version
-      run: xcodebuild -version
+      run: xcodebuild -version && swift --version
     - name: Build
       run: swift build -v
     - name: Run tests
       run: swift test -v
 
-  build-macos-11:
-    name: Swift ${{ matrix.swift }} on macos-11
-    strategy:
-      matrix:
-        swift: ["5.6", "5.7", "5.8"]
-      fail-fast: false
-    runs-on: macos-11
+  build-macos-latest:
+    name: Xcode on macos-latest
+    runs-on: macos-latest
     steps:
-    - uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: ${{ matrix.swift }}
     - uses: actions/checkout@v4
+    - name: Verify Xcode Version
+      run: xcodebuild -version && swift --version
     - name: Build
       run: swift build -v
     - name: Run tests
