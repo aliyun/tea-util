@@ -63,4 +63,65 @@ public class RuntimeOptionsTest {
         Assert.assertEquals("value", opts.extendsParameters.headers.get("key"));
         Assert.assertEquals("value", opts.extendsParameters.queries.get("key"));
     }
+
+    @Test
+    public void setterGetterTest() throws Exception {
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("h", "v");
+        Map<String, String> queries = new HashMap<String, String>();
+        queries.put("q", "1");
+
+        ExtendsParameters ext = new ExtendsParameters();
+        Assert.assertSame(ext, ext.setHeaders(headers));
+        Assert.assertSame(ext, ext.setQueries(queries));
+        Assert.assertEquals("v", ext.getHeaders().get("h"));
+        Assert.assertEquals("1", ext.getQueries().get("q"));
+
+        Map<String, Object> extMap = new HashMap<String, Object>();
+        extMap.put("headers", headers);
+        extMap.put("queries", queries);
+        ExtendsParameters built = ExtendsParameters.build(extMap);
+        Assert.assertEquals("v", built.getHeaders().get("h"));
+        Assert.assertEquals("1", built.getQueries().get("q"));
+
+        RuntimeOptions opts = new RuntimeOptions();
+        Assert.assertSame(opts, opts.setAutoretry(true));
+        Assert.assertEquals(Boolean.TRUE, opts.getAutoretry());
+        Assert.assertSame(opts, opts.setIgnoreSSL(true));
+        Assert.assertEquals(Boolean.TRUE, opts.getIgnoreSSL());
+        Assert.assertSame(opts, opts.setKey("key"));
+        Assert.assertEquals("key", opts.getKey());
+        Assert.assertSame(opts, opts.setCert("cert"));
+        Assert.assertEquals("cert", opts.getCert());
+        Assert.assertSame(opts, opts.setCa("ca"));
+        Assert.assertEquals("ca", opts.getCa());
+        Assert.assertSame(opts, opts.setMaxAttempts(3));
+        Assert.assertEquals(3, opts.getMaxAttempts());
+        Assert.assertSame(opts, opts.setBackoffPolicy("policy"));
+        Assert.assertEquals("policy", opts.getBackoffPolicy());
+        Assert.assertSame(opts, opts.setBackoffPeriod(10));
+        Assert.assertEquals(10, opts.getBackoffPeriod());
+        Assert.assertSame(opts, opts.setReadTimeout(3000));
+        Assert.assertEquals(3000, opts.getReadTimeout());
+        Assert.assertSame(opts, opts.setConnectTimeout(1000));
+        Assert.assertEquals(1000, opts.getConnectTimeout());
+        Assert.assertSame(opts, opts.setHttpProxy("http://proxy"));
+        Assert.assertEquals("http://proxy", opts.getHttpProxy());
+        Assert.assertSame(opts, opts.setHttpsProxy("https://proxy"));
+        Assert.assertEquals("https://proxy", opts.getHttpsProxy());
+        Assert.assertSame(opts, opts.setNoProxy("localhost"));
+        Assert.assertEquals("localhost", opts.getNoProxy());
+        Assert.assertSame(opts, opts.setMaxIdleConns(5));
+        Assert.assertEquals(5, opts.getMaxIdleConns());
+        Assert.assertSame(opts, opts.setLocalAddr("127.0.0.1"));
+        Assert.assertEquals("127.0.0.1", opts.getLocalAddr());
+        Assert.assertSame(opts, opts.setSocks5Proxy("socks5://127.0.0.1"));
+        Assert.assertEquals("socks5://127.0.0.1", opts.getSocks5Proxy());
+        Assert.assertSame(opts, opts.setSocks5NetWork("tcp"));
+        Assert.assertEquals("tcp", opts.getSocks5NetWork());
+        Assert.assertSame(opts, opts.setKeepAlive(true));
+        Assert.assertEquals(Boolean.TRUE, opts.getKeepAlive());
+        Assert.assertSame(opts, opts.setExtendsParameters(ext));
+        Assert.assertSame(ext, opts.getExtendsParameters());
+    }
 }

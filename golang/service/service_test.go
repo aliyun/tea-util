@@ -1,7 +1,9 @@
 package service
 
 import (
+	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -36,7 +38,15 @@ func Test_SetFunc(t *testing.T) {
 		SetExtendsParameters(new(ExtendsParameters).SetHeaders(map[string]*string{
 			"key": tea.String("value")}).SetQueries(map[string]*string{
 			"key": tea.String("value"),
-		}))
+		})).
+		SetWebSocketPingInterval(1).
+		SetWebSocketPongTimeout(2).
+		SetWebSocketEnableReconnect(true).
+		SetWebSocketReconnectInterval(3).
+		SetWebSocketMaxReconnectTimes(4).
+		SetWebSocketWriteTimeout(5).
+		SetWebSocketHandshakeTimeout(6).
+		SetWebSocketHandler("handler")
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.Autoretry))
 	utils.AssertEqual(t, true, tea.BoolValue(runtime.IgnoreSSL))
 	utils.AssertEqual(t, "key", tea.StringValue(runtime.Key))
@@ -58,6 +68,15 @@ func Test_SetFunc(t *testing.T) {
 	utils.AssertEqual(t, false, tea.BoolValue(runtime.KeepAlive))
 	utils.AssertEqual(t, "value", tea.StringValue(runtime.ExtendsParameters.Headers["key"]))
 	utils.AssertEqual(t, "value", tea.StringValue(runtime.ExtendsParameters.Queries["key"]))
+	utils.AssertEqual(t, runtime.ExtendsParameters.String(), runtime.ExtendsParameters.GoString())
+	utils.AssertEqual(t, 1, tea.IntValue(runtime.WebSocketPingInterval))
+	utils.AssertEqual(t, 2, tea.IntValue(runtime.WebSocketPongTimeout))
+	utils.AssertEqual(t, true, tea.BoolValue(runtime.WebSocketEnableReconnect))
+	utils.AssertEqual(t, 3, tea.IntValue(runtime.WebSocketReconnectInterval))
+	utils.AssertEqual(t, 4, tea.IntValue(runtime.WebSocketMaxReconnectTimes))
+	utils.AssertEqual(t, 5, tea.IntValue(runtime.WebSocketWriteTimeout))
+	utils.AssertEqual(t, 6, tea.IntValue(runtime.WebSocketHandshakeTimeout))
+	utils.AssertEqual(t, "handler", runtime.WebSocketHandler)
 	runtime.GoString()
 }
 
@@ -508,4 +527,76 @@ func Test_GetHostName(t *testing.T) {
 	if tea.StringValue(hostname) != "" {
 		utils.AssertEqual(t, true, len(tea.StringValue(hostname)) > 0)
 	}
+}
+
+type failReader struct{}
+
+func (failReader) Read(p []byte) (int, error) {
+	return 0, errors.New("read fail")
+}
+
+type onceErrCloser struct {
+	n int
+}
+
+func (r *onceErrCloser) Read(p []byte) (int, error) {
+	r.n++
+	if r.n == 1 {
+		return 0, errors.New("boom")
+	}
+	return 0, io.EOF
+}
+
+func (r *onceErrCloser) Close() error {
+	return nil
+}
+
+func drainSSE(t *testing.T, events <-chan SSEEvent, errs <-chan error) (int, error) {
+	t.Helper()
+	timeout := time.After(2 * time.Second)
+	var got error
+	count := 0
+	for {
+		select {
+		case _, ok := <-events:
+			if !ok {
+				return count, got
+			}
+			count++
+		case err := <-errs:
+			got = err
+		case <-timeout:
+			t.Fatal("timeout waiting for sse")
+		}
+	}
+}
+
+func Test_ReadAndEncodeErrors(t *testing.T) {
+	_, err := ReadAsString(failReader{})
+	utils.AssertEqual(t, true, err != nil)
+
+	_, err = ReadAsBytes(failReader{})
+	utils.AssertEqual(t, true, err != nil)
+
+	_, err = ReadAsJSON(failReader{})
+	utils.AssertEqual(t, true, err != nil)
+
+	utils.AssertNil(t, ToJSONString(failReader{}))
+	utils.AssertNil(t, ToJSONString(make(chan int)))
+
+	_, err = AssertAsArray("nope")
+	utils.AssertEqual(t, true, err != nil)
+
+	utils.AssertNil(t, ToArray("nope"))
+}
+
+func Test_ReadAsSSEErrorPaths(t *testing.T) {
+	events, errs := ReadAsSSE(ioutil.NopCloser(strings.NewReader("retry: nope\n\n")))
+	count, err := drainSSE(t, events, errs)
+	utils.AssertEqual(t, true, count > 0)
+	utils.AssertEqual(t, true, err != nil)
+
+	events, errs = ReadAsSSE(&onceErrCloser{})
+	_, err = drainSSE(t, events, errs)
+	utils.AssertEqual(t, true, err != nil)
 }

@@ -81,6 +81,20 @@ describe('Tea Util', function () {
         assert.deepStrictEqual(result, Buffer.from('{"a":"b"}'));
     });
 
+    it('readAsBytes rejects when the stream errors', async function () {
+        const stream = new Readable({
+            read() { }
+        });
+        const pending = Client.readAsBytes(stream);
+        stream.emit('error', new Error('boom'));
+        try {
+            await pending;
+            assert.ok(false);
+        } catch (err) {
+            assert.strictEqual((err as Error).message, 'boom');
+        }
+    });
+
     it('readAsString', async function () {
         const readable = new MyReadable(Buffer.from(JSON.stringify({ 'a': 'b' })));
         const result = await Client.readAsString(readable);
@@ -376,6 +390,9 @@ describe('Tea Util', function () {
         let inputModel = new TestModel({ test: 'testValue' });
         let input: any = [inputModel];
         assert.deepStrictEqual(Client.toArray(input), [{
+            test: 'testValue'
+        }]);
+        assert.deepStrictEqual(Client.toArray([null, inputModel, undefined]), [{
             test: 'testValue'
         }]);
         assert.deepStrictEqual(Client.toArray(inputModel), null);

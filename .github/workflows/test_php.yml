@@ -46,10 +46,20 @@ jobs:
       run: composer require phpunit/phpunit --dev
 
     - name: Run test case
-      run: composer test
+      run: |
+        composer run-script clearCache
+        mkdir -p cache
+        phpunit_major="$(./vendor/bin/phpunit --version | sed -n 's/.*PHPUnit \([0-9][0-9]*\).*/\1/p' | head -1)"
+        if [ "$phpunit_major" -ge 9 ]; then
+          ./vendor/bin/phpunit --colors=always --coverage-clover cache/coverage.clover
+        else
+          ./vendor/bin/phpunit --colors=always --whitelist src --coverage-clover cache/coverage.clover
+        fi
 
     - name: Upload code coverage report
       uses: codecov/codecov-action@v4
       with:
-        flags: php # optional
+        flags: php
+        name: php-${{ matrix.php-versions }}
+        files: ./php/cache/coverage.clover
         token: ${{ secrets.CODECOV_TOKEN }}
