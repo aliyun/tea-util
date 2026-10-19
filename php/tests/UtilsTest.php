@@ -12,7 +12,6 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @internal
- * @coversNothing
  */
 final class UtilsTest extends TestCase
 {
@@ -60,6 +59,14 @@ final class UtilsTest extends TestCase
         $this->assertEquals($string[0], '{');
     }
 
+    public function testReadSeekableStream()
+    {
+        $handle = fopen('php://temp', 'r+');
+        fwrite($handle, 'string');
+        $stream = new Stream($handle);
+        $this->assertEquals('string', Utils::readAsString($stream));
+    }
+
     public function testReadAsJSON()
     {
         $result = Utils::readAsJSON($this->getStream());
@@ -105,6 +112,7 @@ final class UtilsTest extends TestCase
             'withWhiteSpace' => 'a b',
         ];
         $this->assertEquals('foo=bar&empty=&withWhiteSpace=a%20b', Utils::toFormString($query));
+        $this->assertEquals('', Utils::toFormString(null));
 
         $object = json_decode(json_encode($query));
         $this->assertEquals('foo=bar&empty=&withWhiteSpace=a%20b', Utils::toFormString($object));
@@ -130,12 +138,22 @@ final class UtilsTest extends TestCase
         $this->assertEquals('1', Utils::toJSONString(1));
         $this->assertEquals('true', Utils::toJSONString(TRUE));
         $this->assertEquals('null', Utils::toJSONString(null));
+        $this->assertEquals('plain', Utils::toJSONString('plain'));
+
+        $model        = new RequestTest();
+        $model->query = 'foo';
+        $encoded      = Utils::toJSONString($model);
+        $this->assertTrue(false !== strpos($encoded, 'foo'));
     }
 
     public function testEmpty()
     {
         $this->assertTrue(Utils::_empty(''));
         $this->assertFalse(Utils::_empty('not empty'));
+        $this->assertTrue(Utils::empty_(''));
+        $this->assertFalse(Utils::empty_('not empty'));
+        $this->assertTrue(Utils::emptyWithSuffix(null));
+        $this->assertFalse(Utils::emptyWithSuffix('not empty'));
     }
 
     public function testEqualString()
@@ -173,6 +191,14 @@ final class UtilsTest extends TestCase
             'false'  => false,
             'number' => 1000,
         ]));
+
+        $object    = new \stdClass();
+        $object->a = 1;
+        $this->assertEquals([
+            'obj' => ['a' => 1],
+        ], Utils::stringifyMapValue([
+            'obj' => $object,
+        ]));
     }
 
     public function testAnyifyMapValue()
@@ -194,122 +220,99 @@ final class UtilsTest extends TestCase
 
     public function testAssertAsBoolean()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a boolean value.');
-        Utils::assertAsBoolean('true');
-
+        $this->assertTrue(Utils::assertAsBoolean(true));
+        $this->assertFalse(Utils::assertAsBoolean(false));
         try {
-            $map = true;
-            $this->assertEquals($map, Utils::assertAsBoolean($map));
-        } catch (\Exception $e) {
-            // should not be here
+            Utils::assertAsBoolean('true');
             $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('It is not a boolean value.', $e->getMessage());
         }
     }
 
     public function testAssertAsString()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a string value.');
-        Utils::assertAsString(123);
-
+        $this->assertEquals('123', Utils::assertAsString('123'));
         try {
-            $map = '123';
-            $this->assertEquals($map, Utils::assertAsString($map));
-        } catch (\Exception $e) {
-            // should not be here
+            Utils::assertAsString(123);
             $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('It is not a string value.', $e->getMessage());
         }
     }
 
     public function testAssertAsBytes()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a bytes value.');
-        // failed because $var is not array
-        Utils::assertAsBytes('test');
-        // failed because $var is map not array
-        Utils::assertAsBytes(['foo' => 1]);
-        // failed because item value is not int
-        Utils::assertAsBytes(['1']);
-        // failed because item value is out off range
-        Utils::assertAsBytes([256]);
+        $map = [1, 2, 3];
+        $this->assertEquals($map, Utils::assertAsBytes($map));
+        $this->assertEquals([], Utils::assertAsBytes([]));
+        $this->assertEquals([
+            115, 116, 114, 105, 110, 103,
+        ], Utils::assertAsBytes(Utils::toBytes('string')));
 
-        try {
-            // success
-            $map = [1, 2, 3];
-            $this->assertEquals($map, Utils::assertAsBytes($map));
-            $this->assertEquals([
-                115, 116, 114, 105, 110, 103,
-            ], Utils::assertAsBytes(Utils::toBytes('string')));
-        } catch (\Exception $e) {
-            // should not be here
-            $this->assertTrue(false);
+        $invalid = ['test', ['foo' => 1], ['1'], [256], [-1]];
+        foreach ($invalid as $value) {
+            try {
+                Utils::assertAsBytes($value);
+                $this->assertTrue(false);
+            } catch (\InvalidArgumentException $e) {
+                $this->assertEquals('It is not a bytes value.', $e->getMessage());
+            }
         }
     }
 
     public function testAssertAsNumber()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a number value.');
-        Utils::assertAsNumber('is not number');
-
+        $this->assertEquals(123, Utils::assertAsNumber(123));
+        $this->assertEquals('1.5', Utils::assertAsNumber('1.5'));
         try {
-            $map = 123;
-            $this->assertEquals($map, Utils::assertAsNumber($map));
-        } catch (\Exception $e) {
-            // should not be here
+            Utils::assertAsNumber('is not number');
             $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('It is not a number value.', $e->getMessage());
         }
     }
 
     public function testAssertAsInteger()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a int value.');
-        Utils::assertAsInteger('is not int');
-
+        $this->assertEquals(123, Utils::assertAsInteger(123));
         try {
-            $map = 123;
-            $this->assertEquals($map, Utils::assertAsInteger($map));
-        } catch (\Exception $e) {
-            // should not be here
+            Utils::assertAsInteger('is not int');
             $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('It is not a int value.', $e->getMessage());
         }
     }
 
     public function testAssertAsMap()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a map value.');
-        Utils::assertAsMap('is not array');
-
+        $map = ['foo' => 'bar'];
+        $this->assertEquals($map, Utils::assertAsMap($map));
         try {
-            $map = ['foo' => 'bar'];
-            $this->assertEquals($map, Utils::assertAsMap($map));
-        } catch (\Exception $e) {
-            // should not be here
+            Utils::assertAsMap('is not array');
             $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('It is not a map value.', $e->getMessage());
         }
     }
 
     public function testAssertAsArray()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('It is not a array value.');
-        Utils::assertAsArray('is not array');
-
+        $map = ['foo'];
+        $this->assertEquals($map, Utils::assertAsArray($map));
         try {
-            $map = ['foo'];
-            $this->assertEquals($map, Utils::assertAsArray($map));
-        } catch (\Exception $e) {
-            // should not be here
+            Utils::assertAsArray('is not array');
             $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('It is not a array value.', $e->getMessage());
         }
     }
 
     public function testGetUserAgent()
     {
+        $default = Utils::getUserAgent();
+        $this->assertTrue(false !== strpos($default, 'AlibabaCloud'));
+        $this->assertEquals($default, Utils::getUserAgent(''));
         $this->assertTrue(false !== strpos(Utils::getUserAgent('CustomUserAgent'), 'CustomUserAgent'));
     }
 
@@ -384,6 +387,8 @@ final class UtilsTest extends TestCase
         $this->assertEquals([
             ['query' => ['query' => 'bar']],
         ], Utils::toArray([$model]));
+        $this->assertEquals('x', Utils::toArray('x'));
+        $this->assertEquals(['a' => ['b' => 1]], Utils::toArray(['a' => ['b' => 1]]));
     }
 
     public function testAssertAsReadable()
@@ -441,6 +446,93 @@ final class UtilsTest extends TestCase
         $this->assertEquals('value', $opts->extendsParameters->queries['key']);
     }
 
+    public function testRuntimeOptionsMap()
+    {
+        $opts = RuntimeOptions::fromMap([
+            'autoretry'          => true,
+            'ignoreSSL'          => false,
+            'key'                => 'key',
+            'cert'               => 'cert',
+            'ca'                 => 'ca',
+            'max_attempts'       => 3,
+            'backoff_policy'     => 'backoffPolicy',
+            'backoff_period'     => 10,
+            'readTimeout'        => 3000,
+            'connectTimeout'     => 3000,
+            'httpProxy'          => 'httpProxy',
+            'httpsProxy'         => 'httpsProxy',
+            'noProxy'            => 'noProxy',
+            'maxIdleConns'       => 300,
+            'localAddr'          => '127.0.0.1',
+            'socks5Proxy'        => 'socks5://127.0.0.1',
+            'socks5NetWork'      => 'tcp',
+            'keepAlive'          => true,
+            'extendsParameters'  => [
+                'headers' => ['key' => 'value'],
+                'queries' => ['key' => 'value'],
+            ],
+        ]);
+        $opts->validate();
+        $map = $opts->toMap();
+        $this->assertEquals(true, $map['autoretry']);
+        $this->assertEquals(false, $map['ignoreSSL']);
+        $this->assertEquals('key', $map['key']);
+        $this->assertEquals('cert', $map['cert']);
+        $this->assertEquals('ca', $map['ca']);
+        $this->assertEquals(3, $map['max_attempts']);
+        $this->assertEquals('backoffPolicy', $map['backoff_policy']);
+        $this->assertEquals(10, $map['backoff_period']);
+        $this->assertEquals(3000, $map['readTimeout']);
+        $this->assertEquals(3000, $map['connectTimeout']);
+        $this->assertEquals('httpProxy', $map['httpProxy']);
+        $this->assertEquals('httpsProxy', $map['httpsProxy']);
+        $this->assertEquals('noProxy', $map['noProxy']);
+        $this->assertEquals(300, $map['maxIdleConns']);
+        $this->assertEquals('127.0.0.1', $map['localAddr']);
+        $this->assertEquals('socks5://127.0.0.1', $map['socks5Proxy']);
+        $this->assertEquals('tcp', $map['socks5NetWork']);
+        $this->assertEquals(true, $map['keepAlive']);
+        $this->assertEquals('value', $map['extendsParameters']['headers']['key']);
+        $this->assertEquals('value', $map['extendsParameters']['queries']['key']);
+
+        $this->assertEquals([], RuntimeOptions::fromMap([])->toMap());
+
+        $extends = ExtendsParameters::fromMap([
+            'headers' => ['a' => 'b'],
+            'queries' => ['c' => 'd'],
+        ]);
+        $extends->validate();
+        $this->assertEquals([
+            'headers' => ['a' => 'b'],
+            'queries' => ['c' => 'd'],
+        ], $extends->toMap());
+        $this->assertEquals([], ExtendsParameters::fromMap([])->toMap());
+    }
+
+    public function testValidateModel()
+    {
+        $this->assertNull(Utils::validateModel(null));
+        $this->assertNull(Utils::validateModel(new RequestTest()));
+    }
+
+    public function testToMapBranches()
+    {
+        $this->assertEquals([], Utils::toMap(null));
+
+        $model                         = new ShrinkGapModel();
+        $model->mapParamInQueryShrink  = 'replaced';
+        $model->otherShrink            = 'ignored';
+        $this->assertEquals([
+            'MapParamInQuery' => 'replaced',
+        ], Utils::toMap($model));
+    }
+
+    public function testGetHostName()
+    {
+        $hostname = Utils::getHostName();
+        $this->assertTrue(is_string($hostname));
+    }
+
     private function convert($body, &$content)
     {
         $class = new \ReflectionClass($body);
@@ -459,7 +551,6 @@ final class UtilsTest extends TestCase
 
 /**
  * @internal
- * @coversNothing
  */
 class RequestTest extends Model
 {
@@ -471,7 +562,6 @@ class RequestTest extends Model
 
 /**
  * @internal
- * @coversNothing
  */
 class RequestShrinkTest extends Model
 {
@@ -547,14 +637,18 @@ class RequestTestShrinkQuery extends Model
 
         return $res;
     }
+}
 
-    public function testGetHostName()
+class ShrinkGapModel extends Model
+{
+    public $mapParamInQueryShrink;
+    public $otherShrink;
+    protected $_name = [];
+
+    public function toMap()
     {
-        $hostname = Utils::getHostName();
-        $this->assertNotNull($hostname);
-        // hostname should not be empty in most cases
-        if ($hostname !== '') {
-            $this->assertTrue(strlen($hostname) > 0);
-        }
+        return [
+            'MapParamInQuery' => 'keep',
+        ];
     }
 }

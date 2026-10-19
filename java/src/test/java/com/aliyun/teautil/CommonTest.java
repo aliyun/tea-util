@@ -4,12 +4,17 @@ import com.aliyun.tea.NameInMap;
 import com.aliyun.tea.TeaModel;
 import com.aliyun.tea.TeaRequest;
 import com.aliyun.teautil.models.RuntimeOptions;
+import com.aliyun.teautil.models.TeaUtilException;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -651,6 +656,111 @@ public class CommonTest {
         // hostname should not be empty in most cases
         if (!hostname.isEmpty()) {
             Assert.assertTrue(hostname.length() > 0);
+        }
+    }
+
+    @Test
+    public void javaProjectVersionTest() {
+        Assert.assertFalse(JavaProject.teaUtilVersion.isEmpty());
+    }
+
+    @Test
+    public void teaUtilExceptionWithCauseTest() {
+        Throwable cause = new IllegalStateException("cause");
+        TeaUtilException exception = new TeaUtilException("msg", cause);
+        Assert.assertEquals("msg", exception.getMessage());
+        Assert.assertSame(cause, exception.getCause());
+    }
+
+    @Test
+    public void validateModelWhenValidateThrowsTest() {
+        try {
+            Common.validateModel(new TeaModel() {
+                @Override
+                public void validate() {
+                    throw new RuntimeException("bad model");
+                }
+            });
+            Assert.fail();
+        } catch (TeaUtilException e) {
+            Assert.assertEquals("bad model", e.getMessage());
+            Assert.assertNotNull(e.getCause());
+        }
+    }
+
+    @Test
+    public void sleepInterruptedTest() {
+        Thread.currentThread().interrupt();
+        try {
+            Common.sleep(50);
+            Assert.fail();
+        } catch (TeaUtilException e) {
+            Assert.assertNotNull(e.getMessage());
+        } finally {
+            Thread.interrupted();
+        }
+    }
+
+    @Test
+    public void readAsBytesFailureTest() {
+        InputStream badRead = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw new IOException("read");
+            }
+
+            @Override
+            public int read(byte[] b, int off, int len) throws IOException {
+                throw new IOException("read");
+            }
+        };
+        try {
+            Common.readAsBytes(badRead);
+            Assert.fail();
+        } catch (TeaUtilException e) {
+            Assert.assertEquals("read", e.getMessage());
+        }
+
+        InputStream badClose = new ByteArrayInputStream("hi".getBytes()) {
+            @Override
+            public void close() throws IOException {
+                throw new IOException("close");
+            }
+        };
+        try {
+            Common.readAsBytes(badClose);
+            Assert.fail();
+        } catch (TeaUtilException e) {
+            Assert.assertEquals("close", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseJSONScalarBranchesTest() {
+        Map<String, Object> res = (Map<String, Object>) Common.parseJSON("{\"flag\":true,\"empty\":null,\"sci\":1E2}");
+        Assert.assertEquals(Boolean.TRUE, res.get("flag"));
+        Assert.assertNull(res.get("empty"));
+        Assert.assertEquals(Double.valueOf(100.0d), res.get("sci"));
+    }
+
+    @Test
+    public void mapTypeAdapterWriteAndDefaultTest() throws Exception {
+        MapTypeAdapter adapter = new MapTypeAdapter();
+        StringWriter buffer = new StringWriter();
+        JsonWriter writer = new JsonWriter(buffer);
+        adapter.write(writer, "text");
+        writer.close();
+        Assert.assertEquals("\"text\"", buffer.toString());
+
+        JsonReader reader = new JsonReader(new StringReader("{\"a\":1}"));
+        reader.beginObject();
+        try {
+            adapter.read(reader);
+            Assert.fail();
+        } catch (IllegalStateException e) {
+            Assert.assertNotNull(e);
+        } finally {
+            reader.close();
         }
     }
 }
