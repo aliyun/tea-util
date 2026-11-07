@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -22,10 +24,14 @@ namespace AlibabaCloud.TeaUtil
     public static class Common
     {
         private static readonly string _defaultUserAgent;
+        private static readonly long _processStartTime;
+        private static long _seqId = 0;
 
         static Common()
         {
             _defaultUserAgent = GetDefaultUserAgent();
+            double ticks = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+            _processStartTime = (long)(ticks * 1000);
         }
 
         public static byte[] ToBytes(string val)
@@ -127,7 +133,17 @@ namespace AlibabaCloud.TeaUtil
 
         public static string GetNonce()
         {
-            return Guid.NewGuid().ToString();
+            int threadId = Thread.CurrentThread.ManagedThreadId;
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            long seq = Interlocked.Increment(ref seqId);
+            long randNum = new Random().NextInt64();
+            string msg = string.Format("{0}-{1}-{2}-{3}", _processStartTime, threadId, currentTime, seq, randNum);
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hash = md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(msg));
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+            //return Guid.NewGuid().ToString();
         }
 
         public static string GetDateUTCString()
