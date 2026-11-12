@@ -90,6 +90,10 @@ public class RuntimeOptions extends TeaModel {
      */
     @NameInMap("domain")
     public String domain;
+
+    /** OSS PrivateLink 上传地址，单次请求优先于 Config，Bucket 放入路径。 */
+    @NameInMap("ossPrivateUrl")
+    public String ossPrivateUrl;
     
     
     /**
@@ -254,6 +258,15 @@ public class RuntimeOptions extends TeaModel {
     }
     public ExtendsParameters getExtendsParameters() {
         return this.extendsParameters;
+    }
+
+    public RuntimeOptions setOssPrivateUrl(String ossPrivateUrl) {
+        this.ossPrivateUrl = ossPrivateUrl;
+        return this;
+    }
+
+    public String getOssPrivateUrl() {
+        return this.ossPrivateUrl;
     }
 
     public RuntimeOptions setDomain(String domain) {
