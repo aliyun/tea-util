@@ -29,6 +29,7 @@ model RuntimeOptions {
   socks5NetWork?: string(description='SOCKS5 netWork', name='socks5NetWork'),
   keepAlive?: boolean(description='whether to enable keep-alive', name='keepAlive'),
   domain?: string(description='domain', name='domain'),
+  ossPrivateUrl?: string(description='OSS PrivateLink 上传地址（包含 http:// 或 https://），单次请求优先于 Config，Bucket 使用路径风格寻址', name='ossPrivateUrl'),
   returnErrorResponse?: boolean(description='When set to true, the client returns HTTP error responses instead of throwing exceptions. This is only for observing error response headers and body. Retries will not be triggered for the error response.', name='returnErrorResponse'),
   extendsParameters?: ExtendsParameters(description='Extends Parameters'),
   webSocketPingInterval?: integer(description='', name='webSocketPingInterval'),
