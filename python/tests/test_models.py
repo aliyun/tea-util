@@ -4,6 +4,13 @@ from alibabacloud_tea_util.models import ExtendsParameters
 
 
 class TestClient(unittest.TestCase):
+    def test_oss_private_url_round_trip(self):
+        self.assertNotIn('ossPrivateUrl', RuntimeOptions().to_map())
+        for endpoint in ('', 'http://localhost:8080/prefix', 'https://oss.example.test'):
+            model = RuntimeOptions(oss_private_url=endpoint)
+            self.assertEqual(endpoint, model.oss_private_url)
+            self.assertEqual(endpoint, model.to_map()['ossPrivateUrl'])
+            self.assertEqual(endpoint, RuntimeOptions().from_map(model.to_map()).oss_private_url)
     def test_init(self):
         option = RuntimeOptions()
         option.validate()

@@ -15,6 +15,18 @@ use Psr\Http\Message\StreamInterface;
  */
 final class UtilsTest extends TestCase
 {
+    public function testOssPrivateUrlRoundTrip()
+    {
+        self::assertArrayNotHasKey('ossPrivateUrl', (new RuntimeOptions())->toMap());
+        foreach (['', 'http://localhost:8080/prefix', 'https://oss.example.test'] as $endpoint) {
+            $model = new RuntimeOptions(['ossPrivateUrl' => $endpoint]);
+            self::assertSame($endpoint, $model->ossPrivateUrl);
+            self::assertSame($endpoint, $model->toMap()['ossPrivateUrl']);
+            self::assertSame($endpoint, RuntimeOptions::fromMap($model->toMap())->ossPrivateUrl);
+            self::assertSame($endpoint, Model::toModel(['ossPrivateUrl' => $endpoint], new RuntimeOptions())->ossPrivateUrl);
+        }
+    }
+
     public function getStream()
     {
         return new Stream(fopen('http://httpbin.org/get', 'r'));

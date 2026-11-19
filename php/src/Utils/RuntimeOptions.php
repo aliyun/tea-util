@@ -28,6 +28,7 @@ class RuntimeOptions extends Model {
         'socks5Proxy' => 'socks5Proxy',
         'socks5NetWork' => 'socks5NetWork',
         'keepAlive' => 'keepAlive',
+        'ossPrivateUrl' => 'ossPrivateUrl',
     ];
     public function validate() {}
     public function toMap() {
@@ -85,6 +86,9 @@ class RuntimeOptions extends Model {
         }
         if (null !== $this->keepAlive) {
             $res['keepAlive'] = $this->keepAlive;
+        }
+        if (null !== $this->ossPrivateUrl) {
+            $res['ossPrivateUrl'] = $this->ossPrivateUrl;
         }
         if (null !== $this->extendsParameters) {
             $res['extendsParameters'] = null !== $this->extendsParameters ? $this->extendsParameters->toMap() : null;
@@ -150,6 +154,9 @@ class RuntimeOptions extends Model {
         }
         if(isset($map['keepAlive'])){
             $model->keepAlive = $map['keepAlive'];
+        }
+        if(isset($map['ossPrivateUrl'])){
+            $model->ossPrivateUrl = $map['ossPrivateUrl'];
         }
         if(isset($map['extendsParameters'])){
             $model->extendsParameters = ExtendsParameters::fromMap($map['extendsParameters']);
@@ -263,6 +270,12 @@ class RuntimeOptions extends Model {
      * @var bool
      */
     public $keepAlive;
+
+    /**
+     * @description OSS PrivateLink 上传地址（包含 http:// 或 https://），非空时优先于 Config
+     * @var string
+     */
+    public $ossPrivateUrl;
 
     /**
      * @description Extends Parameters
