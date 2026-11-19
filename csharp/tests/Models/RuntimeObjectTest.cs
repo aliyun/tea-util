@@ -7,6 +7,20 @@ namespace tests.Models
 {
     public class RuntimeObjectTest
     {
+        [Theory]
+        [InlineData("")]
+        [InlineData("http://localhost:8080/prefix")]
+        [InlineData("https://oss.example.test")]
+        public void Test_OssPrivateUrl_RoundTrip(string endpoint)
+        {
+            var runtime = new RuntimeOptions { OssPrivateUrl = endpoint };
+            var map = AlibabaCloud.TeaUtil.Common.ToMap(runtime);
+            Assert.Equal(endpoint, map["ossPrivateUrl"]);
+            var restored = Tea.TeaModel.ToObject<RuntimeOptions>(map);
+            Assert.Equal(endpoint, restored.OssPrivateUrl);
+            Assert.Null(new RuntimeOptions().OssPrivateUrl);
+        }
+
         [Fact]
         public void Test_RuntimeObject()
         {
