@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -599,4 +600,41 @@ func Test_ReadAsSSEErrorPaths(t *testing.T) {
 	events, errs = ReadAsSSE(&onceErrCloser{})
 	_, err = drainSSE(t, events, errs)
 	utils.AssertEqual(t, true, err != nil)
+}
+
+// stickyErrCloser keeps returning the same non-EOF error, which is what
+// net/http's chunkedReader does when a response is truncated in the middle of a
+// chunk: the error is latched in cr.err and handed back by every later Read.
+type stickyErrCloser struct {
+	reads int32
+}
+
+func (r *stickyErrCloser) Read(p []byte) (int, error) {
+	atomic.AddInt32(&r.reads, 1)
+	return 0, io.ErrUnexpectedEOF
+}
+
+func (r *stickyErrCloser) Close() error {
+	return nil
+}
+
+func Test_ReadAsSSEStopsOnStickyReadError(t *testing.T) {
+	body := &stickyErrCloser{}
+	events, errs := ReadAsSSE(body)
+
+	count, err := drainSSE(t, events, errs)
+	utils.AssertEqual(t, 0, count)
+	utils.AssertEqual(t, true, errors.Is(err, io.ErrUnexpectedEOF))
+
+	// The producer has to stop after reporting the first error instead of
+	// reading the same latched error over and over.
+	utils.AssertEqual(t, int32(1), atomic.LoadInt32(&body.reads))
+
+	// errorChannel is intentionally left open, consumers must not rely on it
+	// being closed to detect the end of the stream.
+	select {
+	case _, ok := <-errs:
+		utils.AssertEqual(t, true, ok)
+	default:
+	}
 }
