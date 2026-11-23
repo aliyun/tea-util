@@ -474,6 +474,30 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual("model2", res[1]["str"] as! String)
     }
 
+    func testOSSPrivateUrlDefaultsAndRoundTrip() throws {
+        let unset = RuntimeOptions()
+        XCTAssertNil(unset.ossPrivateUrl)
+        XCTAssertNil(unset.toMap()["ossPrivateUrl"])
+        unset.fromMap(nil)
+        XCTAssertNil(unset.ossPrivateUrl)
+
+        for url in ["", "http://127.0.0.1:8080/prefix", "https://oss-private.example:8443/"] {
+            let options = RuntimeOptions([
+                "ossPrivateUrl": url, "readTimeout": 3000, "autoretry": false,
+                "extendsParameters": ["headers": ["x-test": "value"]]
+            ])
+            try options.validate()
+            XCTAssertEqual(options.ossPrivateUrl, url)
+            XCTAssertEqual(options.toMap()["ossPrivateUrl"] as? String, url)
+            let copied = RuntimeOptions()
+            copied.fromMap(options.toMap())
+            XCTAssertEqual(copied.ossPrivateUrl, url)
+            XCTAssertEqual(copied.readTimeout, 3000)
+            XCTAssertEqual(copied.autoretry, false)
+            XCTAssertEqual(copied.extendsParameters?.headers?["x-test"], "value")
+        }
+    }
+
     func testRuntimeOptions() {
         var opts = RuntimeOptions(
             [
