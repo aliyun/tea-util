@@ -671,7 +671,12 @@ func ReadAsSSE(body io.ReadCloser) (<-chan SSEEvent, <-chan error) {
 				break
 			}
 			if err != nil {
+				// Any non-EOF read error means the stream is dead. io.ErrUnexpectedEOF
+				// for example is returned by net/http's chunkedReader forever once a
+				// response is truncated mid-chunk, so keeping the loop alive would
+				// spin on the same latched error and never close eventChannel.
 				errorChannel <- err
+				return
 			}
 
 			line = strings.TrimRight(line, "\n")
