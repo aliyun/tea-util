@@ -1,3 +1,6 @@
+### 2026-11-24 Version 1.1.1
+* 新增可选 `RuntimeOptions.ossPrivateUrl`，支持 OSS PrivateLink 上传地址及模型序列化往返。
+
 ### 2025-05-15 Version 1.0.7
 * Codegen model.
 
