@@ -1,3 +1,6 @@
+2026-11-24 Version v2.0.10
+- 新增可选 RuntimeOptions.OssPrivateUrl 及 SetOssPrivateUrl，支持 OSS PrivateLink 上传地址。
+
 2024-07-08 Version v2.0.6
 - Support extends query parameters.
 

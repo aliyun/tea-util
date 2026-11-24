@@ -1,17 +1,17 @@
 {
 	"scope": "darabonba",
 	"name": "Util",
-	"version": "0.2.19",
+	"version": "0.2.20",
 	"main": "./main.tea",
 	"releases": {
-		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.8",
+		"go": "github.com/alibabacloud-go/tea-utils/v2/service:v2.0.10",
 		"ts": "@alicloud/tea-util:^1.4.11",
-		"csharp": "AlibabaCloud.TeaUtil:0.1.20",
-		"java": "com.aliyun:tea-util:0.2.28",
+		"csharp": "AlibabaCloud.TeaUtil:0.1.21",
+		"java": "com.aliyun:tea-util:0.2.29",
 		"php": "alibabacloud/tea-utils:^0.2.22",
 		"python": "alibabacloud_tea_util:0.3.14",
 		"python2": "alibabacloud_tea_util_py2:0.0.9",
-		"swift": "alibabacloud-sdk-swift/tea-utils:1.0.8",
+		"swift": "alibabacloud-sdk-swift/tea-utils:1.1.1",
 		"cpp": "alibabacloud-sdk-cpp/dara-util:master"
 	},
 	"java": {
@@ -55,7 +55,7 @@
 	},
 	"releaselog": {
 		"changelog": [
-			"feat: support hostname."
+			"新增可选 RuntimeOptions.ossPrivateUrl，支持 OSS PrivateLink 上传地址（Java/C#/Go/Swift）。"
 		],
 		"compatible": true
 	}

@@ -1,3 +1,6 @@
+### 2026-11-24 Version 0.1.21
+* 新增可选 `RuntimeOptions.OssPrivateUrl`，支持 OSS PrivateLink 上传地址及模型序列化往返。
+
 ### 2024-07-08 Version 0.1.19
 * Support extends query parameters
 
