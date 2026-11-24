@@ -50,25 +50,27 @@ func (s *ExtendsParameters) SetQueries(v map[string]*string) *ExtendsParameters 
 }
 
 type RuntimeOptions struct {
-	IdleTimeout       *int               `json:"idleTimeout" xml:"idleTimeout"`
-	Autoretry         *bool              `json:"autoretry" xml:"autoretry"`
-	IgnoreSSL         *bool              `json:"ignoreSSL" xml:"ignoreSSL"`
-	Key               *string            `json:"key,omitempty" xml:"key,omitempty"`
-	Cert              *string            `json:"cert,omitempty" xml:"cert,omitempty"`
-	Ca                *string            `json:"ca,omitempty" xml:"ca,omitempty"`
-	MaxAttempts       *int               `json:"maxAttempts" xml:"maxAttempts"`
-	BackoffPolicy     *string            `json:"backoffPolicy" xml:"backoffPolicy"`
-	BackoffPeriod     *int               `json:"backoffPeriod" xml:"backoffPeriod"`
-	ReadTimeout       *int               `json:"readTimeout" xml:"readTimeout"`
-	ConnectTimeout    *int               `json:"connectTimeout" xml:"connectTimeout"`
-	LocalAddr         *string            `json:"localAddr" xml:"localAddr"`
-	HttpProxy         *string            `json:"httpProxy" xml:"httpProxy"`
-	HttpsProxy        *string            `json:"httpsProxy" xml:"httpsProxy"`
-	NoProxy           *string            `json:"noProxy" xml:"noProxy"`
-	MaxIdleConns      *int               `json:"maxIdleConns" xml:"maxIdleConns"`
-	Socks5Proxy       *string            `json:"socks5Proxy" xml:"socks5Proxy"`
-	Socks5NetWork     *string            `json:"socks5NetWork" xml:"socks5NetWork"`
-	KeepAlive         *bool              `json:"keepAlive" xml:"keepAlive"`
+	IdleTimeout    *int    `json:"idleTimeout" xml:"idleTimeout"`
+	Autoretry      *bool   `json:"autoretry" xml:"autoretry"`
+	IgnoreSSL      *bool   `json:"ignoreSSL" xml:"ignoreSSL"`
+	Key            *string `json:"key,omitempty" xml:"key,omitempty"`
+	Cert           *string `json:"cert,omitempty" xml:"cert,omitempty"`
+	Ca             *string `json:"ca,omitempty" xml:"ca,omitempty"`
+	MaxAttempts    *int    `json:"maxAttempts" xml:"maxAttempts"`
+	BackoffPolicy  *string `json:"backoffPolicy" xml:"backoffPolicy"`
+	BackoffPeriod  *int    `json:"backoffPeriod" xml:"backoffPeriod"`
+	ReadTimeout    *int    `json:"readTimeout" xml:"readTimeout"`
+	ConnectTimeout *int    `json:"connectTimeout" xml:"connectTimeout"`
+	LocalAddr      *string `json:"localAddr" xml:"localAddr"`
+	HttpProxy      *string `json:"httpProxy" xml:"httpProxy"`
+	HttpsProxy     *string `json:"httpsProxy" xml:"httpsProxy"`
+	NoProxy        *string `json:"noProxy" xml:"noProxy"`
+	MaxIdleConns   *int    `json:"maxIdleConns" xml:"maxIdleConns"`
+	Socks5Proxy    *string `json:"socks5Proxy" xml:"socks5Proxy"`
+	Socks5NetWork  *string `json:"socks5NetWork" xml:"socks5NetWork"`
+	KeepAlive      *bool   `json:"keepAlive" xml:"keepAlive"`
+	// OSS PrivateLink 上传地址（含协议），单次请求优先于 Config。
+	OssPrivateUrl     *string            `json:"ossPrivateUrl,omitempty" xml:"ossPrivateUrl,omitempty"`
 	ExtendsParameters *ExtendsParameters `json:"extendsParameters,omitempty" xml:"extendsParameters,omitempty"`
 
 	// WebSocket Specific Configuration
@@ -228,6 +230,11 @@ func (s *RuntimeOptions) SetSocks5NetWork(v string) *RuntimeOptions {
 
 func (s *RuntimeOptions) SetKeepAlive(v bool) *RuntimeOptions {
 	s.KeepAlive = &v
+	return s
+}
+
+func (s *RuntimeOptions) SetOssPrivateUrl(v string) *RuntimeOptions {
+	s.OssPrivateUrl = &v
 	return s
 }
 

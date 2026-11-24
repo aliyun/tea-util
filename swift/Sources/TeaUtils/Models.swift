@@ -77,6 +77,9 @@ public class RuntimeOptions : Tea.TeaModel {
 
     public var keepAlive: Bool?
 
+    /// OSS PrivateLink 上传地址（包含 http:// 或 https://），非空时优先于 Config。
+    public var ossPrivateUrl: String?
+
     public var extendsParameters: ExtendsParameters?
 
     public override init() {
@@ -148,6 +151,9 @@ public class RuntimeOptions : Tea.TeaModel {
         if self.keepAlive != nil {
             map["keepAlive"] = self.keepAlive!
         }
+        if self.ossPrivateUrl != nil {
+            map["ossPrivateUrl"] = self.ossPrivateUrl!
+        }
         if self.extendsParameters != nil {
             map["extendsParameters"] = self.extendsParameters?.toMap()
         }
@@ -209,6 +215,9 @@ public class RuntimeOptions : Tea.TeaModel {
         }
         if let value = dict["keepAlive"] as? Bool {
             self.keepAlive = value
+        }
+        if let value = dict["ossPrivateUrl"] as? String {
+            self.ossPrivateUrl = value
         }
         if let value = dict["extendsParameters"] as? [String: Any?] {
             var model = ExtendsParameters()

@@ -86,6 +86,13 @@ namespace AlibabaCloud.TeaUtil.Models
         public bool? KeepAlive { get; set; }
 
         /// <summary>
+        /// OSS PrivateLink 上传地址（包含 http:// 或 https://），非空时优先于 Config
+        /// </summary>
+        [NameInMap("ossPrivateUrl")]
+        [Validation(Required = false)]
+        public string OssPrivateUrl { get; set; }
+
+        /// <summary>
         /// Extends Parameters
         /// </summary>
         [NameInMap("extendsParameters")]
